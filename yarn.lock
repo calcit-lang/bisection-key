@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@calcit/procs@^0.4.1":
+"@calcit/procs@^0.4.3":
   version "0.4.3"
   resolved "https://registry.npmjs.org/@calcit/procs/-/procs-0.4.3.tgz#06e230815b1eb281db7f15f184ab23cb4076335f"
   integrity sha512-G76YVNOuGqmoCTJh7pQ1Bu4H9RsVZ4OE12aW8Bm/LBZlvtKW5/sy3P/jIZs8POFwSGZkflDHX1FsZerlYbO/Dw==

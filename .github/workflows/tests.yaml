@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: ACTIONS_ALLOW_UNSECURE_COMMANDS
       id: ACTIONS_ALLOW_UNSECURE_COMMANDS
@@ -24,7 +24,9 @@ jobs:
         echo "::add-path::$GITHUB_WORKSPACE/bin"
 
     - name: "prepare modules"
-      run: mkdir -p ~/.config/calcit/modules/ && cd ~/.config/calcit/modules/ && echo 'no deps'
+      run: >
+        mkdir -p ~/.config/calcit/modules/ && cd ~/.config/calcit/modules/ && echo 'no deps'
+        && git clone https://github.com/calcit-lang/calcit-test
 
     - name: "test"
       run: mode=ci cr -1
