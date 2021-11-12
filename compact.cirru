@@ -2,7 +2,7 @@
 {} (:package |bisection-key)
   :configs $ {} (:init-fn |bisection-key.main/main!) (:reload-fn |bisection-key.main/reload!)
     :modules $ [] |calcit-test/
-    :version |0.0.8
+    :version |0.0.9
   :entries $ {}
   :files $ {}
     |bisection-key.core $ {}
@@ -27,7 +27,7 @@
             map-indexed $ fn (idx char) ([] idx char)
             pairs-map
         |bisect-vec $ quote
-          defn bisect-vec (xs ys result)
+          defn bisect-vec (xs ys result) (; println xs ys result) (; js/console.log xs ys result)
             if
               and (empty? xs) (empty? ys)
               , result $ let
@@ -46,11 +46,7 @@
                   (= delta 1)
                     let
                         rest-ys $ rest ys
-                      recur (rest xs)
-                        prepend
-                          or (rest rest-ys) ([])
-                          or (first rest-ys) 64
-                        conj result x
+                      recur (rest xs) ([] 64) (conj result x)
                   (or (= delta 2) (= delta 3))
                     recur (rest xs) (rest ys)
                       conj result $ bit-shift-right (+ x y) 1
@@ -199,7 +195,7 @@
         |test-shorten $ quote
           deftest test-shorten
             is $ = |c (bisect |a34fd |f3554)
-            is $ = |a34N (bisect |a34fd |a3554)
+            is $ = |a34p (bisect |a34fd |a3554)
         |test-frequent-append $ quote
           deftest test-frequent-append $ is
             =
