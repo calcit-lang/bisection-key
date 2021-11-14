@@ -32,10 +32,6 @@
         |bit-shift-right $ quote
           defn bit-shift-right (n _TODO)
             .floor $ * 0.5 n
-        |int->char-map $ quote
-          def int->char-map $ -> (.split dictionary |)
-            map-indexed $ fn (idx char) ([] idx char)
-            pairs-map
         |c0 $ quote
           def c0 $ nth dictionary 0
         |c1 $ quote
@@ -109,25 +105,14 @@
             assert "|[bisection] x > y" $ or (= y "\"")
               < (&compare x y) 0
             bisect-vec "\"" x y 0
-        |str->vec $ quote
-          defn str->vec (x)
-            -> (.split x "\"")
-              .map $ fn (char) (get char->int-map char)
         |char->int-map $ quote
-          def char->int-map $ -> int->char-map
-            .map-kv $ fn (k v) ([] v k)
-        |vec->str $ quote
-          defn vec->str (xs)
-            -> xs
-              map $ fn (x) (get int->char-map x)
-              join-str |
-              ; trim-right
+          def char->int-map $ -> (.split dictionary |)
+            map-indexed $ fn (idx char) ([] char idx)
+            pairs-map
         |max-id $ quote
           def max-id $ do (; "tricky value for largest") "\""
-        |mid-id $ quote
-          def mid-id $ vec->str ([] 32)
-        |min-id $ quote
-          def min-id $ vec->str ([] 0)
+        |mid-id $ quote (def mid-id c32)
+        |min-id $ quote (def min-id c0)
         |lookup-i $ quote
           defn lookup-i (c)
             let
@@ -137,22 +122,28 @@
     |bisection-key.main $ {}
       :ns $ quote
         ns bisection-key.main $ :require
-          [] cljs.reader :refer $ [] read-string
           [] bisection-key.core :refer $ [] bisect min-id max-id mid-id
           [] bisection-key.test :refer $ run-tests
+          calcit.std.rand :refer $ rand
       :defs $ {}
         |compare-random-ids $ quote
-          defn compare-random-ids () $ loop
-              i 0
-              x mid-id
-            let
-                yes? $ > (js/Math.random) 0.5
-                new-id $ if yes? (bisect x max-id) (bisect min-id x)
-              println |random: yes?
-                = -1 $ &compare x new-id
-                , x new-id
-              if (< i 10)
-                recur (inc i) new-id
+          defn compare-random-ids () $ apply-args (0 mid-id)
+            fn (i x)
+              if (< i 1000)
+                if
+                  > (rand 1) 0.5
+                  let
+                      new-id $ bisect x max-id
+                    println |right:
+                      = -1 $ &compare x new-id
+                      , x new-id
+                    recur (inc i) new-id
+                  let
+                      new-id $ bisect min-id x
+                    println "|left: "
+                      = 1 $ &compare x new-id
+                      , x new-id
+                    recur (inc i) new-id
         |list-appending-results $ quote
           defn list-appending-results () $ loop
               i 0
