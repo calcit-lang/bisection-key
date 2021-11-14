@@ -2,7 +2,7 @@
 {} (:package |bisection-key)
   :configs $ {} (:init-fn |bisection-key.main/main!) (:reload-fn |bisection-key.main/reload!)
     :modules $ []
-    :version |0.0.9
+    :version |0.0.10
   :entries $ {}
     :test $ {} (:reload-fn |bisection-key.test/run-tests)
       :modules $ [] |calcit-test/
@@ -333,17 +333,13 @@
               &set:min $ keys dict
         |get-max-key $ quote
           defn get-max-key (x)
-            last $ sort
-              .to-list $ keys x
-              , &compare
+            &set:max $ keys x
         |get-min-key $ quote
           defn get-min-key (x)
-            first $ sort
-              .to-list $ keys x
-              , &compare
+            &set:min $ keys x
         |has-nth? $ quote
           defn has-nth? (x n)
-            < n $ count x
+            &< n $ count x
         |key-nth $ quote
           defn key-nth (x n)
             if (has-nth? x n)
@@ -364,13 +360,11 @@
             assert (string? base-key) "|base-key should be string"
             assert (map? dict) "|dict should be a map"
             let
-                existing-keys $ sort
-                  .to-list $ keys dict
-                  , &compare
-                keys-set $ #{} & existing-keys
+                keys-set $ keys dict
+                existing-keys $ sort (.to-list keys-set) &compare
               assert (includes? keys-set base-key) "|base-key should be existed"
               let
-                  position $ .index-of existing-keys base-key
+                  position $ index-of existing-keys base-key
                 bisect
                   if (= 0 position) min-id $ get existing-keys (dec position)
                   , base-key
@@ -390,13 +384,11 @@
             assert (string? base-key) "|base-key should be string"
             assert (map? dict) "|dict should be a map"
             let
-                existing-keys $ sort
-                  .to-list $ keys dict
-                  , &compare
-                keys-set $ #{} & existing-keys
+                keys-set $ keys dict
+                existing-keys $ sort (.to-list keys-set) &compare
               assert (.includes? keys-set base-key) "|base-key should be existed"
               let
-                  position $ .index-of existing-keys base-key
+                  position $ index-of existing-keys base-key
                 bisect base-key $ if
                   = position $ dec (count existing-keys)
                   , max-id
