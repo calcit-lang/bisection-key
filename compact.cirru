@@ -29,9 +29,6 @@
           def c63 $ nth dictionary 63
         |c64 $ quote
           def c64 $ nth dictionary 64
-        |bit-shift-right $ quote
-          defn bit-shift-right (n _TODO)
-            .floor $ * 0.5 n
         |c0 $ quote
           def c0 $ nth dictionary 0
         |c1 $ quote
@@ -40,61 +37,67 @@
           defn bisect-vec (result xs0 ys0 idx) (; print-values result xs0 ys0 idx)
             cond
                 and
-                  >= idx $ count xs0
-                  >= idx $ count ys0
+                  &>= idx $ count xs0
+                  &>= idx $ count ys0
                 raise $ str "\"unexpected identical ids: " xs0 "\" " ys0
-              (>= idx (count xs0))
+              (&>= idx (count xs0))
                 let
                     c-y $ nth ys0 idx
-                  if (= c0 c-y)
+                  if (&= c0 c-y)
                     if
-                      = (inc idx) (count ys0)
+                      &= (inc idx) (count ys0)
                       raise $ str "\"invalid position: " xs0 "\" " ys0
                       recur (str result c0) xs0 ys0 $ inc idx
-                    if (= c1 c-y)
+                    if (&= c1 c-y)
                       if
                         peek-tiny? $ nth ys0 (inc idx)
                         str result c0 c32
                         str result c-y
                       str result $ nth dictionary
-                        bit-shift-right (lookup-i c-y) 1
-              (>= idx (count ys0))
+                        bit-shr (lookup-i c-y) 1
+              (&>= idx (count ys0))
                 let
                     c-x $ nth xs0 idx
                   if (= c-x c64)
                     if
-                      = (inc idx) (count xs0)
-                      str result c64 c32
+                      &= (inc idx) (count xs0)
+                      str result c64 $ nth dictionary 16
                       recur (str result c64) xs0 ys0 $ inc idx
-                    if (= c-x c63) (str result c64)
+                    case-default c-x
                       str result $ nth dictionary
-                        bit-shift-right
-                          + (lookup-i c-x) 64
-                          , 1
+                        bit-shr
+                          &+
+                            &* 3 $ lookup-i c-x
+                            , 64
+                          , 2
+                      c63 $ str result c64
+                      (nth dictionary 62) (str result c63)
+                      (nth dictionary 61)
+                        str result $ nth dictionary 62
               true $ let
                   c-x $ nth xs0 idx
                   c-y $ nth ys0 idx
                   x $ lookup-i (wo-log c-x)
                   y $ lookup-i c-y
-                  delta $ wo-log (- y x)
+                  delta $ wo-log (&- y x)
                 cond
-                    = delta 0
+                    &= delta 0
                     recur (str result c-x) xs0 ys0 $ inc idx
-                  (= delta 1)
+                  (&= delta 1)
                     if
                       peek-tiny? $ nth ys0 (inc idx)
                       if
-                        = (inc idx) (count xs0)
+                        &= (inc idx) (count xs0)
                         str result c-x c32
-                        if (= c-x c64)
+                        if (&= c-x c64)
                           recur (str result c-x) xs0 "\"" $ inc idx
                           str result c-x $ wo-log
-                            nth dictionary $ bit-shift-right
-                              + (wo-log x) 64 1
+                            nth dictionary $ bit-shr
+                              &+ (wo-log x) 64 1
                               , 1
                       str result c-y
                   true $ str result
-                    nth dictionary $ bit-shift-right (+ x y) 1
+                    nth dictionary $ bit-shr (&+ x y) 1
         |peek-tiny? $ quote
           defn peek-tiny? (x)
             or (nil? x) (= c0 x)
@@ -241,7 +244,7 @@
               key-after
                 {} (|a 1) (|b 1)
                 , |b
-              , |n
+              , |h
         |test-shorten $ quote
           deftest test-shorten
             is $ = |c (bisect |a34fd |f3554)
@@ -256,7 +259,7 @@
                     if (<= i 40)
                       recur (inc i) new-id
                       , x
-              , |zzzzzz
+              , |zzx
         |test-nth-ops $ quote
           deftest test-nth-ops $ let
               v $ {} ("\"a" 1) ("\"b" 2) ("\"c" 3)
@@ -283,12 +286,12 @@
               , mid-id
             is $ =
               key-append $ {} (|a 1)
-              , |m
+              , |g
             is $ =
               assoc-append
                 {} $ |a 1
                 , 2
-              {} (|a 1) (|m 2)
+              {} (|a 1) (|g 2)
         |test-bisect $ quote
           deftest test-bisect
             is $ = (bisect |1 |2) |1T
@@ -299,7 +302,7 @@
             is $ = (bisect |11 |13) |12
             is $ = (bisect |11 |14) |12
             is $ = (bisect |11 |15) |13
-            is $ = (bisect |yyyz |z) |yz
+            is $ = (bisect |yyyz |z) |yy
         |test-frequent-prepend $ quote
           deftest test-frequent-prepend $ is
             =
@@ -311,7 +314,7 @@
                   if (<= i 40)
                     recur (inc i) new-id
                     , x
-              , |++++++/
+              , |++++++-
     |bisection-key.util $ {}
       :ns $ quote
         ns bisection-key.util $ :require
