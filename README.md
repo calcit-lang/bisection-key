@@ -22,6 +22,12 @@ yarn build
 node js-out/bundle.js # run code
 ```
 
+### Special cases
+
+Nothing could be inserted between `a` and `a+` since `+` is very close to zero. Such a key which ends with `+` should not be created from current implementation.
+
+Smallest visible value is `+`, largest visible values would be `zzzzz.....`(infinitely). They are both tricky.
+
 ### Workflow
 
 https://github.com/calcit-lang/calcit-workflow

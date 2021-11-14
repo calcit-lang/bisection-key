@@ -23,6 +23,12 @@
                 = |+ $ .slice x end
                 recur $ .slice x 0 end
                 , x
+        |c32 $ quote
+          def c32 $ nth dictionary 32
+        |c63 $ quote
+          def c63 $ nth dictionary 63
+        |c64 $ quote
+          def c64 $ nth dictionary 64
         |bit-shift-right $ quote
           defn bit-shift-right (n _TODO)
             .floor $ * 0.5 n
@@ -30,41 +36,79 @@
           def int->char-map $ -> (.split dictionary |)
             map-indexed $ fn (idx char) ([] idx char)
             pairs-map
+        |c0 $ quote
+          def c0 $ nth dictionary 0
+        |c1 $ quote
+          def c1 $ nth dictionary 1
         |bisect-vec $ quote
-          defn bisect-vec (xs ys result) (; println xs ys result) (; js/console.log xs ys result)
-            if
-              and (empty? xs) (empty? ys)
-              , result $ let
-                  x $ or (first xs) 0
-                  y $ or (first ys) 0
-                  delta $ - y x
+          defn bisect-vec (result xs0 ys0 idx) (; print-values result xs0 ys0 idx)
+            cond
+                and
+                  >= idx $ count xs0
+                  >= idx $ count ys0
+                raise $ str "\"unexpected identical ids: " xs0 "\" " ys0
+              (>= idx (count xs0))
+                let
+                    c-y $ nth ys0 idx
+                  if (= c0 c-y)
+                    if
+                      = (inc idx) (count ys0)
+                      raise $ str "\"invalid position: " xs0 "\" " ys0
+                      recur (str result c0) xs0 ys0 $ inc idx
+                    if (= c1 c-y)
+                      if
+                        peek-tiny? $ nth ys0 (inc idx)
+                        str result c0 c32
+                        str result c-y
+                      str result $ nth dictionary
+                        bit-shift-right (lookup-i c-y) 1
+              (>= idx (count ys0))
+                let
+                    c-x $ nth xs0 idx
+                  if (= c-x c64)
+                    if
+                      = (inc idx) (count xs0)
+                      str result c64 c32
+                      recur (str result c64) xs0 ys0 $ inc idx
+                    if (= c-x c63) (str result c64)
+                      str result $ nth dictionary
+                        bit-shift-right
+                          + (lookup-i c-x) 64
+                          , 1
+              true $ let
+                  c-x $ nth xs0 idx
+                  c-y $ nth ys0 idx
+                  x $ lookup-i (wo-log c-x)
+                  y $ lookup-i c-y
+                  delta $ wo-log (- y x)
                 cond
                     = delta 0
-                    let
-                        next-xs $ rest xs
-                        next-ys $ rest ys
-                      if
-                        and (empty? next-xs) (empty? next-ys)
-                        recur ([] 0) ([] 64) (conj result x)
-                        recur next-xs next-ys $ conj result x
+                    recur (str result c-x) xs0 ys0 $ inc idx
                   (= delta 1)
-                    let
-                        rest-ys $ rest ys
-                      recur (rest xs) ([] 64) (conj result x)
-                  (or (= delta 2) (= delta 3))
-                    recur (rest xs) (rest ys)
-                      conj result $ bit-shift-right (+ x y) 1
-                  true $ conj result
-                    bit-shift-right (+ x y) 1
+                    if
+                      peek-tiny? $ nth ys0 (inc idx)
+                      if
+                        = (inc idx) (count xs0)
+                        str result c-x c32
+                        if (= c-x c64)
+                          recur (str result c-x) xs0 "\"" $ inc idx
+                          str result c-x $ wo-log
+                            nth dictionary $ bit-shift-right
+                              + (wo-log x) 64 1
+                              , 1
+                      str result c-y
+                  true $ str result
+                    nth dictionary $ bit-shift-right (+ x y) 1
+        |peek-tiny? $ quote
+          defn peek-tiny? (x)
+            or (nil? x) (= c0 x)
         |bisect $ quote
           defn bisect (x y)
             assert "|[bitsect] arguments should be strings!" $ and (string? x) (string? y)
             assert "|[bisection] keys are identical!" $ not= x y
-            assert "|[bisection] x > y" $ < (&compare x y) 0
-            let
-                xs $ str->vec x
-                ys $ str->vec y
-              vec->str $ bisect-vec xs ys ([])
+            assert "|[bisection] x > y" $ or (= y "\"")
+              < (&compare x y) 0
+            bisect-vec "\"" x y 0
         |str->vec $ quote
           defn str->vec (x)
             -> (.split x "\"")
@@ -79,11 +123,17 @@
               join-str |
               ; trim-right
         |max-id $ quote
-          def max-id $ vec->str ([] 64)
+          def max-id $ do (; "tricky value for largest") "\""
         |mid-id $ quote
           def mid-id $ vec->str ([] 32)
         |min-id $ quote
           def min-id $ vec->str ([] 0)
+        |lookup-i $ quote
+          defn lookup-i (c)
+            let
+                idx $ get char->int-map c
+              if (some? idx) idx $ raise
+                str "\"unexpected bisection-key charactor: " $ pr-str c
     |bisection-key.main $ {}
       :ns $ quote
         ns bisection-key.main $ :require
@@ -119,7 +169,17 @@
           defn reload! () (run-bisection!) (println "|Code updated.")
         |run-bisection! $ quote
           defn run-bisection! () (; compare-random-ids) (; list-appending-results)
-            println $ bisect "\"yyyz" "\"z"
+            ; println $ bisect "\"yyyz" "\"z"
+            ; println $ bisect "\"1" "\"2"
+            loop
+                i 0
+                x mid-id
+              let
+                  new-id $ bisect x "\""
+                println i x
+                if (<= i 400)
+                  recur (inc i) new-id
+                  , x
     |bisection-key.test $ {}
       :ns $ quote
         ns bisection-key.test $ :require
@@ -194,19 +254,18 @@
         |test-shorten $ quote
           deftest test-shorten
             is $ = |c (bisect |a34fd |f3554)
-            is $ = |a34p (bisect |a34fd |a3554)
+            is $ = |a35 (bisect |a34fd |a3554)
         |test-frequent-append $ quote
           deftest test-frequent-append $ is
             =
-              loop
-                  i 0
-                  x mid-id
-                let
-                    new-id $ bisect x max-id
-                  if (<= i 40)
-                    recur (inc i) new-id
-                    , x
-              , |yyyyyyy
+              apply-args (0 mid-id)
+                fn (i x)
+                  let
+                      new-id $ bisect x max-id
+                    if (<= i 40)
+                      recur (inc i) new-id
+                      , x
+              , |zzzzzz
         |test-nth-ops $ quote
           deftest test-nth-ops $ let
               v $ {} ("\"a" 1) ("\"b" 2) ("\"c" 3)
@@ -249,7 +308,7 @@
             is $ = (bisect |11 |13) |12
             is $ = (bisect |11 |14) |12
             is $ = (bisect |11 |15) |13
-            is $ = (bisect |yyyz |z) |yyyzT
+            is $ = (bisect |yyyz |z) |yz
         |test-frequent-prepend $ quote
           deftest test-frequent-prepend $ is
             =
@@ -276,12 +335,8 @@
         |key-prepend $ quote
           defn key-prepend (dict)
             assert (map? dict) "|dict should be a map"
-            if (empty? dict) mid-id $ let
-                first-key $ first
-                  sort
-                    .to-list $ keys dict
-                    , &compare
-              bisect min-id first-key
+            if (empty? dict) mid-id $ bisect min-id
+              &set:min $ keys dict
         |get-max-key $ quote
           defn get-max-key (x)
             last $ sort
@@ -307,12 +362,9 @@
         |key-append $ quote
           defn key-append (dict)
             assert (map? dict) "|dict should be a map"
-            if (empty? dict) mid-id $ let
-                last-key $ last
-                  sort
-                    .to-list $ keys dict
-                    , &compare
-              bisect last-key max-id
+            if (empty? dict) mid-id $ bisect
+              &set:max $ keys dict
+              , max-id
         |key-before $ quote
           defn key-before (dict base-key)
             assert (string? base-key) "|base-key should be string"
