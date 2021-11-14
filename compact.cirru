@@ -2,7 +2,7 @@
 {} (:package |bisection-key)
   :configs $ {} (:init-fn |bisection-key.main/main!) (:reload-fn |bisection-key.main/reload!)
     :modules $ []
-    :version |0.0.10
+    :version |0.0.11
   :entries $ {}
     :test $ {} (:reload-fn |bisection-key.test/run-tests)
       :modules $ [] |calcit-test/
@@ -80,20 +80,23 @@
                   x $ lookup-i (wo-log c-x)
                   y $ lookup-i c-y
                   delta $ wo-log (&- y x)
+                  next $ inc idx
                 cond
                     &= delta 0
                     recur (str result c-x) xs0 ys0 $ inc idx
                   (&= delta 1)
                     if
-                      peek-tiny? $ nth ys0 (inc idx)
+                      peek-tiny? $ nth ys0 next
                       if
-                        &= (inc idx) (count xs0)
+                        &= next $ count xs0
                         str result c-x c32
                         if (&= c-x c64)
-                          recur (str result c-x) xs0 "\"" $ inc idx
-                          str result c-x $ wo-log
-                            nth dictionary $ bit-shr
-                              &+ (wo-log x) 64 1
+                          recur (str result c-x) xs0 "\"" next
+                          str result c-x $ nth dictionary
+                            bit-shr
+                              &+
+                                lookup-i $ nth xs0 next
+                                , 64 1
                               , 1
                       str result c-y
                   true $ str result
@@ -165,7 +168,8 @@
           defn run-bisection! () (; compare-random-ids) (; list-appending-results)
             ; println $ bisect "\"yyyz" "\"z"
             ; println $ bisect "\"1" "\"2"
-            loop
+            println $ bisect "\"uvx" "\"uw"
+            ; loop
                 i 0
                 x mid-id
               let
@@ -303,6 +307,7 @@
             is $ = (bisect |11 |14) |12
             is $ = (bisect |11 |15) |13
             is $ = (bisect |yyyz |z) |yy
+            is $ = (bisect "\"uvx" "\"uw") |uvy
         |test-frequent-prepend $ quote
           deftest test-frequent-prepend $ is
             =
