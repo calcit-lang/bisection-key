@@ -2,7 +2,7 @@
 {} (:package |bisection-key)
   :configs $ {} (:init-fn |bisection-key.main/main!) (:reload-fn |bisection-key.main/reload!)
     :modules $ []
-    :version |0.0.11
+    :version |0.0.12
   :entries $ {}
     :test $ {} (:reload-fn |bisection-key.test/run-tests)
       :modules $ [] |calcit-test/
@@ -90,11 +90,12 @@
                       if
                         &= next $ count xs0
                         str result c-x c32
-                        if (&= c-x c64)
+                        if
+                          &= (nth xs0 next) c64
                           recur (str result c-x) xs0 "\"" next
                           str result c-x $ nth dictionary
                             bit-shr
-                              &+
+                              +
                                 lookup-i $ nth xs0 next
                                 , 64 1
                               , 1
@@ -168,7 +169,8 @@
           defn run-bisection! () (; compare-random-ids) (; list-appending-results)
             ; println $ bisect "\"yyyz" "\"z"
             ; println $ bisect "\"1" "\"2"
-            println $ bisect "\"uvx" "\"uw"
+            ; println $ bisect "\"uvx" "\"uw"
+            ; println $ bisect "\"sz" "\"t"
             ; loop
                 i 0
                 x mid-id
@@ -178,6 +180,14 @@
                 if (<= i 400)
                   recur (inc i) new-id
                   , x
+            apply-args (0 "\"a")
+              fn (i x)
+                let
+                    new-id $ bisect x "\"x"
+                  println i x
+                  if (<= i 100)
+                    recur (inc i) new-id
+                    , nil
     |bisection-key.test $ {}
       :ns $ quote
         ns bisection-key.test $ :require
@@ -306,7 +316,7 @@
             is $ = (bisect |11 |13) |12
             is $ = (bisect |11 |14) |12
             is $ = (bisect |11 |15) |13
-            is $ = (bisect |yyyz |z) |yy
+            is $ = (bisect |yyyz |z) |yz
             is $ = (bisect "\"uvx" "\"uw") |uvy
         |test-frequent-prepend $ quote
           deftest test-frequent-prepend $ is
