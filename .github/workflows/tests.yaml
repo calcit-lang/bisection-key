@@ -25,10 +25,14 @@ jobs:
 
     - name: "prepare modules"
       run: >
-        mkdir -p ~/.config/calcit/modules/ && cd ~/.config/calcit/modules/ && echo 'no deps'
+        mkdir -p ~/.config/calcit/modules/ && cd ~/.config/calcit/modules/
         && git clone https://github.com/calcit-lang/calcit-test
 
     - name: "test"
-      run: mode=ci cr -1
+      run: cr -1
 
-    - run: mode=ci cr --emit-js -1 && yarn && yarn webpack && node ./js-out/bundle.js
+    - run: >
+      cr --emit-js -1 --entry test
+      && yarn
+      && yarn esbuild test.js --bundle --outfile=js-out/bundle.js --platform=node
+      && node ./js-out/bundle.js

@@ -1,9 +1,13 @@
 
 {} (:package |bisection-key)
   :configs $ {} (:init-fn |bisection-key.main/main!) (:reload-fn |bisection-key.main/reload!)
-    :modules $ [] |calcit-test/
+    :modules $ []
     :version |0.0.9
   :entries $ {}
+    :test $ {} (:reload-fn |bisection-key.test/run-tests)
+      :modules $ [] |calcit-test/
+      :port 6001
+      :init-fn |bisection-key.test/run-tests
   :files $ {}
     |bisection-key.core $ {}
       :ns $ quote
@@ -110,12 +114,7 @@
                 recur (inc i) new-id
                 , x
         |main! $ quote
-          defn main! ()
-            if
-              = "\"ci" $ get-env "\"mode"
-              run-tests
-              run-bisection!
-            println "|App started."
+          defn main! () (run-bisection!) (println "|App started.")
         |reload! $ quote
           defn reload! () (run-bisection!) (println "|Code updated.")
         |run-bisection! $ quote

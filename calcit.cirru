@@ -732,23 +732,9 @@
               |j $ {} (:type :leaf) (:id |rydlTf1ESmf) (:text |main!) (:by |root) (:at 1514647317117)
               |r $ {} (:type :expr) (:id |HkKlpM1EBXf) (:by nil) (:at 1514647317117)
                 :data $ {}
-              |v $ {} (:type :expr) (:by |Q7nwO-CJS) (:at 1625312495361)
+              |v $ {} (:type :expr) (:id |Hk9gpGJVH7z) (:by nil) (:at 1514647317117)
                 :data $ {}
-                  |T $ {} (:type :expr) (:id |Hk9gpGJVH7z) (:by nil) (:at 1514647317117)
-                    :data $ {}
-                      |T $ {} (:type :leaf) (:id |rkolpzkErQz) (:text |run-bisection!) (:by |root) (:at 1514647317117)
-                  |D $ {} (:type :leaf) (:by |Q7nwO-CJS) (:at 1625312496189) (:text |if)
-                  |L $ {} (:type :expr) (:by |Q7nwO-CJS) (:at 1625312496778)
-                    :data $ {}
-                      |T $ {} (:type :leaf) (:by |Q7nwO-CJS) (:at 1625312496932) (:text |=)
-                      |j $ {} (:type :expr) (:by |Q7nwO-CJS) (:at 1625312497987)
-                        :data $ {}
-                          |T $ {} (:type :leaf) (:by |Q7nwO-CJS) (:at 1625312501130) (:text |get-env)
-                          |j $ {} (:type :leaf) (:by |Q7nwO-CJS) (:at 1625312502855) (:text "|\"mode")
-                      |b $ {} (:type :leaf) (:by |Q7nwO-CJS) (:at 1625312506080) (:text "|\"ci")
-                  |P $ {} (:type :expr) (:by |Q7nwO-CJS) (:at 1625312506782)
-                    :data $ {}
-                      |T $ {} (:type :leaf) (:by |Q7nwO-CJS) (:at 1625312509906) (:text |run-tests)
+                  |T $ {} (:type :leaf) (:id |rkolpzkErQz) (:text |run-bisection!) (:by |root) (:at 1514647317117)
               |x $ {} (:type :expr) (:id |HknepzyVSXM) (:by nil) (:at 1514647317117)
                 :data $ {}
                   |T $ {} (:type :leaf) (:id |H1peaMJVrXM) (:text |println) (:by |root) (:at 1514647317117)
@@ -2529,12 +2515,12 @@
         :proc $ {} (:type :expr) (:by |root) (:at 1514649702582) (:id |r1XyOuVrXf)
           :data $ {}
   :configs $ {} (:reload-fn |bisection-key.main/reload!)
-    :modules $ [] |calcit-test/
-    :output |src
+    :modules $ []
     :port 6001
-    :extension |.cljs
-    :local-ui? false
     :init-fn |bisection-key.main/main!
-    :compact-output? true
     :version |0.0.9
   :entries $ {}
+    :test $ {} (:reload-fn |bisection-key.test/run-tests)
+      :modules $ [] |calcit-test/
+      :port 6001
+      :init-fn |bisection-key.test/run-tests

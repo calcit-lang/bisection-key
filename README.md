@@ -18,20 +18,8 @@ For JavaScript:
 
 ```bash
 cr --emit-js -1 # emit-js once
-yarn webpack
+yarn build
 node js-out/bundle.js # run code
-```
-
-watch reload js program:
-
-```bash
-cr --emit-js
-
-# and watch and build with Webpack
-hot=true webpack --watch
-
-# run with hot reload
-node js-out/bundle.js
 ```
 
 ### Workflow
