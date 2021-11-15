@@ -18,21 +18,15 @@ For JavaScript:
 
 ```bash
 cr --emit-js -1 # emit-js once
-yarn webpack
+yarn build
 node js-out/bundle.js # run code
 ```
 
-watch reload js program:
+### Special cases
 
-```bash
-cr --emit-js
+Nothing could be inserted between `a` and `a+` since `+` is very close to zero. Such a key which ends with `+` should not be created from current implementation.
 
-# and watch and build with Webpack
-hot=true webpack --watch
-
-# run with hot reload
-node js-out/bundle.js
-```
+Smallest visible value is `+`, largest visible values would be `zzzzz.....`(infinitely). They are both tricky.
 
 ### Workflow
 

@@ -1,15 +1,14 @@
 {
-  "version": "0.0.9",
+  "version": "0.0.12",
   "dependencies": {
-    "@calcit/procs": "^0.5.4"
+    "@calcit/procs": "^0.5.7"
   },
   "scripts": {
-    "watch-server": "cr --emit-js",
-    "build-server": "yarn webpack && node js-out/bundle.js",
-    "dev-server": "hot=true webpack --watch"
+    "watch": "cr --emit-js",
+    "build": "esbuild main.js --bundle --outfile=js-out/bundle.js --platform=node",
+    "build-test": "esbuild test.js --bundle --outfile=js-out/bundle.js --platform=node"
   },
   "devDependencies": {
-    "webpack": "^5.64.0",
-    "webpack-cli": "^4.9.1"
+    "esbuild": "^0.13.13"
   }
 }
