@@ -1,10 +1,27 @@
+## Bisection Keys
 
-Calcit Workflow
-----
+> Order keys generating algorithm. Similar to [fractional indexing](https://observablehq.com/@dgreensp/implementing-fractional-indexing).
 
-> running in both Calcit and Calcit-js, with hot code reload.
+Also see:
 
-### Usages
+- Clojure(Older version with known edge cases) https://github.com/Cumulo/bisection-key.cljs
+- Rust(not finished yet) https://github.com/Cumulo/bisection-key.rs
+
+### Usage
+
+_TODO_
+
+```cirru
+bisection-key.core/bisect |a |b
+```
+
+Charset, base65:
+
+```
++-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+```
+
+### Development
 
 Install [calcit-runner](https://github.com/calcit-lang/calcit_runner.rs) to run demo:
 
