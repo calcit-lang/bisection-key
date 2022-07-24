@@ -19,7 +19,7 @@ jobs:
     - name: add cr
       run: |
         mkdir -p $GITHUB_WORKSPACE/bin
-        wget -O $GITHUB_WORKSPACE/bin/cr http://repo.calcit-lang.org/binaries/linux/cr
+        wget -O $GITHUB_WORKSPACE/bin/cr https://github.com/calcit-lang/calcit/releases/download/0.6.0/cr
         chmod +x $GITHUB_WORKSPACE/bin/cr
         echo "::add-path::$GITHUB_WORKSPACE/bin"
 
@@ -34,5 +34,4 @@ jobs:
     - run: >
         cr --emit-js -1 --entry test
         && yarn
-        && yarn esbuild test.js --bundle --outfile=js-out/bundle.js --platform=node
-        && node ./js-out/bundle.js
+        && node test.mjs

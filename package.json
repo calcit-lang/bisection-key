@@ -1,14 +1,11 @@
 {
   "version": "0.0.12",
   "dependencies": {
-    "@calcit/procs": "^0.5.7"
+    "@calcit/procs": "^0.6.0"
   },
   "scripts": {
-    "watch": "cr --emit-js",
-    "build": "esbuild main.js --bundle --outfile=js-out/bundle.js --platform=node",
-    "build-test": "esbuild test.js --bundle --outfile=js-out/bundle.js --platform=node"
+    "watch": "cr --emit-js"
   },
   "devDependencies": {
-    "esbuild": "^0.13.13"
   }
 }
