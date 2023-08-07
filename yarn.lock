@@ -2,26 +2,26 @@
 # yarn lockfile v1
 
 
-"@calcit/procs@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@calcit/procs/-/procs-0.6.0.tgz#4ec145cb352e2a5a7467ccdbb12ffb15305300a3"
-  integrity sha512-Ik11Z9pPh899zeEIpeyfftNo9ygcE5U+8mHTY7db2NcrkieFxjoi0EJneptcv7TKV06Au0LIkDb4P6d6vXw16A==
+"@calcit/procs@^0.7.12":
+  version "0.7.12"
+  resolved "https://registry.yarnpkg.com/@calcit/procs/-/procs-0.7.12.tgz#cba18f0c4c4bb94fc6ee3ad047efb70dc5cd4ea5"
+  integrity sha512-s8EfEqx9j+XsdQVHpBbayEE8HkEeofP0E+AmhdXPy3ZeGUqvZKQq39bE/JFE9q5ne4HlBhDXPdJPtXxRRQXXgg==
   dependencies:
-    "@calcit/ternary-tree" "0.0.19"
-    "@cirru/parser.ts" "^0.0.5"
-    "@cirru/writer.ts" "^0.1.3"
+    "@calcit/ternary-tree" "0.0.22"
+    "@cirru/parser.ts" "^0.0.6"
+    "@cirru/writer.ts" "^0.1.4"
 
-"@calcit/ternary-tree@0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@calcit/ternary-tree/-/ternary-tree-0.0.19.tgz#b5b33a3d07a9e603feeef7cd642958c83628122f"
-  integrity sha512-dn2kNlcOQOPtCAeE68MHcRgrZzRP+jNKBmDW2wO0S8HTUA2SeAbpzZoK0HfcTHFmlGl6yKpjZ95rICQ319AjcA==
+"@calcit/ternary-tree@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@calcit/ternary-tree/-/ternary-tree-0.0.22.tgz#ac6e0659981457b0465cbf95eba222b43ab14222"
+  integrity sha512-f+enhj0iCe6eX6/gcLRpCQeJnY38DxMUooyO3cJxE2JynyTBk/JhmdojTiggm3UX21vw4QUXz/LwGtLOcwcrGA==
 
-"@cirru/parser.ts@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@cirru/parser.ts/-/parser.ts-0.0.5.tgz#12325a69561b95e219e049790c53d5479dc2c1e5"
-  integrity sha512-jmucRW6fQX+HhFZKeN37TDO8ejBxgxLDX9RvU7WKSDM/7peGtfyu9+b6G8NMi4a8wqpDACTvnzbgZId7Xi5bHw==
+"@cirru/parser.ts@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@cirru/parser.ts/-/parser.ts-0.0.6.tgz#b95a84e02273fcbd71ff100925782b6f86410234"
+  integrity sha512-qpDNPq+IuuwYjQFI+wzpd3ntbF7lwJs90v1XWyLQbL9Ru4ld4aHxVGwW/9F/QOu5mEGCMXtagCoYDf0HtOpDZg==
 
-"@cirru/writer.ts@^0.1.3":
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/@cirru/writer.ts/-/writer.ts-0.1.3.tgz#5f54bdecaa20ba3dab16cbe6da711854138a9c0a"
-  integrity sha512-vJnhmhm7we5UfQIwmZfQpF3bAFbVybzT6LbmkbQHxgijaQg3gPfNVsnSIa3g3KpmWVtvkzEx+nUy5aMwsJiV1A==
+"@cirru/writer.ts@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@cirru/writer.ts/-/writer.ts-0.1.4.tgz#4b5851d002ab7c4891457bf8c707f09620c8f122"
+  integrity sha512-Uy3Y7jjLdaxLW9ajZuIS9rp+dhaSVU95hRRwvnP6E16PwgPl+zGs6Xqn1L7Lqw07ypujrdBBdFQyRJOLc6IHQQ==
