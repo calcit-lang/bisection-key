@@ -1,7 +1,7 @@
 {
-  "version": "0.0.13",
+  "version": "0.0.14",
   "dependencies": {
-    "@calcit/procs": "^0.7.12"
+    "@calcit/procs": "^0.8.0-a1"
   },
   "scripts": {
     "watch": "cr --emit-js"
