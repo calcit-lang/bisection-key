@@ -1,14 +1,14 @@
 
 {} (:package |bisection-key)
-  :configs $ {} (:init-fn |bisection-key.main/main!) (:reload-fn |bisection-key.main/reload!) (:version |0.0.14)
+  :configs $ {} (:init-fn |bisection-key.main/main!) (:reload-fn |bisection-key.main/reload!) (:version |0.0.15)
     :modules $ []
   :entries $ {}
     :test $ {} (:init-fn |bisection-key.test/run-tests) (:port 6001) (:reload-fn |bisection-key.test/run-tests)
       :modules $ [] |calcit-test/
   :files $ {}
-    |bisection-key.core $ {}
+    |bisection-key.core $ %{} :FileEntry
       :defs $ {}
-        |bisect $ %{} :CodeEntry
+        |bisect $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn bisect (x y)
               assert "|[bitsect] arguments should be strings!" $ and (string? x) (string? y)
@@ -16,8 +16,7 @@
               assert "|[bisection] x > y" $ or (&= y "\"")
                 < (&compare x y) 0
               bisect-vec "\"" x y 0
-          :doc |
-        |bisect-vec $ %{} :CodeEntry
+        |bisect-vec $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn bisect-vec (result xs0 ys0 idx) (; print-values result xs0 ys0 idx)
               cond
@@ -87,61 +86,48 @@
                         str result c-y
                     true $ str result
                       &str:nth dictionary $ bit-shr (&+ x y) 1
-          :doc |
-        |c0 $ %{} :CodeEntry
+        |c0 $ %{} :CodeEntry (:doc |)
           :code $ quote
             def c0 $ nth dictionary 0
-          :doc |
-        |c1 $ %{} :CodeEntry
+        |c1 $ %{} :CodeEntry (:doc |)
           :code $ quote
             def c1 $ nth dictionary 1
-          :doc |
-        |c32 $ %{} :CodeEntry
+        |c32 $ %{} :CodeEntry (:doc |)
           :code $ quote
             def c32 $ nth dictionary 32
-          :doc |
-        |c63 $ %{} :CodeEntry
+        |c63 $ %{} :CodeEntry (:doc |)
           :code $ quote
             def c63 $ nth dictionary 63
-          :doc |
-        |c64 $ %{} :CodeEntry
+        |c64 $ %{} :CodeEntry (:doc |)
           :code $ quote
             def c64 $ nth dictionary 64
-          :doc |
-        |char->int-map $ %{} :CodeEntry
+        |char->int-map $ %{} :CodeEntry (:doc |)
           :code $ quote
             def char->int-map $ -> (split dictionary |)
               map-indexed $ fn (idx char) ([] char idx)
               pairs-map
-          :doc |
-        |dictionary $ %{} :CodeEntry
+        |dictionary $ %{} :CodeEntry (:doc |)
           :code $ quote
             def dictionary $ str |+-/ |0123456789 |ABCDEFGHIJKLMNOPQRSTUVWXYZ |abcdefghijklmnopqrstuvwxyz
-          :doc |
-        |lookup-i $ %{} :CodeEntry
+        |lookup-i $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn lookup-i (c)
               let
                   idx $ &map:get char->int-map c
                 if (some? idx) idx $ raise
-                  str "\"unexpected bisection-key charactor: " $ pr-str c
-          :doc |
-        |max-id $ %{} :CodeEntry
+                  str "\"unexpected bisection-key charactor: " $ to-lispy-string c
+        |max-id $ %{} :CodeEntry (:doc |)
           :code $ quote
             def max-id $ do (; "tricky value for largest") "\""
-          :doc |
-        |mid-id $ %{} :CodeEntry
+        |mid-id $ %{} :CodeEntry (:doc |)
           :code $ quote (def mid-id c32)
-          :doc |
-        |min-id $ %{} :CodeEntry
+        |min-id $ %{} :CodeEntry (:doc |)
           :code $ quote (def min-id c0)
-          :doc |
-        |peek-tiny? $ %{} :CodeEntry
+        |peek-tiny? $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn peek-tiny? (x)
               or (nil? x) (&= c0 x)
-          :doc |
-        |trim-right $ %{} :CodeEntry
+        |trim-right $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn trim-right (x)
               if (empty? x) x $ let
@@ -150,14 +136,12 @@
                   &= |+ $ slice x end
                   recur $ slice x 0 end
                   , x
-          :doc |
-      :ns $ %{} :CodeEntry
+      :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
           ns bisection-key.core $ :require
-        :doc |
-    |bisection-key.main $ {}
+    |bisection-key.main $ %{} :FileEntry
       :defs $ {}
-        |compare-random-ids $ %{} :CodeEntry
+        |compare-random-ids $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn compare-random-ids () $ apply-args (0 mid-id)
               fn (i x)
@@ -176,8 +160,7 @@
                         = 1 $ &compare x new-id
                         , x new-id
                       recur (inc i) new-id
-          :doc |
-        |list-appending-results $ %{} :CodeEntry
+        |list-appending-results $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn list-appending-results () $ loop
                 i 0
@@ -188,16 +171,13 @@
                 if (<= i 40)
                   recur (inc i) new-id
                   , x
-          :doc |
-        |main! $ %{} :CodeEntry
+        |main! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn main! () (run-bisection!) (println "|App started.")
-          :doc |
-        |reload! $ %{} :CodeEntry
+        |reload! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn reload! () (run-bisection!) (println "|Code updated.")
-          :doc |
-        |run-bisection! $ %{} :CodeEntry
+        |run-bisection! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn run-bisection! () (; compare-random-ids) (; list-appending-results)
               ; println $ bisect "\"yyyz" "\"z"
@@ -221,21 +201,18 @@
                     if (<= i 100)
                       recur (inc i) new-id
                       , nil
-          :doc |
-      :ns $ %{} :CodeEntry
+      :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
           ns bisection-key.main $ :require
             [] bisection-key.core :refer $ [] bisect min-id max-id mid-id
             [] bisection-key.test :refer $ run-tests
             calcit.std.rand :refer $ rand
-        :doc |
-    |bisection-key.test $ {}
+    |bisection-key.test $ %{} :FileEntry
       :defs $ {}
-        |run-tests $ %{} :CodeEntry
+        |run-tests $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn run-tests () (test-append) (test-assoc) (test-bisect) (test-frequent-append) (test-frequent-prepend) (test-get-key) (test-key-after) (test-key-before) (test-prepend) (test-shorten) (test-nth-ops)
-          :doc |
-        |test-append $ %{} :CodeEntry
+        |test-append $ %{} :CodeEntry (:doc |)
           :code $ quote
             deftest test-append
               is $ =
@@ -249,8 +226,7 @@
                   {} $ |a 1
                   , 2
                 {} (|a 1) (|g 2)
-          :doc |
-        |test-assoc $ %{} :CodeEntry
+        |test-assoc $ %{} :CodeEntry (:doc |)
           :code $ quote
             deftest test-assoc
               is $ =
@@ -263,8 +239,7 @@
                   {} $ |a 1 |b 1
                   , |a 2
                 &{} |a 1 |b 1 |aT 2
-          :doc |
-        |test-bisect $ %{} :CodeEntry
+        |test-bisect $ %{} :CodeEntry (:doc |)
           :code $ quote
             deftest test-bisect
               is $ = (bisect |1 |2) |1T
@@ -277,8 +252,7 @@
               is $ = (bisect |11 |15) |13
               is $ = (bisect |yyyz |z) |yz
               is $ = (bisect "\"uvx" "\"uw") |uvy
-          :doc |
-        |test-frequent-append $ %{} :CodeEntry
+        |test-frequent-append $ %{} :CodeEntry (:doc |)
           :code $ quote
             deftest test-frequent-append $ is
               =
@@ -290,8 +264,7 @@
                         recur (inc i) new-id
                         , x
                 , |zzx
-          :doc |
-        |test-frequent-prepend $ %{} :CodeEntry
+        |test-frequent-prepend $ %{} :CodeEntry (:doc |)
           :code $ quote
             deftest test-frequent-prepend $ is
               =
@@ -304,8 +277,7 @@
                       recur (inc i) new-id
                       , x
                 , |++++++-
-          :doc |
-        |test-get-key $ %{} :CodeEntry
+        |test-get-key $ %{} :CodeEntry (:doc |)
           :code $ quote
             deftest test-get-key
               testing "\"get min key" $ is
@@ -319,8 +291,7 @@
                   get-min-key $ {}
                 is $ = nil
                   get-max-key $ {}
-          :doc |
-        |test-key-after $ %{} :CodeEntry
+        |test-key-after $ %{} :CodeEntry (:doc |)
           :code $ quote
             deftest test-key-after
               is $ =
@@ -333,8 +304,7 @@
                   {} (|a 1) (|b 1)
                   , |b
                 , |h
-          :doc |
-        |test-key-before $ %{} :CodeEntry
+        |test-key-before $ %{} :CodeEntry (:doc |)
           :code $ quote
             deftest test-key-before
               is $ =
@@ -347,8 +317,7 @@
                   {} (|a 1) (|b 1)
                   , |b
                 , |aT
-          :doc |
-        |test-nth-ops $ %{} :CodeEntry
+        |test-nth-ops $ %{} :CodeEntry (:doc |)
           :code $ quote
             deftest test-nth-ops $ let
                 v $ {} ("\"a" 1) ("\"b" 2) ("\"c" 3)
@@ -368,8 +337,7 @@
                 = (assoc v "\"aT" 4) (assoc-before-nth v 1 4)
               testing "\"set value after nth" $ is
                 = (assoc v "\"bT" 4) (assoc-after-nth v 1 4)
-          :doc |
-        |test-prepend $ %{} :CodeEntry
+        |test-prepend $ %{} :CodeEntry (:doc |)
           :code $ quote
             deftest test-prepend
               is $ =
@@ -383,92 +351,79 @@
                   {} $ |a 1
                   , 2
                 {} (|a 1) (|G 2)
-          :doc |
-        |test-shorten $ %{} :CodeEntry
+        |test-shorten $ %{} :CodeEntry (:doc |)
           :code $ quote
             deftest test-shorten
               is $ = |c (bisect |a34fd |f3554)
               is $ = |a35 (bisect |a34fd |a3554)
-          :doc |
-      :ns $ %{} :CodeEntry
+      :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
           ns bisection-key.test $ :require
             [] calcit-test.core :refer $ [] deftest is testing run-tests
             [] bisection-key.core :refer $ [] max-id min-id mid-id bisect
             [] bisection-key.util :refer $ [] key-before key-after assoc-before assoc-after key-prepend key-append assoc-prepend assoc-append get-min-key get-max-key key-nth val-nth assoc-nth assoc-before-nth assoc-after-nth
-        :doc |
-    |bisection-key.util $ {}
+    |bisection-key.util $ %{} :FileEntry
       :defs $ {}
-        |assoc-after $ %{} :CodeEntry
+        |assoc-after $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn assoc-after (dict base-key v)
               let
                   new-key $ key-after dict base-key
                 assoc dict new-key v
-          :doc |
-        |assoc-after-nth $ %{} :CodeEntry
+        |assoc-after-nth $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn assoc-after-nth (x n v)
               when-not (has-nth? x n) (raise "\"Succeeded map size")
               let
                   k $ key-nth x n
                 assoc-after x k v
-          :doc |
-        |assoc-append $ %{} :CodeEntry
+        |assoc-append $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn assoc-append (dict v)
               assert (map? dict) "|dict should be a map"
               let
                   k $ key-append dict
                 assoc dict k v
-          :doc |
-        |assoc-before $ %{} :CodeEntry
+        |assoc-before $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn assoc-before (dict base-key v)
               let
                   new-key $ key-before dict base-key
                 assoc dict new-key v
-          :doc |
-        |assoc-before-nth $ %{} :CodeEntry
+        |assoc-before-nth $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn assoc-before-nth (x n v)
               when-not (has-nth? x n) (raise "\"Succeeded map size")
               let
                   k $ key-nth x n
                 assoc-before x k v
-          :doc |
-        |assoc-nth $ %{} :CodeEntry
+        |assoc-nth $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn assoc-nth (x n v)
               when-not (has-nth? x n) (raise "\"Succeeded map size")
               let
                   k $ key-nth x n
                 assoc x k v
-          :doc |
-        |assoc-prepend $ %{} :CodeEntry
+        |assoc-prepend $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn assoc-prepend (dict v)
               assert (map? dict) "|dict should be a map"
               let
                   k $ key-prepend dict
                 assoc dict k v
-          :doc |
-        |get-max-key $ %{} :CodeEntry
+        |get-max-key $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn get-max-key (x)
               &set:max $ keys x
-          :doc |
-        |get-min-key $ %{} :CodeEntry
+        |get-min-key $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn get-min-key (x)
               &set:min $ keys x
-          :doc |
-        |has-nth? $ %{} :CodeEntry
+        |has-nth? $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn has-nth? (x n)
               &< n $ count x
-          :doc |
-        |key-after $ %{} :CodeEntry
+        |key-after $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn key-after (dict base-key)
               assert (string? base-key) "|base-key should be string"
@@ -483,16 +438,14 @@
                     = position $ dec (count existing-keys)
                     , max-id
                       &list:nth existing-keys $ inc position
-          :doc |
-        |key-append $ %{} :CodeEntry
+        |key-append $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn key-append (dict)
               assert (map? dict) "|dict should be a map"
               if (empty? dict) mid-id $ bisect
                 &set:max $ keys dict
                 , max-id
-          :doc |
-        |key-before $ %{} :CodeEntry
+        |key-before $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn key-before (dict base-key)
               assert (string? base-key) "|base-key should be string"
@@ -506,8 +459,7 @@
                   bisect
                     if (= 0 position) min-id $ get existing-keys (dec position)
                     , base-key
-          :doc |
-        |key-nth $ %{} :CodeEntry
+        |key-nth $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn key-nth (x n)
               if (has-nth? x n)
@@ -517,23 +469,19 @@
                     , &compare
                   , n
                 , nil
-          :doc |
-        |key-prepend $ %{} :CodeEntry
+        |key-prepend $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn key-prepend (dict)
               assert (map? dict) "|dict should be a map"
               if (empty? dict) mid-id $ bisect min-id
                 &set:min $ keys dict
-          :doc |
-        |val-nth $ %{} :CodeEntry
+        |val-nth $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn val-nth (x n)
               if (has-nth? x n)
                 get x $ key-nth x n
                 do (println "\"[Warn] exceeded map size") nil
-          :doc |
-      :ns $ %{} :CodeEntry
+      :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
           ns bisection-key.util $ :require
             [] bisection-key.core :refer $ [] mid-id max-id min-id bisect
-        :doc |
