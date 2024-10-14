@@ -17,14 +17,14 @@ jobs:
         node-version: 20
         cache: 'yarn'
 
-    - uses: calcit-lang/setup-cr@0.0.3
+    - uses: calcit-lang/setup-cr@0.0.7
       with:
-        version: "0.8.43"
+        bundler: false
 
     - name: "test"
       run: caps --ci && cr --entry test -1
 
     - run: >
-        cr --emit-js -1 --entry test
+        cr -1 --entry test js
         && yarn
         && node test.mjs

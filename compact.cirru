@@ -230,14 +230,10 @@
           :code $ quote
             deftest test-assoc
               is $ =
-                assoc-before
-                  {} $ |a 1 |b 1
-                  , |a 2
+                assoc-before (&{} |a 1 |b 1) |a 2
                 &{} |a 1 |b 1 |G 2
               is $ =
-                assoc-after
-                  {} $ |a 1 |b 1
-                  , |a 2
+                assoc-after (&{} |a 1 |b 1) |a 2
                 &{} |a 1 |b 1 |aT 2
         |test-bisect $ %{} :CodeEntry (:doc |)
           :code $ quote
