@@ -1,6 +1,6 @@
 
 {} (:package |bisection-key)
-  :configs $ {} (:init-fn |bisection-key.main/main!) (:reload-fn |bisection-key.main/reload!) (:version |0.0.15)
+  :configs $ {} (:init-fn |bisection-key.main/main!) (:reload-fn |bisection-key.main/reload!) (:version |0.0.16)
     :modules $ []
   :entries $ {}
     :test $ {} (:init-fn |bisection-key.test/run-tests) (:port 6001) (:reload-fn |bisection-key.test/run-tests)
@@ -333,6 +333,12 @@
                 = (assoc v "\"aT" 4) (assoc-before-nth v 1 4)
               testing "\"set value after nth" $ is
                 = (assoc v "\"bT" 4) (assoc-after-nth v 1 4)
+              testing "\"find key index a" $ is
+                = 0 $ key-index-of v "\"a"
+              testing "\"find key index c" $ is
+                = 2 $ key-index-of v "\"c"
+              testing "\"find key index missing" $ is
+                = nil $ key-index-of v "\"d"
         |test-prepend $ %{} :CodeEntry (:doc |)
           :code $ quote
             deftest test-prepend
@@ -355,9 +361,9 @@
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
           ns bisection-key.test $ :require
-            [] calcit-test.core :refer $ [] deftest is testing run-tests
-            [] bisection-key.core :refer $ [] max-id min-id mid-id bisect
-            [] bisection-key.util :refer $ [] key-before key-after assoc-before assoc-after key-prepend key-append assoc-prepend assoc-append get-min-key get-max-key key-nth val-nth assoc-nth assoc-before-nth assoc-after-nth
+            calcit-test.core :refer $ deftest is testing run-tests
+            bisection-key.core :refer $ max-id min-id mid-id bisect
+            bisection-key.util :refer $ key-before key-after assoc-before assoc-after key-prepend key-append assoc-prepend assoc-append get-min-key get-max-key key-nth val-nth assoc-nth assoc-before-nth assoc-after-nth key-index-of
     |bisection-key.util $ %{} :FileEntry
       :defs $ {}
         |assoc-after $ %{} :CodeEntry (:doc |)
@@ -455,6 +461,14 @@
                   bisect
                     if (= 0 position) min-id $ get existing-keys (dec position)
                     , base-key
+        |key-index-of $ %{} :CodeEntry (:doc "|find index of `k`, returns `nil` if not found")
+          :code $ quote
+            defn key-index-of (x k)
+              let
+                  ks $ sort
+                    &set:to-list $ keys x
+                    , &compare
+                index-of ks k
         |key-nth $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn key-nth (x n)
