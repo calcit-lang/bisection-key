@@ -1,6 +1,6 @@
 
 {} (:package |bisection-key)
-  :configs $ {} (:init-fn |bisection-key.main/main!) (:port 6001) (:reload-fn |bisection-key.main/reload!) (:version |0.0.15)
+  :configs $ {} (:init-fn |bisection-key.main/main!) (:port 6001) (:reload-fn |bisection-key.main/reload!) (:version |0.0.16)
     :modules $ []
   :entries $ {}
     :test $ {} (:init-fn |bisection-key.test/run-tests) (:port 6001) (:reload-fn |bisection-key.test/run-tests)
@@ -1963,6 +1963,54 @@
                                   |j $ %{} :Leaf (:at 1596645300721) (:by |Q7nwO-CJS) (:text |v)
                                   |r $ %{} :Leaf (:at 1596645474141) (:by |Q7nwO-CJS) (:text |1)
                                   |v $ %{} :Leaf (:at 1596645305495) (:by |Q7nwO-CJS) (:text |4)
+                  |y $ %{} :Expr (:at 1741542105272) (:by |Q7nwO-CJS)
+                    :data $ {}
+                      |T $ %{} :Leaf (:at 1741542106454) (:by |Q7nwO-CJS) (:text |testing)
+                      |b $ %{} :Leaf (:at 1741542179729) (:by |Q7nwO-CJS) (:text "|\"find key index a")
+                      |h $ %{} :Expr (:at 1741542114443) (:by |Q7nwO-CJS)
+                        :data $ {}
+                          |T $ %{} :Leaf (:at 1741542114720) (:by |Q7nwO-CJS) (:text |is)
+                          |b $ %{} :Expr (:at 1741542115406) (:by |Q7nwO-CJS)
+                            :data $ {}
+                              |T $ %{} :Leaf (:at 1741542114962) (:by |Q7nwO-CJS) (:text |=)
+                              |b $ %{} :Leaf (:at 1741542121678) (:by |Q7nwO-CJS) (:text |0)
+                              |h $ %{} :Expr (:at 1741542122825) (:by |Q7nwO-CJS)
+                                :data $ {}
+                                  |T $ %{} :Leaf (:at 1741542131232) (:by |Q7nwO-CJS) (:text |key-index-of)
+                                  |b $ %{} :Leaf (:at 1741542135104) (:by |Q7nwO-CJS) (:text |v)
+                                  |h $ %{} :Leaf (:at 1741542136324) (:by |Q7nwO-CJS) (:text "|\"a")
+                  |z $ %{} :Expr (:at 1741542105272) (:by |Q7nwO-CJS)
+                    :data $ {}
+                      |T $ %{} :Leaf (:at 1741542106454) (:by |Q7nwO-CJS) (:text |testing)
+                      |b $ %{} :Leaf (:at 1741542177171) (:by |Q7nwO-CJS) (:text "|\"find key index c")
+                      |h $ %{} :Expr (:at 1741542114443) (:by |Q7nwO-CJS)
+                        :data $ {}
+                          |T $ %{} :Leaf (:at 1741542114720) (:by |Q7nwO-CJS) (:text |is)
+                          |b $ %{} :Expr (:at 1741542115406) (:by |Q7nwO-CJS)
+                            :data $ {}
+                              |T $ %{} :Leaf (:at 1741542114962) (:by |Q7nwO-CJS) (:text |=)
+                              |b $ %{} :Leaf (:at 1741542174380) (:by |Q7nwO-CJS) (:text |2)
+                              |h $ %{} :Expr (:at 1741542122825) (:by |Q7nwO-CJS)
+                                :data $ {}
+                                  |T $ %{} :Leaf (:at 1741542131232) (:by |Q7nwO-CJS) (:text |key-index-of)
+                                  |b $ %{} :Leaf (:at 1741542135104) (:by |Q7nwO-CJS) (:text |v)
+                                  |h $ %{} :Leaf (:at 1741542172692) (:by |Q7nwO-CJS) (:text "|\"c")
+                  |zD $ %{} :Expr (:at 1741542105272) (:by |Q7nwO-CJS)
+                    :data $ {}
+                      |T $ %{} :Leaf (:at 1741542106454) (:by |Q7nwO-CJS) (:text |testing)
+                      |b $ %{} :Leaf (:at 1741542186710) (:by |Q7nwO-CJS) (:text "|\"find key index missing")
+                      |h $ %{} :Expr (:at 1741542114443) (:by |Q7nwO-CJS)
+                        :data $ {}
+                          |T $ %{} :Leaf (:at 1741542114720) (:by |Q7nwO-CJS) (:text |is)
+                          |b $ %{} :Expr (:at 1741542115406) (:by |Q7nwO-CJS)
+                            :data $ {}
+                              |T $ %{} :Leaf (:at 1741542114962) (:by |Q7nwO-CJS) (:text |=)
+                              |b $ %{} :Leaf (:at 1741542421599) (:by |Q7nwO-CJS) (:text |nil)
+                              |h $ %{} :Expr (:at 1741542122825) (:by |Q7nwO-CJS)
+                                :data $ {}
+                                  |T $ %{} :Leaf (:at 1741542131232) (:by |Q7nwO-CJS) (:text |key-index-of)
+                                  |b $ %{} :Leaf (:at 1741542135104) (:by |Q7nwO-CJS) (:text |v)
+                                  |h $ %{} :Leaf (:at 1741542189776) (:by |Q7nwO-CJS) (:text "|\"d")
         |test-prepend $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1514691231026) (:by |root)
             :data $ {}
@@ -2065,36 +2113,30 @@
                 |T $ %{} :Leaf (:at 1514649763087) (:by |root) (:text |:require)
                 |j $ %{} :Expr (:at 1514649763304) (:by |root)
                   :data $ {}
-                    |T $ %{} :Leaf (:at 1514649763609) (:by |root) (:text |[])
                     |j $ %{} :Leaf (:at 1625312553418) (:by |Q7nwO-CJS) (:text |calcit-test.core)
                     |r $ %{} :Leaf (:at 1514649767217) (:by |root) (:text |:refer)
                     |v $ %{} :Expr (:at 1514649767449) (:by |root)
                       :data $ {}
-                        |T $ %{} :Leaf (:at 1514649769362) (:by |root) (:text |[])
                         |j $ %{} :Leaf (:at 1514649771580) (:by |root) (:text |deftest)
                         |r $ %{} :Leaf (:at 1514649773560) (:by |root) (:text |is)
                         |v $ %{} :Leaf (:at 1514649774357) (:by |root) (:text |testing)
                         |x $ %{} :Leaf (:at 1514649777619) (:by |root) (:text |run-tests)
                 |r $ %{} :Expr (:at 1514650191155) (:by |root)
                   :data $ {}
-                    |T $ %{} :Leaf (:at 1514650192157) (:by |root) (:text |[])
                     |j $ %{} :Leaf (:at 1514650195928) (:by |root) (:text |bisection-key.core)
                     |r $ %{} :Leaf (:at 1514650196572) (:by |root) (:text |:refer)
                     |v $ %{} :Expr (:at 1514650196751) (:by |root)
                       :data $ {}
-                        |T $ %{} :Leaf (:at 1514650197805) (:by |root) (:text |[])
                         |j $ %{} :Leaf (:at 1514650199821) (:by |root) (:text |max-id)
                         |r $ %{} :Leaf (:at 1514650201323) (:by |root) (:text |min-id)
                         |t $ %{} :Leaf (:at 1514650213106) (:by |root) (:text |mid-id)
                         |v $ %{} :Leaf (:at 1514650206991) (:by |root) (:text |bisect)
                 |v $ %{} :Expr (:at 1514652481427) (:by |root)
                   :data $ {}
-                    |T $ %{} :Leaf (:at 1514652481891) (:by |root) (:text |[])
                     |j $ %{} :Leaf (:at 1514652487244) (:by |root) (:text |bisection-key.util)
                     |r $ %{} :Leaf (:at 1514652488277) (:by |root) (:text |:refer)
                     |v $ %{} :Expr (:at 1514652488490) (:by |root)
                       :data $ {}
-                        |T $ %{} :Leaf (:at 1514652488648) (:by |root) (:text |[])
                         |j $ %{} :Leaf (:at 1514652489011) (:by |root) (:text |key-before)
                         |r $ %{} :Leaf (:at 1514652493004) (:by |root) (:text |key-after)
                         |v $ %{} :Leaf (:at 1514652851815) (:by |root) (:text |assoc-before)
@@ -2110,6 +2152,7 @@
                         |yyj $ %{} :Leaf (:at 1596645048175) (:by |Q7nwO-CJS) (:text |assoc-nth)
                         |yyr $ %{} :Leaf (:at 1596645055096) (:by |Q7nwO-CJS) (:text |assoc-before-nth)
                         |yyv $ %{} :Leaf (:at 1596645061380) (:by |Q7nwO-CJS) (:text |assoc-after-nth)
+                        |z $ %{} :Leaf (:at 1741542141910) (:by |Q7nwO-CJS) (:text |key-index-of)
     |bisection-key.util $ %{} :FileEntry
       :defs $ {}
         |assoc-after $ %{} :CodeEntry (:doc |)
@@ -2633,6 +2676,39 @@
                                       |T $ %{} :Leaf (:at 1514652403389) (:by |root) (:text |dec)
                                       |j $ %{} :Leaf (:at 1514652508559) (:by |root) (:text |position)
                           |v $ %{} :Leaf (:at 1514652369395) (:by |root) (:text |base-key)
+        |key-index-of $ %{} :CodeEntry (:doc "|find index of `k`, returns `nil` if not found")
+          :code $ %{} :Expr (:at 1741541995531) (:by |Q7nwO-CJS)
+            :data $ {}
+              |T $ %{} :Leaf (:at 1741541995531) (:by |Q7nwO-CJS) (:text |defn)
+              |b $ %{} :Leaf (:at 1741541995531) (:by |Q7nwO-CJS) (:text |key-index-of)
+              |h $ %{} :Expr (:at 1741541995531) (:by |Q7nwO-CJS)
+                :data $ {}
+                  |T $ %{} :Leaf (:at 1741542007024) (:by |Q7nwO-CJS) (:text |x)
+                  |b $ %{} :Leaf (:at 1741542008720) (:by |Q7nwO-CJS) (:text |k)
+              |l $ %{} :Expr (:at 1741542012684) (:by |Q7nwO-CJS)
+                :data $ {}
+                  |D $ %{} :Leaf (:at 1741542014280) (:by |Q7nwO-CJS) (:text |let)
+                  |T $ %{} :Expr (:at 1741542014703) (:by |Q7nwO-CJS)
+                    :data $ {}
+                      |T $ %{} :Expr (:at 1741542014862) (:by |Q7nwO-CJS)
+                        :data $ {}
+                          |D $ %{} :Leaf (:at 1741542015552) (:by |Q7nwO-CJS) (:text |ks)
+                          |T $ %{} :Expr (:at 1741542011640) (:by |Q7nwO-CJS)
+                            :data $ {}
+                              |T $ %{} :Leaf (:at 1741542011640) (:by |Q7nwO-CJS) (:text |sort)
+                              |b $ %{} :Expr (:at 1741542011640) (:by |Q7nwO-CJS)
+                                :data $ {}
+                                  |T $ %{} :Leaf (:at 1741542011640) (:by |Q7nwO-CJS) (:text |&set:to-list)
+                                  |b $ %{} :Expr (:at 1741542011640) (:by |Q7nwO-CJS)
+                                    :data $ {}
+                                      |T $ %{} :Leaf (:at 1741542011640) (:by |Q7nwO-CJS) (:text |keys)
+                                      |b $ %{} :Leaf (:at 1741542011640) (:by |Q7nwO-CJS) (:text |x)
+                              |h $ %{} :Leaf (:at 1741542011640) (:by |Q7nwO-CJS) (:text |&compare)
+                  |b $ %{} :Expr (:at 1741542017730) (:by |Q7nwO-CJS)
+                    :data $ {}
+                      |T $ %{} :Leaf (:at 1741542397495) (:by |Q7nwO-CJS) (:text |index-of)
+                      |b $ %{} :Leaf (:at 1741542028950) (:by |Q7nwO-CJS) (:text |ks)
+                      |h $ %{} :Leaf (:at 1741542030226) (:by |Q7nwO-CJS) (:text |k)
         |key-nth $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1596643404568) (:by |Q7nwO-CJS)
             :data $ {}
