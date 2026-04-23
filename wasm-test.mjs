@@ -25,6 +25,10 @@ try {
 }
 
 const checks = [
+  ['probe-find-index-literal-plus', 0],
+  ['probe-find-index-literal-1', 4],
+  ['probe-nth-literal-0', 1],
+  ['probe-nth-literal-1', 1],
   ['probe-dictionary', 1],
   ['probe-bisect-basic', 5],
   ['probe-bisect-strings', 2],

@@ -929,6 +929,20 @@
           :schema $ :: :fn
             {} (:return :bool)
               :args $ []
+        |probe-find-index-literal-1 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-find-index-literal-1 () $ &str:find-index |+-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz |1
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-find-index-literal-plus $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-find-index-literal-plus () $ &str:find-index |+-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz |+
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
         |probe-inc0 $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn probe-inc0 () $ inc 0
@@ -994,6 +1008,24 @@
           :code $ quote
             defn probe-nil-check () $ if
               nil? $ &str:nth |1 5
+              , 1 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-nth-literal-0 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-nth-literal-0 () $ if
+              = (&str:nth |+-/ 0) |+
+              , 1 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-nth-literal-1 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-nth-literal-1 () $ if
+              = (&str:nth |+-/ 1) |-
               , 1 0
           :examples $ []
           :schema $ :: :fn
