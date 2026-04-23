@@ -64,9 +64,15 @@
 - `bisection-key.util/assoc-*` 系列
 - `bisection-key.util/key-nth`、`val-nth`、`key-index-of`
 
-### P3：添加 WASM 专用测试脚本
+### P3：添加 WASM 专用运行测试脚本
 
-创建 `wasm-test.mjs`，结构参考 `recollect/scripts/run-wasm-api.sh`：
+当前 `test:wasm` 只做 compile smoke：
+
+```bash
+cr-wasm compact.cirru --init-fn bisection-key.wasm-probe/probe-all-count
+```
+
+后续再补 `wasm-test.mjs`，结构参考 `recollect/scripts/run-wasm-api.sh`：
 
 ```js
 // wasm-test.mjs
@@ -105,10 +111,10 @@ console.log(`=== bisection-key WASM probe passed: ${score}/${expected} ===`);
 caps && yarn install --immutable
 
 # 运行 cr 解释器测试
-cr --entry test -1
+cr --entry test
 
 # 编译 JS 并测试
-cr --entry test js -1 && node test.mjs
+cr --entry test js && node test.mjs
 
 # 编译 WASM（需要本地 cr-wasm binary）
 cr-wasm compact.cirru --init-fn bisection-key.wasm-probe/probe-all-count

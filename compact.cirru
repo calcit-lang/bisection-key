@@ -121,8 +121,7 @@
               pairs-map
           :examples $ []
         |dictionary $ %{} :CodeEntry (:doc |) (:schema :string)
-          :code $ quote
-            def dictionary $ str |+-/ |0123456789 |ABCDEFGHIJKLMNOPQRSTUVWXYZ |abcdefghijklmnopqrstuvwxyz
+          :code $ quote (def dictionary |+-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz)
           :examples $ []
         |lookup-i $ %{} :CodeEntry (:doc |)
           :code $ quote

@@ -34,10 +34,25 @@ cr # run and watch
 For JavaScript:
 
 ```bash
-cr --emit-js -1 # emit-js once
-yarn build
-node js-out/bundle.js # run code
+cr js -1
+node main.mjs
 ```
+
+For tests:
+
+```bash
+yarn test:cr
+yarn test:js
+```
+
+For WASM(temporary compile smoke only):
+
+```bash
+yarn test:wasm:compile
+yarn test:wasm
+```
+
+`test:wasm` runs runtime assertions for probe APIs and will fail when WASM runtime behavior diverges from expected API semantics.
 
 ### Special cases
 
