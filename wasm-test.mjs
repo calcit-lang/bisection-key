@@ -2,19 +2,27 @@ import { readFileSync } from 'node:fs';
 
 const wasmPath = 'js-out/program.wasm';
 
-const mod = new WebAssembly.Module(readFileSync(wasmPath));
-const inst = new WebAssembly.Instance(mod, {
-  math: {
-    pow: Math.pow,
-    sin: Math.sin,
-    cos: Math.cos,
-  },
-  io: {
-    log_value: () => 0,
-  },
-});
+let e;
 
-const e = inst.exports;
+try {
+  const mod = new WebAssembly.Module(readFileSync(wasmPath));
+  const inst = new WebAssembly.Instance(mod, {
+    math: {
+      pow: Math.pow,
+      sin: Math.sin,
+      cos: Math.cos,
+    },
+    io: {
+      log_value: () => 0,
+    },
+  });
+
+  e = inst.exports;
+} catch (err) {
+  const message = err instanceof Error ? err.message : String(err);
+  console.error(`[wasm-test] failed to load or instantiate ${wasmPath}: ${message}`);
+  process.exit(1);
+}
 
 const checks = [
   ['probe-dictionary', 1],
@@ -49,7 +57,7 @@ for (const [name, expected] of checks) {
 }
 
 if (failed) {
-  process.exit(1);
+  process.exitCode = 1;
+} else {
+  console.log('[wasm-test] all probe checks passed');
 }
-
-console.log('[wasm-test] all probe checks passed');

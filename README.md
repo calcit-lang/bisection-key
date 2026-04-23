@@ -45,7 +45,7 @@ yarn test:cr
 yarn test:js
 ```
 
-For WASM(temporary compile smoke only):
+For WASM:
 
 ```bash
 yarn test:wasm:compile
