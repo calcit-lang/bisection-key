@@ -6,3 +6,8 @@ js-out/
 node_modules
 
 example/
+
+.calcit-snippets/*
+
+
+.yarn/*.gz
