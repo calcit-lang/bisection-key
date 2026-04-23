@@ -508,12 +508,16 @@
         |get-max-key $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
             defn get-max-key (x)
-              &set:max $ keys x
+              last $ sort
+                &set:to-list $ keys x
+                , &compare
           :examples $ []
         |get-min-key $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
             defn get-min-key (x)
-              &set:min $ keys x
+              &list:first $ sort
+                &set:to-list $ keys x
+                , &compare
           :examples $ []
         |has-nth? $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
