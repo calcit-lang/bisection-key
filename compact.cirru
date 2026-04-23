@@ -30,7 +30,7 @@
                   raise $ str "|unexpected identical ids: " xs0 "| " ys0
                 (&>= idx (&str:count xs0))
                   let
-                      c-y $ &str:nth ys0 idx
+                      c-y $ str-nth ys0 idx
                     if (&= c0 c-y)
                       if
                         &= (inc idx) (&str:count ys0)
@@ -38,33 +38,33 @@
                         recur (str result c0) xs0 ys0 $ inc idx
                       if (&= c1 c-y)
                         if
-                          peek-tiny? $ &str:nth ys0 (inc idx)
+                          peek-tiny? $ str-nth ys0 (inc idx)
                           str result c0 c32
                           str result c-y
-                        str result $ &str:nth dictionary
+                        str result $ str-nth dictionary
                           bit-shr (lookup-i c-y) 1
                 (&>= idx (&str:count ys0))
                   let
-                      c-x $ &str:nth xs0 idx
+                      c-x $ str-nth xs0 idx
                     if (&= c-x c64)
                       if
                         &= (inc idx) (&str:count xs0)
-                        str result c64 $ &str:nth dictionary 16
+                        str result c64 $ str-nth dictionary 16
                         recur (str result c64) xs0 ys0 $ inc idx
                       case-default c-x
-                        str result $ &str:nth dictionary
+                        str result $ str-nth dictionary
                           bit-shr
                             &+
                               &* 3 $ lookup-i c-x
                               , 64
                             , 2
                         c63 $ str result c64
-                        (&str:nth dictionary 62) (str result c63)
-                        (&str:nth dictionary 61)
-                          str result $ &str:nth dictionary 62
+                        (str-nth dictionary 62) (str result c63)
+                        (str-nth dictionary 61)
+                          str result $ str-nth dictionary 62
                 true $ let
-                    c-x $ &str:nth xs0 idx
-                    c-y $ &str:nth ys0 idx
+                    c-x $ str-nth xs0 idx
+                    c-y $ str-nth ys0 idx
                     x $ lookup-i c-x
                     y $ lookup-i c-y
                     delta $ &- y x
@@ -74,45 +74,45 @@
                       recur (str result c-x) xs0 ys0 $ inc idx
                     (&= delta 1)
                       if
-                        peek-tiny? $ &str:nth ys0 next
+                        peek-tiny? $ str-nth ys0 next
                         if
                           &= next $ &str:count xs0
                           str result c-x c32
                           if
-                            &= (&str:nth xs0 next) c64
+                            &= (str-nth xs0 next) c64
                             recur (str result c-x) xs0 | next
-                            str result c-x $ &str:nth dictionary
+                            str result c-x $ str-nth dictionary
                               bit-shr
                                 &+
-                                  lookup-i $ &str:nth xs0 next
+                                  lookup-i $ str-nth xs0 next
                                   , 65
                                 , 1
                         str result c-y
                     true $ str result
-                      &str:nth dictionary $ bit-shr (&+ x y) 1
+                      str-nth dictionary $ bit-shr (&+ x y) 1
           :examples $ []
           :schema $ :: :fn
             {} (:return :string)
               :args $ [] :string :string :string :number
         |c0 $ %{} :CodeEntry (:doc |) (:schema :string)
           :code $ quote
-            def c0 $ &str:nth dictionary 0
+            def c0 $ str-nth dictionary 0
           :examples $ []
         |c1 $ %{} :CodeEntry (:doc |) (:schema :string)
           :code $ quote
-            def c1 $ &str:nth dictionary 1
+            def c1 $ str-nth dictionary 1
           :examples $ []
         |c32 $ %{} :CodeEntry (:doc |) (:schema :string)
           :code $ quote
-            def c32 $ &str:nth dictionary 32
+            def c32 $ str-nth dictionary 32
           :examples $ []
         |c63 $ %{} :CodeEntry (:doc |) (:schema :string)
           :code $ quote
-            def c63 $ &str:nth dictionary 63
+            def c63 $ str-nth dictionary 63
           :examples $ []
         |c64 $ %{} :CodeEntry (:doc |) (:schema :string)
           :code $ quote
-            def c64 $ &str:nth dictionary 64
+            def c64 $ str-nth dictionary 64
           :examples $ []
         |char->int-map $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
@@ -190,6 +190,17 @@
           :schema $ :: :fn
             {} (:return :string)
               :args $ []
+        |str-nth $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn str-nth (s idx)
+              if
+                &< idx $ &str:count s
+                &str:nth s idx
+                , nil
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :dynamic)
+              :args $ [] :string :number
         |trim-right $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn trim-right (x)
@@ -883,7 +894,7 @@
         |probe-dictionary $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn probe-dictionary () $ if
-              > (count dictionary) 0
+              &> (&str:count dictionary) 0
               , 1 0
           :examples $ []
           :schema $ :: :fn
@@ -1016,7 +1027,7 @@
         |probe-nth-literal-0 $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn probe-nth-literal-0 () $ if
-              = (&str:nth |+-/ 0) |+
+              &= (&str:nth |+-/ 0) |+
               , 1 0
           :examples $ []
           :schema $ :: :fn
@@ -1025,7 +1036,7 @@
         |probe-nth-literal-1 $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn probe-nth-literal-1 () $ if
-              = (&str:nth |+-/ 1) |-
+              &= (&str:nth |+-/ 1) |-
               , 1 0
           :examples $ []
           :schema $ :: :fn
