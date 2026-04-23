@@ -28,7 +28,7 @@ jobs:
       run: caps --ci && yarn install --immutable
 
     - name: "test cr"
-      run: cr --entry test -1
+      run: cr --entry test
 
     - name: "test js"
-      run: cr --entry test js -1 && node test.mjs
+      run: cr --entry test js && node test.mjs
