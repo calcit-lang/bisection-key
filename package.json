@@ -8,6 +8,5 @@
     "test:cr": "cr --entry test -1",
     "test:js": "cr --entry test js -1 && node test.mjs",
     "test:wasm": "cr --entry wasm wasm && node wasm-test.mjs"
-  },
-  "devDependencies": {}
+  }
 }

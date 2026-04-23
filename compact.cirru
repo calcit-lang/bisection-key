@@ -25,15 +25,15 @@
             defn bisect-vec (result xs0 ys0 idx) (; print-values result xs0 ys0 idx)
               cond
                   and
-                    &>= idx $ count xs0
-                    &>= idx $ count ys0
+                    &>= idx $ &str:count xs0
+                    &>= idx $ &str:count ys0
                   raise $ str "|unexpected identical ids: " xs0 "| " ys0
-                (&>= idx (count xs0))
+                (&>= idx (&str:count xs0))
                   let
                       c-y $ &str:nth ys0 idx
                     if (&= c0 c-y)
                       if
-                        &= (inc idx) (count ys0)
+                        &= (inc idx) (&str:count ys0)
                         raise $ str "|invalid position: " xs0 "| " ys0
                         recur (str result c0) xs0 ys0 $ inc idx
                       if (&= c1 c-y)
@@ -43,16 +43,16 @@
                           str result c-y
                         str result $ &str:nth dictionary
                           bit-shr (lookup-i c-y) 1
-                (&>= idx (count ys0))
+                (&>= idx (&str:count ys0))
                   let
                       c-x $ &str:nth xs0 idx
                     if (&= c-x c64)
                       if
-                        &= (inc idx) (count xs0)
+                        &= (inc idx) (&str:count xs0)
                         str result c64 $ &str:nth dictionary 16
                         recur (str result c64) xs0 ys0 $ inc idx
                       case-default c-x
-                        str result $ nth dictionary
+                        str result $ &str:nth dictionary
                           bit-shr
                             &+
                               &* 3 $ lookup-i c-x
@@ -65,7 +65,7 @@
                 true $ let
                     c-x $ &str:nth xs0 idx
                     c-y $ &str:nth ys0 idx
-                    x $ lookup-i (wo-log c-x)
+                    x $ lookup-i c-x
                     y $ lookup-i c-y
                     delta $ &- y x
                     next $ inc idx
@@ -83,9 +83,9 @@
                             recur (str result c-x) xs0 | next
                             str result c-x $ &str:nth dictionary
                               bit-shr
-                                +
+                                &+
                                   lookup-i $ &str:nth xs0 next
-                                  , 64 1
+                                  , 65
                                 , 1
                         str result c-y
                     true $ str result
@@ -94,25 +94,25 @@
           :schema $ :: :fn
             {} (:return :string)
               :args $ [] :string :string :string :number
-        |c0 $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+        |c0 $ %{} :CodeEntry (:doc |) (:schema :string)
           :code $ quote
-            def c0 $ nth dictionary 0
+            def c0 $ &str:nth dictionary 0
           :examples $ []
-        |c1 $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+        |c1 $ %{} :CodeEntry (:doc |) (:schema :string)
           :code $ quote
-            def c1 $ nth dictionary 1
+            def c1 $ &str:nth dictionary 1
           :examples $ []
-        |c32 $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+        |c32 $ %{} :CodeEntry (:doc |) (:schema :string)
           :code $ quote
-            def c32 $ nth dictionary 32
+            def c32 $ &str:nth dictionary 32
           :examples $ []
-        |c63 $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+        |c63 $ %{} :CodeEntry (:doc |) (:schema :string)
           :code $ quote
-            def c63 $ nth dictionary 63
+            def c63 $ &str:nth dictionary 63
           :examples $ []
-        |c64 $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+        |c64 $ %{} :CodeEntry (:doc |) (:schema :string)
           :code $ quote
-            def c64 $ nth dictionary 64
+            def c64 $ &str:nth dictionary 64
           :examples $ []
         |char->int-map $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
@@ -120,29 +120,25 @@
               map-indexed $ fn (idx char) ([] char idx)
               pairs-map
           :examples $ []
-        |dictionary $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+        |dictionary $ %{} :CodeEntry (:doc |) (:schema :string)
           :code $ quote
             def dictionary $ str |+-/ |0123456789 |ABCDEFGHIJKLMNOPQRSTUVWXYZ |abcdefghijklmnopqrstuvwxyz
           :examples $ []
         |lookup-i $ %{} :CodeEntry (:doc |)
           :code $ quote
-            defn lookup-i (c)
-              let
-                  idx $ &map:get char->int-map c
-                if (some? idx) idx $ raise
-                  str "|unexpected bisection-key charactor: " $ to-lispy-string c
+            defn lookup-i (c) (&str:find-index dictionary c)
           :examples $ []
           :schema $ :: :fn
             {} (:return :number)
-              :args $ [] :string
-        |max-id $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+              :args $ [] :dynamic
+        |max-id $ %{} :CodeEntry (:doc |) (:schema :string)
           :code $ quote
             def max-id $ do (; "tricky value for largest") |
           :examples $ []
-        |mid-id $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+        |mid-id $ %{} :CodeEntry (:doc |) (:schema :string)
           :code $ quote (def mid-id c32)
           :examples $ []
-        |min-id $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+        |min-id $ %{} :CodeEntry (:doc |) (:schema :string)
           :code $ quote (def min-id c0)
           :examples $ []
         |peek-tiny? $ %{} :CodeEntry (:doc |)
@@ -153,6 +149,48 @@
           :schema $ :: :fn
             {} (:return :bool)
               :args $ [] :dynamic
+        |probe-c32 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-c32 () c32
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ []
+        |probe-c64 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-c64 () c64
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ []
+        |probe-mapget-c1 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-mapget-c1 () $ &str:find-index dictionary c1
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-mapget-core $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-mapget-core () $ &str:find-index dictionary c0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-simple-map $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-simple-map () $ &map:get ({} c0 10 c1 20) c1
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-str-append $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-str-append () $ str | c0 c32
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ []
         |trim-right $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn trim-right (x)
@@ -489,7 +527,7 @@
               assert (map? dict) "|dict should be a map"
               let
                   keys-set $ keys dict
-                  existing-keys $ sort (.to-list keys-set) &compare
+                  existing-keys $ sort (&set:to-list keys-set) &compare
                 assert (&set:includes? keys-set base-key) "|base-key should be existed"
                 let
                     position $ index-of existing-keys base-key
@@ -563,14 +601,67 @@
       :defs $ {}
         |probe-all-count $ %{} :CodeEntry (:doc |)
           :code $ quote
-            defn probe-all-count () :Number $ &+ (probe-bisect-basic) (probe-bisect-strings)
+            defn probe-all-count () $ &+ (probe-bisect-basic) (probe-bisect-strings)
           :examples $ []
           :schema $ :: :fn
             {} (:return :number)
               :args $ []
+        |probe-assert-neq $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-assert-neq () $ if (not= |1 |2) 1 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-assert-order $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-assert-order () $ if
+              or (&= |2 |)
+                < (&compare |1 |2) 0
+              , 1 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-assert-str $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-assert-str () $ and (string? |1) (string? |2)
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :bool)
+              :args $ []
+        |probe-assert1 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-assert1 () $ and (string? |1) (string? |2)
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :bool)
+              :args $ []
+        |probe-assert2 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-assert2 () $ not= |1 |2
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :bool)
+              :args $ []
+        |probe-assert3 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-assert3 () $ < (&compare |1 |2) 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :bool)
+              :args $ []
+        |probe-bisect-assert $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-bisect-assert () $ and (not= |1 |2)
+              < (&compare |1 |2) 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :bool)
+              :args $ []
         |probe-bisect-basic $ %{} :CodeEntry (:doc |)
           :code $ quote
-            defn probe-bisect-basic () :Number $ &+
+            defn probe-bisect-basic () $ &+
               &+
                 &+
                   &+
@@ -593,9 +684,62 @@
           :schema $ :: :fn
             {} (:return :number)
               :args $ []
+        |probe-bisect-call $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-bisect-call () $ bisect |1 |2
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ []
+        |probe-bisect-direct $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-bisect-direct () $ bisect-vec | |1 |2 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ []
+        |probe-bisect-inner $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-bisect-inner () $ let
+                c-x $ &str:nth |1 0
+                c-y $ &str:nth |2 0
+                x $ lookup-i c-x
+                y $ lookup-i c-y
+                delta $ &- y x
+                next $ inc 0
+              if (&= delta 1)
+                if
+                  peek-tiny? $ &str:nth |2 next
+                  &+ 1 0
+                  &+ 0 0
+                &+ 0 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-bisect-result1 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-bisect-result1 () $ bisect |1 |2
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ []
+        |probe-bisect-step2 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-bisect-step2 () $ let
+                c-x $ &str:nth |1 0
+                next $ inc 0
+              if
+                &= next $ &str:count |1
+                str | c-x c32
+                str | |X
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ []
         |probe-bisect-strings $ %{} :CodeEntry (:doc |)
           :code $ quote
-            defn probe-bisect-strings () :Number $ &+
+            defn probe-bisect-strings () $ &+
               if
                 = (bisect |yyyz |z) |yz
                 , 1 0
@@ -606,25 +750,260 @@
           :schema $ :: :fn
             {} (:return :number)
               :args $ []
-        |probe-dictionary $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+        |probe-bisect-vec $ %{} :CodeEntry (:doc |)
           :code $ quote
-            defn probe-dictionary () :number $ if
+            defn probe-bisect-vec () $ &str:nth |abc 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ []
+        |probe-bisect-vec-call $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-bisect-vec-call () $ bisect-vec | |1 |2 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ []
+        |probe-c0 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-c0 () c0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ []
+        |probe-c32 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-c32 () c32
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ []
+        |probe-c32-val $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-c32-val () c32
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ []
+        |probe-c64 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-c64 () c64
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ []
+        |probe-char-map $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-char-map () $ if
+              &>= (&str:find-index dictionary |1) 0
+              , 1 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-compare $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-compare () $ &compare |1 |2
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-delta $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-delta () $ &-
+              lookup-i $ &str:nth |12 1
+              lookup-i $ &str:nth |12 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-dictionary $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-dictionary () $ if
               > (count dictionary) 0
               , 1 0
           :examples $ []
-        |probe-str-count $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-eq-1-1 $ %{} :CodeEntry (:doc |)
           :code $ quote
-            defn probe-str-count () :number $ count (str |ab |cd)
+            defn probe-eq-1-1 () $ &= 1 1
           :examples $ []
-        |probe-str-inline $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :bool)
+              :args $ []
+        |probe-eq-direct $ %{} :CodeEntry (:doc |)
           :code $ quote
-            defn probe-str-inline () :number $ count (str |+-/ |0123456789 |ABCDEFGHIJKLMNOPQRSTUVWXYZ |abcdefghijklmnopqrstuvwxyz)
+            defn probe-eq-direct () $ if
+              &= (inc 0) (&str:count |1)
+              &+ 1 0
+              &+ 0 0
           :examples $ []
-        |probe-string-eq $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-eq-inc-1 $ %{} :CodeEntry (:doc |)
           :code $ quote
-            defn probe-string-eq () :number $ if (= |hello |hello) 1 0
+            defn probe-eq-inc-1 () $ &= (inc 0) 1
           :examples $ []
+          :schema $ :: :fn
+            {} (:return :bool)
+              :args $ []
+        |probe-eq-let $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-eq-let () $ let
+                next $ inc 0
+              if (&= next 1) (&+ 1 0) (&+ 0 0)
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-eq-str-count $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-eq-str-count () $ &= 1 (&str:count |1)
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :bool)
+              :args $ []
+        |probe-inc0 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-inc0 () $ inc 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-lookup-1 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-lookup-1 () $ lookup-i (&str:nth |12 1)
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-lookup-c1 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-lookup-c1 () $ lookup-i c1
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-lookup-fresh $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-lookup-fresh () $ &str:find-index dictionary (&str:nth |1 0)
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-lookup-i $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-lookup-i () $ &str:find-index dictionary (&str:nth |12 1)
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-lookup-i1 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-lookup-i1 () $ lookup-i (&str:nth |1 0)
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-mapget $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-mapget () $ &str:find-index dictionary c0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-next-eq $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-next-eq () $ let
+                next $ inc 0
+              if
+                &= next $ &str:count |1
+                &+ 1 0
+                &+ 0 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-nil-check $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-nil-check () $ if
+              nil? $ &str:nth |1 5
+              , 1 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-str-3arg $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-str-3arg () $ str |a |b |c
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ []
+        |probe-str-concat $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-str-concat () $ let
+                c-x $ &str:nth |1 0
+              str | c-x c32
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ []
+        |probe-str-count $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-str-count () $ count (str |ab |cd)
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-str-count-1 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-str-count-1 () $ &str:count |1
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-str-eq1 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-str-eq1 () $ = (bisect |1 |2) |1T
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :bool)
+              :args $ []
+        |probe-str-inline $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-str-inline () $ count (str |+-/ |0123456789 |ABCDEFGHIJKLMNOPQRSTUVWXYZ |abcdefghijklmnopqrstuvwxyz)
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-str-q $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-str-q () $ if (string? |hello) 1 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-string-eq $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-string-eq () $ if (= |hello |hello) 1 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
+        |probe-stringq2 $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn probe-stringq2 () $ if
+              and (string? |1) (string? |2)
+              , 1 0
+          :examples $ []
+          :schema $ :: :fn
+            {} (:return :number)
+              :args $ []
       :ns $ %{} :NsEntry (:doc |)
         :code $ quote
           ns bisection-key.wasm-probe $ :require
-            bisection-key.core :refer $ bisect min-id max-id mid-id c0 trim-right lookup-i peek-tiny? dictionary
+            bisection-key.core :refer $ bisect bisect-vec min-id max-id mid-id c0 c1 c32 c64 trim-right lookup-i peek-tiny? dictionary
