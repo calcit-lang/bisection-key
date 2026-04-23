@@ -240,15 +240,21 @@
                   recur (inc i) new-id
                   , x
           :examples $ []
-        |main! $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+        |main! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn main! () (run-bisection!) (println "|App started.")
           :examples $ []
-        |reload! $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :unit)
+              :args $ []
+        |reload! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn reload! () (run-bisection!) (println "|Code updated.")
           :examples $ []
-        |run-bisection! $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :unit)
+              :args $ []
+        |run-bisection! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn run-bisection! () (; compare-random-ids) (; list-appending-results)
               ; println $ bisect |yyyz |z
@@ -273,6 +279,9 @@
                       recur (inc i) new-id
                       , nil
           :examples $ []
+          :schema $ :: :fn
+            {} (:return :dynamic)
+              :args $ []
       :ns $ %{} :NsEntry (:doc |)
         :code $ quote
           ns bisection-key.main $ :require
@@ -450,14 +459,17 @@
             bisection-key.util :refer $ key-before key-after assoc-before assoc-after key-prepend key-append assoc-prepend assoc-append get-min-key get-max-key key-nth val-nth assoc-nth assoc-before-nth assoc-after-nth key-index-of
     |bisection-key.util $ %{} :FileEntry
       :defs $ {}
-        |assoc-after $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+        |assoc-after $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn assoc-after (dict base-key v)
               let
                   new-key $ key-after dict base-key
                 assoc dict new-key v
           :examples $ []
-        |assoc-after-nth $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :map)
+              :args $ [] :map :string :dynamic
+        |assoc-after-nth $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn assoc-after-nth (x n v)
               when-not (has-nth? x n) (raise "|Succeeded map size")
@@ -465,7 +477,10 @@
                   k $ key-nth x n
                 assoc-after x k v
           :examples $ []
-        |assoc-append $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :map)
+              :args $ [] :map :number :dynamic
+        |assoc-append $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn assoc-append (dict v)
               assert (map? dict) "|dict should be a map"
@@ -473,14 +488,20 @@
                   k $ key-append dict
                 assoc dict k v
           :examples $ []
-        |assoc-before $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :map)
+              :args $ [] :map :dynamic
+        |assoc-before $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn assoc-before (dict base-key v)
               let
                   new-key $ key-before dict base-key
                 assoc dict new-key v
           :examples $ []
-        |assoc-before-nth $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :map)
+              :args $ [] :map :string :dynamic
+        |assoc-before-nth $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn assoc-before-nth (x n v)
               when-not (has-nth? x n) (raise "|Succeeded map size")
@@ -488,7 +509,10 @@
                   k $ key-nth x n
                 assoc-before x k v
           :examples $ []
-        |assoc-nth $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :map)
+              :args $ [] :map :number :dynamic
+        |assoc-nth $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn assoc-nth (x n v)
               when-not (has-nth? x n) (raise "|Succeeded map size")
@@ -496,7 +520,10 @@
                   k $ key-nth x n
                 assoc x k v
           :examples $ []
-        |assoc-prepend $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :map)
+              :args $ [] :map :number :dynamic
+        |assoc-prepend $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn assoc-prepend (dict v)
               assert (map? dict) "|dict should be a map"
@@ -504,26 +531,38 @@
                   k $ key-prepend dict
                 assoc dict k v
           :examples $ []
-        |get-max-key $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :map)
+              :args $ [] :map :dynamic
+        |get-max-key $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn get-max-key (x)
               last $ sort
                 &set:to-list $ keys x
                 , &compare
           :examples $ []
-        |get-min-key $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :dynamic)
+              :args $ [] :map
+        |get-min-key $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn get-min-key (x)
               &list:first $ sort
                 &set:to-list $ keys x
                 , &compare
           :examples $ []
-        |has-nth? $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :dynamic)
+              :args $ [] :map
+        |has-nth? $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn has-nth? (x n)
               &< n $ count x
           :examples $ []
-        |key-after $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :bool)
+              :args $ [] :map :number
+        |key-after $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn key-after (dict base-key)
               assert (string? base-key) "|base-key should be string"
@@ -539,7 +578,10 @@
                     , max-id
                       &list:nth existing-keys $ inc position
           :examples $ []
-        |key-append $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ [] :map :string
+        |key-append $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn key-append (dict)
               assert (map? dict) "|dict should be a map"
@@ -547,7 +589,10 @@
                 &set:max $ keys dict
                 , max-id
           :examples $ []
-        |key-before $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ [] :map
+        |key-before $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn key-before (dict base-key)
               assert (string? base-key) "|base-key should be string"
@@ -562,7 +607,10 @@
                     if (= 0 position) min-id $ get existing-keys (dec position)
                     , base-key
           :examples $ []
-        |key-index-of $ %{} :CodeEntry (:doc "|find index of `k`, returns `nil` if not found") (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ [] :map :string
+        |key-index-of $ %{} :CodeEntry (:doc "|find index of `k`, returns `nil` if not found")
           :code $ quote
             defn key-index-of (x k)
               let
@@ -571,7 +619,10 @@
                     , &compare
                 index-of ks k
           :examples $ []
-        |key-nth $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :dynamic)
+              :args $ [] :map :string
+        |key-nth $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn key-nth (x n)
               if (has-nth? x n)
@@ -582,20 +633,29 @@
                   , n
                 , nil
           :examples $ []
-        |key-prepend $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :dynamic)
+              :args $ [] :map :number
+        |key-prepend $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn key-prepend (dict)
               assert (map? dict) "|dict should be a map"
               if (empty? dict) mid-id $ bisect min-id
                 &set:min $ keys dict
           :examples $ []
-        |val-nth $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: :fn
+            {} (:return :string)
+              :args $ [] :map
+        |val-nth $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn val-nth (x n)
               if (has-nth? x n)
                 get x $ key-nth x n
                 do (println "|[Warn] exceeded map size") nil
           :examples $ []
+          :schema $ :: :fn
+            {} (:return :dynamic)
+              :args $ [] :map :number
       :ns $ %{} :NsEntry (:doc |)
         :code $ quote
           ns bisection-key.util $ :require
