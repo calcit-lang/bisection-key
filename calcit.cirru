@@ -1,5 +1,5 @@
 
-{} (:about "|Machine-generated snapshot. AI AGENTS: never edit this file directly — changes will be overwritten on recompile. Inspect via `cr query`; modify via `cr edit` / `cr tree`. MANDATORY first step: run `cr docs agents --full`.") (:package |bisection-key)
+{} (:about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `cr query` to inspect and `cr edit`/`cr tree` to modify. Run `cr docs agents --full` first. Manual edits must follow format and schema conventions, then run `cr edit format`.") (:package |bisection-key)
   :configs $ {} (:init-fn |bisection-key.main/main!) (:reload-fn |bisection-key.main/reload!) (:version |0.0.16)
     :modules $ []
   :entries $ {}
@@ -273,8 +273,7 @@
               ; println $ bisect |uvx |uw
               ; println $ bisect |sz |t
               ; loop
-                  i 0
-                  x mid-id
+                (i 0) (x mid-id)
                 let
                     new-id $ bisect x |
                   println i x
