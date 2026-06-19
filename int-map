@@ -1,0 +1,21 @@
+registered platform APIs
+Command: cr query def target=bisection-key.core/char- --json=OFF --chunk-target-nodes=(56) --chunk-max-nodes=(68) --chunk-trigger-nodes=(88) --raw=OFF
+
+⚠️  Warning: Definition 'char-' not found in namespace 'bisection-key.core'.
+   Possible cause: your shell may have interpreted part of the definition name before calcit received it.
+   This often happens with characters like >, <, |, &, $, *, ?, (, or ).
+   Detected a likely intended definition: 'char->int-map' (the next character after 'char-' is shell-sensitive: '>').
+   Try quoting the full target, for example: 'bisection-key.core/char->int-map'
+   Auto-correcting to 'char->int-map' for this read-only command.
+
+Tags: (none)
+
+Schema:
+(none)
+
+Cirru:
+
+def char->int-map $ -> (split dictionary |)
+  map-indexed $ fn (idx char) ([] char idx)
+  pairs-map
+

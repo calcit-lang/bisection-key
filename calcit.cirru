@@ -114,7 +114,7 @@
           :code $ quote
             def c64 $ str-nth dictionary 64
           :examples $ []
-        |char->int-map $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+        |char->int-map $ %{} :CodeEntry (:doc |) (:schema :map)
           :code $ quote
             def char->int-map $ -> (split dictionary |)
               map-indexed $ fn (idx char) ([] char idx)
