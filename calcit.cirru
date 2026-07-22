@@ -1,6 +1,6 @@
 
 {} (:about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `cr query` to inspect and `cr edit`/`cr tree` to modify. Run `cr docs agents --full` first. Manual edits must follow format and schema conventions, then run `cr edit format`.") (:package |bisection-key)
-  :configs $ {} (:init-fn |bisection-key.main/main!) (:reload-fn |bisection-key.main/reload!) (:version |0.0.17)
+  :configs $ {} (:init-fn |bisection-key.main/main!) (:reload-fn |bisection-key.main/reload!) (:version |0.0.18)
     :modules $ []
   :entries $ {}
     :test $ {} (:init-fn |bisection-key.test/run-tests) (:reload-fn |bisection-key.test/run-tests) (:version |0.0.0)
@@ -595,9 +595,7 @@
           :code $ quote
             defn key-append (dict)
               assert (map? dict) "|dict should be a map"
-              if (empty? dict) mid-id $ bisect
-                &set:max $ keys dict
-                , max-id
+              if (empty? dict) mid-id $ bisect (get-max-key dict) max-id
           :examples $ []
           :schema $ :: :fn
             {} (:return :string)

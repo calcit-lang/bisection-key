@@ -14,6 +14,12 @@ try {
     },
     io: {
       log_value: () => 0,
+      log_str: () => 0,
+      read_file_str: () => 0,
+      file_exists: () => 0,
+      parse_json: () => 0,
+      current_time: () => 0,
+      get_env: () => 0,
     },
   });
 
