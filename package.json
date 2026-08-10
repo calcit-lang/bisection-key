@@ -1,8 +1,8 @@
 {
-  "version": "0.0.18",
+  "version": "0.0.19",
   "packageManager": "yarn@4.12.0",
   "dependencies": {
-    "@calcit/procs": "^0.12.51"
+    "@calcit/procs": "^0.13.8"
   },
   "scripts": {
     "test:cr": "cr --entry test",
