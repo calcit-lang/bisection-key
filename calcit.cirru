@@ -1,14 +1,16 @@
 
-{} (:about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `cr query` to inspect and `cr edit`/`cr tree` to modify. Run `cr docs agents --full` first. Manual edits must follow format and schema conventions, then run `cr edit format`.") (:package |bisection-key)
-  :configs $ {} (:init-fn |bisection-key.main/main!) (:reload-fn |bisection-key.main/reload!) (:version |0.0.18)
-    :modules $ []
+{} (:about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `cr query` to inspect and `cr edit`/`cr tree` to modify. Run `cr docs agents --full` first. Manual edits must follow format and schema conventions, then run `cr edit format`.") (:package |bisection-key) (:version |0.0.20)
   :entries $ {}
-    :test $ {} (:init-fn |bisection-key.test/run-tests) (:reload-fn |bisection-key.test/run-tests) (:version |0.0.0)
-      :modules $ [] |calcit-test/
+    :default $ {} (:description |) (:init-fn 'bisection-key.main/main!) (:mode :native) (:reload-fn 'bisection-key.main/reload!)
+      :modules $ []
+      :type-slots $ {}
+    :test $ {} (:description |) (:init-fn 'bisection-key.test/run-tests) (:mode :native) (:reload-fn 'bisection-key.test/run-tests)
+      :modules $ []
+      :type-slots $ {}
   :files $ {}
-    |bisection-key.core $ %{} :FileEntry
+    |bisection-key.core $ %{} 'FileEntry
       :defs $ {}
-        |bisect $ %{} :CodeEntry (:doc |)
+        |bisect $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn bisect (x y)
               assert "|[bitsect] arguments should be strings!" $ and (string? x) (string? y)
@@ -17,10 +19,10 @@
                 < (&compare x y) 0
               bisect-vec | x y 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
-              :args $ [] :string :string
-        |bisect-vec $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'String)
+              :args $ [] 'String 'String
+        |bisect-vec $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn bisect-vec (result xs0 ys0 idx) (; print-values result xs0 ys0 idx)
               cond
@@ -91,106 +93,116 @@
                     true $ str result
                       str-nth dictionary $ bit-shr (&+ x y) 1
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
-              :args $ [] :string :string :string :number
-        |c0 $ %{} :CodeEntry (:doc |) (:schema :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
+              :args $ [] 'String 'String 'String 'Number
+        |c0 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def c0 $ str-nth dictionary 0
           :examples $ []
-        |c1 $ %{} :CodeEntry (:doc |) (:schema :string)
+          :schema $ :: 'String
+        |c1 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def c1 $ str-nth dictionary 1
           :examples $ []
-        |c32 $ %{} :CodeEntry (:doc |) (:schema :string)
+          :schema $ :: 'String
+        |c32 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def c32 $ str-nth dictionary 32
           :examples $ []
-        |c63 $ %{} :CodeEntry (:doc |) (:schema :string)
+          :schema $ :: 'String
+        |c63 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def c63 $ str-nth dictionary 63
           :examples $ []
-        |c64 $ %{} :CodeEntry (:doc |) (:schema :string)
+          :schema $ :: 'String
+        |c64 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def c64 $ str-nth dictionary 64
           :examples $ []
-        |char->int-map $ %{} :CodeEntry (:doc |) (:schema :map)
+          :schema $ :: 'String
+        |char->int-map $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def char->int-map $ -> (split dictionary |)
               map-indexed $ fn (idx char) ([] char idx)
               pairs-map
           :examples $ []
-        |dictionary $ %{} :CodeEntry (:doc |) (:schema :string)
+          :schema $ :: 'Map
+        |dictionary $ %{} 'CodeEntry (:doc |)
           :code $ quote (def dictionary |+-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz)
           :examples $ []
-        |lookup-i $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'String
+        |lookup-i $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn lookup-i (c) (&str:find-index dictionary c)
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
-              :args $ [] :dynamic
-        |max-id $ %{} :CodeEntry (:doc |) (:schema :string)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
+              :args $ [] 'Dynamic
+        |max-id $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def max-id $ do (; "tricky value for largest") |
           :examples $ []
-        |mid-id $ %{} :CodeEntry (:doc |) (:schema :string)
+          :schema $ :: 'String
+        |mid-id $ %{} 'CodeEntry (:doc |)
           :code $ quote (def mid-id c32)
           :examples $ []
-        |min-id $ %{} :CodeEntry (:doc |) (:schema :string)
+          :schema $ :: 'String
+        |min-id $ %{} 'CodeEntry (:doc |)
           :code $ quote (def min-id c0)
           :examples $ []
-        |peek-tiny? $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'String
+        |peek-tiny? $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn peek-tiny? (x)
               or (nil? x) (&= c0 x)
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :bool)
-              :args $ [] :dynamic
-        |probe-c32 $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'Bool)
+              :args $ [] 'Dynamic
+        |probe-c32 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-c32 () c32
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ []
-        |probe-c64 $ %{} :CodeEntry (:doc |)
+        |probe-c64 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-c64 () c64
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ []
-        |probe-mapget-c1 $ %{} :CodeEntry (:doc |)
+        |probe-mapget-c1 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-mapget-c1 () $ &str:find-index dictionary c1
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-mapget-core $ %{} :CodeEntry (:doc |)
+        |probe-mapget-core $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-mapget-core () $ &str:find-index dictionary c0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-simple-map $ %{} :CodeEntry (:doc |)
+        |probe-simple-map $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-simple-map () $ &map:get ({} c0 10 c1 20) c1
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-str-append $ %{} :CodeEntry (:doc |)
+        |probe-str-append $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-str-append () $ str | c0 c32
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ []
-        |str-nth $ %{} :CodeEntry (:doc |)
+        |str-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn str-nth (s idx)
               if
@@ -198,10 +210,10 @@
                 &str:nth s idx
                 , nil
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :dynamic)
-              :args $ [] :string :number
-        |trim-right $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'Dynamic)
+              :args $ [] 'String 'Number
+        |trim-right $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn trim-right (x)
               if (empty? x) x $ let
@@ -211,15 +223,15 @@
                   recur $ slice x 0 end
                   , x
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
-              :args $ [] :string
-      :ns $ %{} :NsEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'String)
+              :args $ [] 'String
+      :ns $ %{} 'NsEntry (:doc |)
         :code $ quote
           ns bisection-key.core $ :require
-    |bisection-key.main $ %{} :FileEntry
+    |bisection-key.main $ %{} 'FileEntry
       :defs $ {}
-        |compare-random-ids $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+        |compare-random-ids $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn compare-random-ids () $ apply-args (0 mid-id)
               fn (i x)
@@ -239,7 +251,8 @@
                         , x new-id
                       recur (inc i) new-id
           :examples $ []
-        |list-appending-results $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: 'Dynamic
+        |list-appending-results $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn list-appending-results () $ loop
                 i 0
@@ -251,21 +264,22 @@
                   recur (inc i) new-id
                   , x
           :examples $ []
-        |main! $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Dynamic
+        |main! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn main! () (run-bisection!) (println "|App started.")
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :unit)
+          :schema $ :: 'Fn
+            {} (:return 'Unit)
               :args $ []
-        |reload! $ %{} :CodeEntry (:doc |)
+        |reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn reload! () (run-bisection!) (println "|Code updated.")
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :unit)
+          :schema $ :: 'Fn
+            {} (:return 'Unit)
               :args $ []
-        |run-bisection! $ %{} :CodeEntry (:doc |)
+        |run-bisection! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn run-bisection! () (; compare-random-ids) (; list-appending-results)
               ; println $ bisect |yyyz |z
@@ -289,24 +303,25 @@
                       recur (inc i) new-id
                       , nil
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :dynamic)
+          :schema $ :: 'Fn
+            {} (:return 'Dynamic)
               :args $ []
-      :ns $ %{} :NsEntry (:doc |)
+      :ns $ %{} 'NsEntry (:doc |)
         :code $ quote
           ns bisection-key.main $ :require
             [] bisection-key.core :refer $ [] bisect min-id max-id mid-id
             [] bisection-key.test :refer $ run-tests
             calcit.std.rand :refer $ rand
-    |bisection-key.test $ %{} :FileEntry
+    |bisection-key.test $ %{} 'FileEntry
       :defs $ {}
-        |run-tests $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+        |run-tests $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn run-tests () (test-append) (test-assoc) (test-bisect) (test-frequent-append) (test-frequent-prepend) (test-get-key) (test-key-after) (test-key-before) (test-prepend) (test-shorten) (test-nth-ops)
           :examples $ []
-        |test-append $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: 'Dynamic
+        |test-append $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-append
+            defn test-append ()
               is $ =
                 key-append $ {}
                 , mid-id
@@ -319,9 +334,10 @@
                   , 2
                 {} (|a 1) (|g 2)
           :examples $ []
-        |test-assoc $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: 'Dynamic
+        |test-assoc $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-assoc
+            defn test-assoc ()
               is $ =
                 assoc-before (&{} |a 1 |b 1) |a 2
                 &{} |a 1 |b 1 |G 2
@@ -329,9 +345,10 @@
                 assoc-after (&{} |a 1 |b 1) |a 2
                 &{} |a 1 |b 1 |aT 2
           :examples $ []
-        |test-bisect $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: 'Dynamic
+        |test-bisect $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-bisect
+            defn test-bisect ()
               is $ = (bisect |1 |2) |1T
               is $ = (bisect |1 |3) |2
               is $ = (bisect |1 |4) |2
@@ -343,9 +360,10 @@
               is $ = (bisect |yyyz |z) |yz
               is $ = (bisect |uvx |uw) |uvy
           :examples $ []
-        |test-frequent-append $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: 'Dynamic
+        |test-frequent-append $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-frequent-append $ is
+            defn test-frequent-append () $ is
               =
                 apply-args (0 mid-id)
                   fn (i x)
@@ -356,9 +374,10 @@
                         , x
                 , |zzx
           :examples $ []
-        |test-frequent-prepend $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: 'Dynamic
+        |test-frequent-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-frequent-prepend $ is
+            defn test-frequent-prepend () $ is
               =
                 loop
                     i 0
@@ -370,24 +389,26 @@
                       , x
                 , |++++++-
           :examples $ []
-        |test-get-key $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: 'Dynamic
+        |test-get-key $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-get-key
-              testing "|get min key" $ is
+            defn test-get-key ()
+              do "|get min key" $ is
                 = |a $ get-min-key
                   {} (|a 1) (|b 2)
-              testing "|get max key" $ is
-                = |b $ get-max-key
-                  {} (|a 1) (|b 2)
-              testing "|get nil"
+              do "|get max key" $ is
+                = |b $ .unwrap
+                  get-max-key $ {} (|a 1) (|b 2)
+              do "|get nil"
                 is $ = nil
                   get-min-key $ {}
-                is $ = nil
+                is $ .none?
                   get-max-key $ {}
           :examples $ []
-        |test-key-after $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: 'Dynamic
+        |test-key-after $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-key-after
+            defn test-key-after ()
               is $ =
                 key-after
                   {} (|a 1) (|b 1)
@@ -399,9 +420,10 @@
                   , |b
                 , |h
           :examples $ []
-        |test-key-before $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: 'Dynamic
+        |test-key-before $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-key-before
+            defn test-key-before ()
               is $ =
                 key-before
                   {} (|a 1) (|b 1)
@@ -413,36 +435,44 @@
                   , |b
                 , |aT
           :examples $ []
-        |test-nth-ops $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: 'Dynamic
+        |test-nth-ops $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-nth-ops $ let
+            defn test-nth-ops () $ let
                 v $ {} (|a 1) (|b 2) (|c 3)
-              testing "|get key at nth"
-                is $ = |a (key-nth v 0)
-                is $ = |b (key-nth v 1)
-                is $ = |c (key-nth v 2)
-                is $ = nil (key-nth v 3)
-              testing "|get val at nth"
-                is $ = 1 (val-nth v 0)
-                is $ = 2 (val-nth v 1)
-                is $ = 3 (val-nth v 2)
-                is $ = nil (val-nth v 3)
-              testing "|set value at nth" $ is
+              do "|get key at nth"
+                is $ = |a
+                  .unwrap $ key-nth v 0
+                is $ = |b
+                  .unwrap $ key-nth v 1
+                is $ = |c
+                  .unwrap $ key-nth v 2
+                is $ .none? (key-nth v 3)
+              do "|get val at nth"
+                is $ = 1
+                  .unwrap $ val-nth v 0
+                is $ = 2
+                  .unwrap $ val-nth v 1
+                is $ = 3
+                  .unwrap $ val-nth v 2
+                is $ .none? (val-nth v 3)
+              do "|set value at nth" $ is
                 = (assoc v |a 4) (assoc-nth v 0 4)
-              testing "|set value before nth" $ is
+              do "|set value before nth" $ is
                 = (assoc v |aT 4) (assoc-before-nth v 1 4)
-              testing "|set value after nth" $ is
+              do "|set value after nth" $ is
                 = (assoc v |bT 4) (assoc-after-nth v 1 4)
-              testing "|find key index a" $ is
-                = 0 $ key-index-of v |a
-              testing "|find key index c" $ is
-                = 2 $ key-index-of v |c
-              testing "|find key index missing" $ is
-                = nil $ key-index-of v |d
+              do "|find key index a" $ is
+                = 0 $ .unwrap (key-index-of v |a)
+              do "|find key index c" $ is
+                = 2 $ .unwrap (key-index-of v |c)
+              do "|find key index missing" $ is
+                .none? $ key-index-of v |d
           :examples $ []
-        |test-prepend $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: 'Dynamic
+        |test-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-prepend
+            defn test-prepend ()
               is $ =
                 key-prepend $ {}
                 , mid-id
@@ -455,42 +485,44 @@
                   , 2
                 {} (|a 1) (|G 2)
           :examples $ []
-        |test-shorten $ %{} :CodeEntry (:doc |) (:schema :dynamic)
+          :schema $ :: 'Dynamic
+        |test-shorten $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-shorten
+            defn test-shorten ()
               is $ = |c (bisect |a34fd |f3554)
               is $ = |a35 (bisect |a34fd |a3554)
           :examples $ []
-      :ns $ %{} :NsEntry (:doc |)
+          :schema $ :: 'Dynamic
+      :ns $ %{} 'NsEntry (:doc |)
         :code $ quote
           ns bisection-key.test $ :require
-            calcit-test.core :refer $ deftest is testing run-tests
             bisection-key.core :refer $ max-id min-id mid-id bisect
             bisection-key.util :refer $ key-before key-after assoc-before assoc-after key-prepend key-append assoc-prepend assoc-append get-min-key get-max-key key-nth val-nth assoc-nth assoc-before-nth assoc-after-nth key-index-of
-    |bisection-key.util $ %{} :FileEntry
+            calcit.test :refer $ is
+    |bisection-key.util $ %{} 'FileEntry
       :defs $ {}
-        |assoc-after $ %{} :CodeEntry (:doc |)
+        |assoc-after $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn assoc-after (dict base-key v)
               let
                   new-key $ key-after dict base-key
                 assoc dict new-key v
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :map)
-              :args $ [] :map :string :dynamic
-        |assoc-after-nth $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'Map)
+              :args $ [] 'Map 'String 'Dynamic
+        |assoc-after-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn assoc-after-nth (x n v)
               when-not (has-nth? x n) (raise "|Succeeded map size")
               let
-                  k $ key-nth x n
+                  k $ .unwrap (key-nth x n)
                 assoc-after x k v
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :map)
-              :args $ [] :map :number :dynamic
-        |assoc-append $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'Map)
+              :args $ [] 'Map 'Number 'Dynamic
+        |assoc-append $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn assoc-append (dict v)
               assert (map? dict) "|dict should be a map"
@@ -498,42 +530,42 @@
                   k $ key-append dict
                 assoc dict k v
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :map)
-              :args $ [] :map :dynamic
-        |assoc-before $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'Map)
+              :args $ [] 'Map 'Dynamic
+        |assoc-before $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn assoc-before (dict base-key v)
               let
                   new-key $ key-before dict base-key
                 assoc dict new-key v
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :map)
-              :args $ [] :map :string :dynamic
-        |assoc-before-nth $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'Map)
+              :args $ [] 'Map 'String 'Dynamic
+        |assoc-before-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn assoc-before-nth (x n v)
               when-not (has-nth? x n) (raise "|Succeeded map size")
               let
-                  k $ key-nth x n
+                  k $ .unwrap (key-nth x n)
                 assoc-before x k v
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :map)
-              :args $ [] :map :number :dynamic
-        |assoc-nth $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'Map)
+              :args $ [] 'Map 'Number 'Dynamic
+        |assoc-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn assoc-nth (x n v)
               when-not (has-nth? x n) (raise "|Succeeded map size")
               let
-                  k $ key-nth x n
+                  k $ .unwrap (key-nth x n)
                 assoc x k v
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :map)
-              :args $ [] :map :number :dynamic
-        |assoc-prepend $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'Map)
+              :args $ [] 'Map 'Number 'Dynamic
+        |assoc-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn assoc-prepend (dict v)
               assert (map? dict) "|dict should be a map"
@@ -541,38 +573,38 @@
                   k $ key-prepend dict
                 assoc dict k v
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :map)
-              :args $ [] :map :dynamic
-        |get-max-key $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'Map)
+              :args $ [] 'Map 'Dynamic
+        |get-max-key $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn get-max-key (x)
               last $ sort
                 &set:to-list $ keys x
                 , &compare
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :dynamic)
-              :args $ [] :map
-        |get-min-key $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'Dynamic)
+              :args $ [] 'Map
+        |get-min-key $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn get-min-key (x)
               &list:first $ sort
                 &set:to-list $ keys x
                 , &compare
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :dynamic)
-              :args $ [] :map
-        |has-nth? $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'Dynamic)
+              :args $ [] 'Map
+        |has-nth? $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn has-nth? (x n)
               &< n $ count x
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :bool)
-              :args $ [] :map :number
-        |key-after $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'Bool)
+              :args $ [] 'Map 'Number
+        |key-after $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn key-after (dict base-key)
               assert (string? base-key) "|base-key should be string"
@@ -582,25 +614,27 @@
                   existing-keys $ sort (&set:to-list keys-set) &compare
                 assert (&set:includes? keys-set base-key) "|base-key should be existed"
                 let
-                    position $ index-of existing-keys base-key
+                    position $ .unwrap (index-of existing-keys base-key)
                   bisect base-key $ if
                     = position $ dec (count existing-keys)
                     , max-id
                       &list:nth existing-keys $ inc position
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
-              :args $ [] :map :string
-        |key-append $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'String)
+              :args $ [] 'Map 'String
+        |key-append $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn key-append (dict)
               assert (map? dict) "|dict should be a map"
-              if (empty? dict) mid-id $ bisect (get-max-key dict) max-id
+              if (empty? dict) mid-id $ bisect
+                .unwrap $ get-max-key dict
+                , max-id
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
-              :args $ [] :map
-        |key-before $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'String)
+              :args $ [] 'Map
+        |key-before $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn key-before (dict base-key)
               assert (string? base-key) "|base-key should be string"
@@ -610,15 +644,16 @@
                   existing-keys $ sort (&set:to-list keys-set) &compare
                 assert (&set:includes? keys-set base-key) "|base-key should be existed"
                 let
-                    position $ index-of existing-keys base-key
+                    position $ .unwrap (index-of existing-keys base-key)
                   bisect
-                    if (= 0 position) min-id $ get existing-keys (dec position)
+                    if (= 0 position) min-id $ .unwrap
+                      get existing-keys $ dec position
                     , base-key
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
-              :args $ [] :map :string
-        |key-index-of $ %{} :CodeEntry (:doc "|find index of `k`, returns `nil` if not found")
+          :schema $ :: 'Fn
+            {} (:return 'String)
+              :args $ [] 'Map 'String
+        |key-index-of $ %{} 'CodeEntry (:doc "|find index of `k`, returns `nil` if not found")
           :code $ quote
             defn key-index-of (x k)
               let
@@ -627,110 +662,106 @@
                     , &compare
                 index-of ks k
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :dynamic)
-              :args $ [] :map :string
-        |key-nth $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'Dynamic)
+              :args $ [] 'Map 'String
+        |key-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn key-nth (x n)
-              if (has-nth? x n)
-                nth
-                  sort
-                    &set:to-list $ keys x
-                    , &compare
-                  , n
-                , nil
+              nth
+                sort
+                  &set:to-list $ keys x
+                  , &compare
+                , n
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :dynamic)
-              :args $ [] :map :number
-        |key-prepend $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'Dynamic)
+              :args $ [] 'Map 'Number
+        |key-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn key-prepend (dict)
               assert (map? dict) "|dict should be a map"
-              if (empty? dict) mid-id $ bisect min-id
-                &set:min $ keys dict
+              if (empty? dict) mid-id $ bisect min-id (get-min-key dict)
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
-              :args $ [] :map
-        |val-nth $ %{} :CodeEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'String)
+              :args $ [] 'Map
+        |val-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn val-nth (x n)
-              if (has-nth? x n)
-                get x $ key-nth x n
-                do (println "|[Warn] exceeded map size") nil
+              .and-then (key-nth x n)
+                fn (k) (get x k)
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :dynamic)
-              :args $ [] :map :number
-      :ns $ %{} :NsEntry (:doc |)
+          :schema $ :: 'Fn
+            {} (:return 'Dynamic)
+              :args $ [] 'Map 'Number
+      :ns $ %{} 'NsEntry (:doc |)
         :code $ quote
           ns bisection-key.util $ :require
             [] bisection-key.core :refer $ [] mid-id max-id min-id bisect
-    |bisection-key.wasm-probe $ %{} :FileEntry
+    |bisection-key.wasm-probe $ %{} 'FileEntry
       :defs $ {}
-        |probe-all-count $ %{} :CodeEntry (:doc |)
+        |probe-all-count $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-all-count () $ &+ (probe-bisect-basic) (probe-bisect-strings)
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-assert-neq $ %{} :CodeEntry (:doc |)
+        |probe-assert-neq $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-assert-neq () $ if (not= |1 |2) 1 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-assert-order $ %{} :CodeEntry (:doc |)
+        |probe-assert-order $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-assert-order () $ if
               or (&= |2 |)
                 < (&compare |1 |2) 0
               , 1 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-assert-str $ %{} :CodeEntry (:doc |)
+        |probe-assert-str $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-assert-str () $ and (string? |1) (string? |2)
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :bool)
+          :schema $ :: 'Fn
+            {} (:return 'Bool)
               :args $ []
-        |probe-assert1 $ %{} :CodeEntry (:doc |)
+        |probe-assert1 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-assert1 () $ and (string? |1) (string? |2)
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :bool)
+          :schema $ :: 'Fn
+            {} (:return 'Bool)
               :args $ []
-        |probe-assert2 $ %{} :CodeEntry (:doc |)
+        |probe-assert2 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-assert2 () $ not= |1 |2
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :bool)
+          :schema $ :: 'Fn
+            {} (:return 'Bool)
               :args $ []
-        |probe-assert3 $ %{} :CodeEntry (:doc |)
+        |probe-assert3 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-assert3 () $ < (&compare |1 |2) 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :bool)
+          :schema $ :: 'Fn
+            {} (:return 'Bool)
               :args $ []
-        |probe-bisect-assert $ %{} :CodeEntry (:doc |)
+        |probe-bisect-assert $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-bisect-assert () $ and (not= |1 |2)
               < (&compare |1 |2) 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :bool)
+          :schema $ :: 'Fn
+            {} (:return 'Bool)
               :args $ []
-        |probe-bisect-basic $ %{} :CodeEntry (:doc |)
+        |probe-bisect-basic $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-bisect-basic () $ &+
               &+
@@ -752,24 +783,24 @@
                 = (bisect |11 |13) |12
                 , 1 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-bisect-call $ %{} :CodeEntry (:doc |)
+        |probe-bisect-call $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-bisect-call () $ bisect |1 |2
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ []
-        |probe-bisect-direct $ %{} :CodeEntry (:doc |)
+        |probe-bisect-direct $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-bisect-direct () $ bisect-vec | |1 |2 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ []
-        |probe-bisect-inner $ %{} :CodeEntry (:doc |)
+        |probe-bisect-inner $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-bisect-inner () $ let
                 c-x $ &str:nth |1 0
@@ -785,17 +816,17 @@
                   &+ 0 0
                 &+ 0 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-bisect-result1 $ %{} :CodeEntry (:doc |)
+        |probe-bisect-result1 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-bisect-result1 () $ bisect |1 |2
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ []
-        |probe-bisect-step2 $ %{} :CodeEntry (:doc |)
+        |probe-bisect-step2 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-bisect-step2 () $ let
                 c-x $ &str:nth |1 0
@@ -805,10 +836,10 @@
                 str | c-x c32
                 str | |X
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ []
-        |probe-bisect-strings $ %{} :CodeEntry (:doc |)
+        |probe-bisect-strings $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-bisect-strings () $ &+
               if
@@ -818,189 +849,189 @@
                 = (bisect |a34fd |f3554) |c
                 , 1 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-bisect-vec $ %{} :CodeEntry (:doc |)
+        |probe-bisect-vec $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-bisect-vec () $ &str:nth |abc 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ []
-        |probe-bisect-vec-call $ %{} :CodeEntry (:doc |)
+        |probe-bisect-vec-call $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-bisect-vec-call () $ bisect-vec | |1 |2 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ []
-        |probe-c0 $ %{} :CodeEntry (:doc |)
+        |probe-c0 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-c0 () c0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ []
-        |probe-c32 $ %{} :CodeEntry (:doc |)
+        |probe-c32 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-c32 () c32
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ []
-        |probe-c32-val $ %{} :CodeEntry (:doc |)
+        |probe-c32-val $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-c32-val () c32
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ []
-        |probe-c64 $ %{} :CodeEntry (:doc |)
+        |probe-c64 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-c64 () c64
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ []
-        |probe-char-map $ %{} :CodeEntry (:doc |)
+        |probe-char-map $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-char-map () $ if
               &>= (&str:find-index dictionary |1) 0
               , 1 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-compare $ %{} :CodeEntry (:doc |)
+        |probe-compare $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-compare () $ &compare |1 |2
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-delta $ %{} :CodeEntry (:doc |)
+        |probe-delta $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-delta () $ &-
               lookup-i $ &str:nth |12 1
               lookup-i $ &str:nth |12 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-dictionary $ %{} :CodeEntry (:doc |)
+        |probe-dictionary $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-dictionary () $ if
               &> (&str:count dictionary) 0
               , 1 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-eq-1-1 $ %{} :CodeEntry (:doc |)
+        |probe-eq-1-1 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-eq-1-1 () $ &= 1 1
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :bool)
+          :schema $ :: 'Fn
+            {} (:return 'Bool)
               :args $ []
-        |probe-eq-direct $ %{} :CodeEntry (:doc |)
+        |probe-eq-direct $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-eq-direct () $ if
               &= (inc 0) (&str:count |1)
               &+ 1 0
               &+ 0 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-eq-inc-1 $ %{} :CodeEntry (:doc |)
+        |probe-eq-inc-1 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-eq-inc-1 () $ &= (inc 0) 1
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :bool)
+          :schema $ :: 'Fn
+            {} (:return 'Bool)
               :args $ []
-        |probe-eq-let $ %{} :CodeEntry (:doc |)
+        |probe-eq-let $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-eq-let () $ let
                 next $ inc 0
               if (&= next 1) (&+ 1 0) (&+ 0 0)
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-eq-str-count $ %{} :CodeEntry (:doc |)
+        |probe-eq-str-count $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-eq-str-count () $ &= 1 (&str:count |1)
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :bool)
+          :schema $ :: 'Fn
+            {} (:return 'Bool)
               :args $ []
-        |probe-find-index-literal-1 $ %{} :CodeEntry (:doc |)
+        |probe-find-index-literal-1 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-find-index-literal-1 () $ &str:find-index |+-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz |1
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-find-index-literal-plus $ %{} :CodeEntry (:doc |)
+        |probe-find-index-literal-plus $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-find-index-literal-plus () $ &str:find-index |+-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz |+
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-inc0 $ %{} :CodeEntry (:doc |)
+        |probe-inc0 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-inc0 () $ inc 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-lookup-1 $ %{} :CodeEntry (:doc |)
+        |probe-lookup-1 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-lookup-1 () $ lookup-i (&str:nth |12 1)
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-lookup-c1 $ %{} :CodeEntry (:doc |)
+        |probe-lookup-c1 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-lookup-c1 () $ lookup-i c1
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-lookup-fresh $ %{} :CodeEntry (:doc |)
+        |probe-lookup-fresh $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-lookup-fresh () $ &str:find-index dictionary (&str:nth |1 0)
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-lookup-i $ %{} :CodeEntry (:doc |)
+        |probe-lookup-i $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-lookup-i () $ &str:find-index dictionary (&str:nth |12 1)
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-lookup-i1 $ %{} :CodeEntry (:doc |)
+        |probe-lookup-i1 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-lookup-i1 () $ lookup-i (&str:nth |1 0)
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-mapget $ %{} :CodeEntry (:doc |)
+        |probe-mapget $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-mapget () $ &str:find-index dictionary c0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-next-eq $ %{} :CodeEntry (:doc |)
+        |probe-next-eq $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-next-eq () $ let
                 next $ inc 0
@@ -1009,104 +1040,104 @@
                 &+ 1 0
                 &+ 0 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-nil-check $ %{} :CodeEntry (:doc |)
+        |probe-nil-check $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-nil-check () $ if
               nil? $ &str:nth |1 5
               , 1 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-nth-literal-0 $ %{} :CodeEntry (:doc |)
+        |probe-nth-literal-0 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-nth-literal-0 () $ if
               &= (&str:nth |+-/ 0) |+
               , 1 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-nth-literal-1 $ %{} :CodeEntry (:doc |)
+        |probe-nth-literal-1 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-nth-literal-1 () $ if
               &= (&str:nth |+-/ 1) |-
               , 1 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-str-3arg $ %{} :CodeEntry (:doc |)
+        |probe-str-3arg $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-str-3arg () $ str |a |b |c
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ []
-        |probe-str-concat $ %{} :CodeEntry (:doc |)
+        |probe-str-concat $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-str-concat () $ let
                 c-x $ &str:nth |1 0
               str | c-x c32
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :string)
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ []
-        |probe-str-count $ %{} :CodeEntry (:doc |)
+        |probe-str-count $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-str-count () $ count (str |ab |cd)
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-str-count-1 $ %{} :CodeEntry (:doc |)
+        |probe-str-count-1 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-str-count-1 () $ &str:count |1
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-str-eq1 $ %{} :CodeEntry (:doc |)
+        |probe-str-eq1 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-str-eq1 () $ = (bisect |1 |2) |1T
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :bool)
+          :schema $ :: 'Fn
+            {} (:return 'Bool)
               :args $ []
-        |probe-str-inline $ %{} :CodeEntry (:doc |)
+        |probe-str-inline $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-str-inline () $ count (str |+-/ |0123456789 |ABCDEFGHIJKLMNOPQRSTUVWXYZ |abcdefghijklmnopqrstuvwxyz)
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-str-q $ %{} :CodeEntry (:doc |)
+        |probe-str-q $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-str-q () $ if (string? |hello) 1 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-string-eq $ %{} :CodeEntry (:doc |)
+        |probe-string-eq $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-string-eq () $ if (= |hello |hello) 1 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-        |probe-stringq2 $ %{} :CodeEntry (:doc |)
+        |probe-stringq2 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-stringq2 () $ if
               and (string? |1) (string? |2)
               , 1 0
           :examples $ []
-          :schema $ :: :fn
-            {} (:return :number)
+          :schema $ :: 'Fn
+            {} (:return 'Number)
               :args $ []
-      :ns $ %{} :NsEntry (:doc |)
+      :ns $ %{} 'NsEntry (:doc |)
         :code $ quote
           ns bisection-key.wasm-probe $ :require
             bisection-key.core :refer $ bisect bisect-vec min-id max-id mid-id c0 c1 c32 c64 trim-right lookup-i peek-tiny? dictionary

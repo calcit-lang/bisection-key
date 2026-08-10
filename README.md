@@ -26,15 +26,15 @@ Charset, base65:
 Install [calcit-runner](https://github.com/calcit-lang/calcit_runner.rs) to run demo:
 
 ```bash
-cr -1 # run once
+cr calcit.cirru # run once
 
-cr # run and watch
+cr calcit.cirru -w # run and watch
 ```
 
 For JavaScript:
 
 ```bash
-cr js -1
+cr calcit.cirru js
 node main.mjs
 ```
 
