@@ -1,11 +1,11 @@
 
-{} (:about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `cr query` to inspect and `cr edit`/`cr tree` to modify. Run `cr docs agents --full` first. Manual edits must follow format and schema conventions, then run `cr edit format`.") (:package |bisection-key) (:version |0.0.19)
+{} (:about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `cr query` to inspect and `cr edit`/`cr tree` to modify. Run `cr docs agents --full` first. Manual edits must follow format and schema conventions, then run `cr edit format`.") (:package |bisection-key) (:version |0.0.20)
   :entries $ {}
     :default $ {} (:description |) (:init-fn 'bisection-key.main/main!) (:mode :native) (:reload-fn 'bisection-key.main/reload!)
       :modules $ []
       :type-slots $ {}
     :test $ {} (:description |) (:init-fn 'bisection-key.test/run-tests) (:mode :native) (:reload-fn 'bisection-key.test/run-tests)
-      :modules $ [] |calcit-test/
+      :modules $ []
       :type-slots $ {}
   :files $ {}
     |bisection-key.core $ %{} 'FileEntry
@@ -321,7 +321,7 @@
           :schema $ :: 'Dynamic
         |test-append $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-append
+            defn test-append ()
               is $ =
                 key-append $ {}
                 , mid-id
@@ -337,7 +337,7 @@
           :schema $ :: 'Dynamic
         |test-assoc $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-assoc
+            defn test-assoc ()
               is $ =
                 assoc-before (&{} |a 1 |b 1) |a 2
                 &{} |a 1 |b 1 |G 2
@@ -348,7 +348,7 @@
           :schema $ :: 'Dynamic
         |test-bisect $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-bisect
+            defn test-bisect ()
               is $ = (bisect |1 |2) |1T
               is $ = (bisect |1 |3) |2
               is $ = (bisect |1 |4) |2
@@ -363,7 +363,7 @@
           :schema $ :: 'Dynamic
         |test-frequent-append $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-frequent-append $ is
+            defn test-frequent-append () $ is
               =
                 apply-args (0 mid-id)
                   fn (i x)
@@ -377,7 +377,7 @@
           :schema $ :: 'Dynamic
         |test-frequent-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-frequent-prepend $ is
+            defn test-frequent-prepend () $ is
               =
                 loop
                     i 0
@@ -392,23 +392,23 @@
           :schema $ :: 'Dynamic
         |test-get-key $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-get-key
-              testing "|get min key" $ is
+            defn test-get-key ()
+              do "|get min key" $ is
                 = |a $ get-min-key
                   {} (|a 1) (|b 2)
-              testing "|get max key" $ is
-                = |b $ get-max-key
-                  {} (|a 1) (|b 2)
-              testing "|get nil"
+              do "|get max key" $ is
+                = |b $ .unwrap
+                  get-max-key $ {} (|a 1) (|b 2)
+              do "|get nil"
                 is $ = nil
                   get-min-key $ {}
-                is $ = nil
+                is $ .none?
                   get-max-key $ {}
           :examples $ []
           :schema $ :: 'Dynamic
         |test-key-after $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-key-after
+            defn test-key-after ()
               is $ =
                 key-after
                   {} (|a 1) (|b 1)
@@ -423,7 +423,7 @@
           :schema $ :: 'Dynamic
         |test-key-before $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-key-before
+            defn test-key-before ()
               is $ =
                 key-before
                   {} (|a 1) (|b 1)
@@ -438,35 +438,41 @@
           :schema $ :: 'Dynamic
         |test-nth-ops $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-nth-ops $ let
+            defn test-nth-ops () $ let
                 v $ {} (|a 1) (|b 2) (|c 3)
-              testing "|get key at nth"
-                is $ = |a (key-nth v 0)
-                is $ = |b (key-nth v 1)
-                is $ = |c (key-nth v 2)
-                is $ = nil (key-nth v 3)
-              testing "|get val at nth"
-                is $ = 1 (val-nth v 0)
-                is $ = 2 (val-nth v 1)
-                is $ = 3 (val-nth v 2)
-                is $ = nil (val-nth v 3)
-              testing "|set value at nth" $ is
+              do "|get key at nth"
+                is $ = |a
+                  .unwrap $ key-nth v 0
+                is $ = |b
+                  .unwrap $ key-nth v 1
+                is $ = |c
+                  .unwrap $ key-nth v 2
+                is $ .none? (key-nth v 3)
+              do "|get val at nth"
+                is $ = 1
+                  .unwrap $ val-nth v 0
+                is $ = 2
+                  .unwrap $ val-nth v 1
+                is $ = 3
+                  .unwrap $ val-nth v 2
+                is $ .none? (val-nth v 3)
+              do "|set value at nth" $ is
                 = (assoc v |a 4) (assoc-nth v 0 4)
-              testing "|set value before nth" $ is
+              do "|set value before nth" $ is
                 = (assoc v |aT 4) (assoc-before-nth v 1 4)
-              testing "|set value after nth" $ is
+              do "|set value after nth" $ is
                 = (assoc v |bT 4) (assoc-after-nth v 1 4)
-              testing "|find key index a" $ is
-                = 0 $ key-index-of v |a
-              testing "|find key index c" $ is
-                = 2 $ key-index-of v |c
-              testing "|find key index missing" $ is
-                = nil $ key-index-of v |d
+              do "|find key index a" $ is
+                = 0 $ .unwrap (key-index-of v |a)
+              do "|find key index c" $ is
+                = 2 $ .unwrap (key-index-of v |c)
+              do "|find key index missing" $ is
+                .none? $ key-index-of v |d
           :examples $ []
           :schema $ :: 'Dynamic
         |test-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-prepend
+            defn test-prepend ()
               is $ =
                 key-prepend $ {}
                 , mid-id
@@ -482,7 +488,7 @@
           :schema $ :: 'Dynamic
         |test-shorten $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            deftest test-shorten
+            defn test-shorten ()
               is $ = |c (bisect |a34fd |f3554)
               is $ = |a35 (bisect |a34fd |a3554)
           :examples $ []
@@ -490,9 +496,9 @@
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote
           ns bisection-key.test $ :require
-            calcit-test.core :refer $ deftest is testing run-tests
             bisection-key.core :refer $ max-id min-id mid-id bisect
             bisection-key.util :refer $ key-before key-after assoc-before assoc-after key-prepend key-append assoc-prepend assoc-append get-min-key get-max-key key-nth val-nth assoc-nth assoc-before-nth assoc-after-nth key-index-of
+            calcit.test :refer $ is
     |bisection-key.util $ %{} 'FileEntry
       :defs $ {}
         |assoc-after $ %{} 'CodeEntry (:doc |)
@@ -510,7 +516,7 @@
             defn assoc-after-nth (x n v)
               when-not (has-nth? x n) (raise "|Succeeded map size")
               let
-                  k $ key-nth x n
+                  k $ .unwrap (key-nth x n)
                 assoc-after x k v
           :examples $ []
           :schema $ :: 'Fn
@@ -542,7 +548,7 @@
             defn assoc-before-nth (x n v)
               when-not (has-nth? x n) (raise "|Succeeded map size")
               let
-                  k $ key-nth x n
+                  k $ .unwrap (key-nth x n)
                 assoc-before x k v
           :examples $ []
           :schema $ :: 'Fn
@@ -553,7 +559,7 @@
             defn assoc-nth (x n v)
               when-not (has-nth? x n) (raise "|Succeeded map size")
               let
-                  k $ key-nth x n
+                  k $ .unwrap (key-nth x n)
                 assoc x k v
           :examples $ []
           :schema $ :: 'Fn
@@ -621,7 +627,9 @@
           :code $ quote
             defn key-append (dict)
               assert (map? dict) "|dict should be a map"
-              if (empty? dict) mid-id $ bisect (get-max-key dict) max-id
+              if (empty? dict) mid-id $ bisect
+                .unwrap $ get-max-key dict
+                , max-id
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'String)
@@ -638,7 +646,8 @@
                 let
                     position $ .unwrap (index-of existing-keys base-key)
                   bisect
-                    if (= 0 position) min-id $ get existing-keys (dec position)
+                    if (= 0 position) min-id $ .unwrap
+                      get existing-keys $ dec position
                     , base-key
           :examples $ []
           :schema $ :: 'Fn
@@ -659,13 +668,11 @@
         |key-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn key-nth (x n)
-              if (has-nth? x n)
-                nth
-                  sort
-                    &set:to-list $ keys x
-                    , &compare
-                  , n
-                , nil
+              nth
+                sort
+                  &set:to-list $ keys x
+                  , &compare
+                , n
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'Dynamic)
@@ -674,8 +681,7 @@
           :code $ quote
             defn key-prepend (dict)
               assert (map? dict) "|dict should be a map"
-              if (empty? dict) mid-id $ bisect min-id
-                &set:min $ keys dict
+              if (empty? dict) mid-id $ bisect min-id (get-min-key dict)
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'String)
@@ -683,9 +689,8 @@
         |val-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn val-nth (x n)
-              if (has-nth? x n)
-                get x $ key-nth x n
-                do (println "|[Warn] exceeded map size") nil
+              .and-then (key-nth x n)
+                fn (k) (get x k)
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'Dynamic)
