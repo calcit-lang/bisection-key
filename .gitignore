@@ -12,3 +12,5 @@ example/
 
 .yarn/*.gz
 .calcit/
+
+.DS_Store
