@@ -23,7 +23,8 @@ Charset, base65:
 
 ### Development
 
-Install [calcit-runner](https://github.com/calcit-lang/calcit_runner.rs) to run demo:
+Install [Calcit](https://calcit-lang.org/) so the `cr` command is available on
+your `PATH`, then run the demo:
 
 ```bash
 cr calcit.cirru # run once
@@ -53,6 +54,16 @@ yarn test:wasm
 ```
 
 `test:wasm` runs runtime assertions for probe APIs and will fail when WASM runtime behavior diverges from expected API semantics.
+
+### Type-quality gate
+
+CI records the existing static-type debt in a per-definition baseline and
+rejects regressions. Run the same gate locally before changing public APIs:
+
+    cr calcit.cirru analyze quality --baseline config/calcit-quality.json --format json
+
+The baseline policy and commands for fixing or deliberately reviewing debt are
+in [docs/quality-gate.md](docs/quality-gate.md).
 
 ### Special cases
 

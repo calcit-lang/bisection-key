@@ -22,10 +22,27 @@ jobs:
         corepack prepare yarn@4.12.0 --activate
         yarn --version
 
-    - uses: calcit-lang/setup-cr@0.0.9
+    - uses: calcit-lang/setup-calcit@v1
 
     - name: Install deps
       run: caps --ci && yarn install --immutable
+
+    - name: Check snapshot formatting
+      run: |
+        cr calcit.cirru edit format
+        git diff --exit-code -- calcit.cirru
+
+    - name: Report static type coverage
+      run: |
+        cr calcit.cirru analyze check-types --summary-only --format json
+        cr calcit.cirru analyze weak-types --only schema-dynamic,code-dynamic --intent unresolved --summary-only --format json
+        cr calcit.cirru docs format-md README.md --check
+        cr calcit.cirru docs format-md docs/quality-gate.md --check
+        cr calcit.cirru docs check-md README.md --failures-only
+        cr calcit.cirru docs check-md docs/quality-gate.md --failures-only
+
+    - name: Enforce static type-quality baseline
+      run: cr calcit.cirru analyze quality --baseline config/calcit-quality.json --format json
 
     - name: "test cr"
       run: cr calcit.cirru --entry test
