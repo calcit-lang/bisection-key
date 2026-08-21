@@ -23,7 +23,8 @@ Charset, base65:
 
 ### Development
 
-Install [Calcit](https://calcit-lang.org/) to run the demo:
+Install [Calcit](https://calcit-lang.org/) so the `cr` command is available on
+your `PATH`, then run the demo:
 
 ```bash
 cr calcit.cirru # run once
