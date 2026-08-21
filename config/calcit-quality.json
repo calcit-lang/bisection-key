@@ -1,0 +1,380 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "namespace": null,
+    "namespacePrefix": null,
+    "includeDependencies": false
+  },
+  "metrics": {
+    "typeNone": 14,
+    "typeNotFull": 36,
+    "schemaDynamic": 80,
+    "codeDynamic": 0,
+    "codeNil": 3,
+    "unresolved": 83,
+    "declaredOptional": 0,
+    "deprecatedCalls": 0
+  },
+  "definitions": {
+    "bisection-key.core/char->int-map": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 2,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 2,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.core/lookup-i": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.core/peek-tiny?": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.core/str-nth": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 1,
+      "unresolved": 2,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.main/compare-random-ids": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.main/list-appending-results": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.main/run-bisection!": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 1,
+      "unresolved": 2,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.test/run-tests": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.test/test-append": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.test/test-assoc": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.test/test-bisect": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.test/test-frequent-append": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.test/test-frequent-prepend": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.test/test-get-key": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 1,
+      "unresolved": 2,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.test/test-key-after": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.test/test-key-before": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.test/test-nth-ops": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.test/test-prepend": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.test/test-shorten": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/assoc-after": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 5,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 5,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/assoc-after-nth": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 5,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 5,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/assoc-append": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 5,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 5,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/assoc-before": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 5,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 5,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/assoc-before-nth": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 5,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 5,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/assoc-nth": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 5,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 5,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/assoc-prepend": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 5,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 5,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/get-max-key": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 3,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 3,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/get-min-key": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 3,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 3,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/has-nth?": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 2,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 2,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/key-after": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 2,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 2,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/key-append": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 2,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 2,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/key-before": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 2,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 2,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/key-index-of": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 3,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 3,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/key-nth": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 3,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 3,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/key-prepend": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 2,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 2,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    },
+    "bisection-key.util/val-nth": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 3,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 3,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0
+    }
+  }
+}
