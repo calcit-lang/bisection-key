@@ -23,26 +23,26 @@ Charset, base65:
 
 ### Development
 
-Install [Calcit](https://calcit-lang.org/) so the `cr` command is available on
+Install [Calcit](https://calcit-lang.org/) so the `calcit` command is available on
 your `PATH`, then run the demo:
 
 ```bash
-cr calcit.cirru # run once
+calcit calcit.cirru # run once
 
-cr calcit.cirru -w # run and watch
+calcit -w calcit.cirru # run and watch
 ```
 
 For JavaScript:
 
 ```bash
-cr calcit.cirru js
+calcit calcit.cirru js
 node main.mjs
 ```
 
 For tests:
 
 ```bash
-yarn test:cr
+yarn test:calcit
 yarn test:js
 ```
 
@@ -60,7 +60,7 @@ yarn test:wasm
 CI records the existing static-type debt in a per-definition baseline and
 rejects regressions. Run the same gate locally before changing public APIs:
 
-    cr calcit.cirru analyze quality --baseline config/calcit-quality.json --format json
+    calcit calcit.cirru analyze quality --baseline config/calcit-quality.json --format json
 
 The baseline policy and commands for fixing or deliberately reviewing debt are
 in [docs/quality-gate.md](docs/quality-gate.md).
