@@ -8,9 +8,9 @@ deprecated calls.
 
 Run the same checks locally before changing public APIs:
 
-    cr calcit.cirru analyze check-types --summary-only --format json
-    cr calcit.cirru analyze weak-types --only schema-dynamic,code-dynamic --intent unresolved --summary-only --format json
-    cr calcit.cirru analyze quality --baseline config/calcit-quality.json --format json
+    calcit calcit.cirru analyze check-types --summary-only --format json
+    calcit calcit.cirru analyze weak-types --only schema-dynamic,code-dynamic --intent unresolved --summary-only --format json
+    calcit calcit.cirru analyze quality --baseline config/calcit-quality.json --format json
 
 The first two commands are reports for diagnosis. The last command is the
 release gate and exits nonzero on a regression. Do not regenerate the baseline
@@ -18,7 +18,7 @@ as part of ordinary CI. When intentional cleanup reduces the current debt,
 generate a candidate with the command below, review every changed definition,
 and commit only the stricter result:
 
-    cr calcit.cirru analyze quality --write-baseline config/calcit-quality.json
+    calcit calcit.cirru analyze quality --write-baseline config/calcit-quality.json
 
 See Calcit’s [library-quality guide](https://github.com/calcit-lang/calcit/blob/main/docs/run/library-quality.md)
 for the policy, remediation choices, and release evidence expected from a
