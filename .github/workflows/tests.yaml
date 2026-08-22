@@ -22,30 +22,30 @@ jobs:
         corepack prepare yarn@4.12.0 --activate
         yarn --version
 
-    - uses: calcit-lang/setup-calcit@v1
+    - uses: calcit-lang/setup-calcit@3b5843cb725963bb4ee158cfe49dad877134963e # v1
 
     - name: Install deps
       run: caps --ci && yarn install --immutable
 
     - name: Check snapshot formatting
       run: |
-        cr calcit.cirru edit format
+        calcit calcit.cirru edit format
         git diff --exit-code -- calcit.cirru
 
     - name: Report static type coverage
       run: |
-        cr calcit.cirru analyze check-types --summary-only --format json
-        cr calcit.cirru analyze weak-types --only schema-dynamic,code-dynamic --intent unresolved --summary-only --format json
-        cr calcit.cirru docs format-md README.md --check
-        cr calcit.cirru docs format-md docs/quality-gate.md --check
-        cr calcit.cirru docs check-md README.md --failures-only
-        cr calcit.cirru docs check-md docs/quality-gate.md --failures-only
+        calcit calcit.cirru analyze check-types --summary-only --format json
+        calcit calcit.cirru analyze weak-types --only schema-dynamic,code-dynamic --intent unresolved --summary-only --format json
+        calcit calcit.cirru docs format-md README.md --check
+        calcit calcit.cirru docs format-md docs/quality-gate.md --check
+        calcit calcit.cirru docs check-md README.md --failures-only
+        calcit calcit.cirru docs check-md docs/quality-gate.md --failures-only
 
     - name: Enforce static type-quality baseline
-      run: cr calcit.cirru analyze quality --baseline config/calcit-quality.json --format json
+      run: calcit calcit.cirru analyze quality --baseline config/calcit-quality.json --format json
 
-    - name: "test cr"
-      run: cr calcit.cirru --entry test
+    - name: "test calcit"
+      run: calcit calcit.cirru --entry test
 
     - name: "test js"
-      run: cr calcit.cirru --entry test js && node test.mjs
+      run: calcit calcit.cirru --entry test js && node test.mjs
