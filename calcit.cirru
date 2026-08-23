@@ -691,8 +691,9 @@
         |val-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn val-nth (x n)
-              .and-then (key-nth x n)
-                fn (k) (get x k)
+              option:let
+                  k $ key-nth x n
+                get x k
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'Dynamic)
