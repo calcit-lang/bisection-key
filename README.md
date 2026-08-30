@@ -2,10 +2,10 @@
 
 > Order keys generating algorithm. Similar to [fractional indexing](https://observablehq.com/@dgreensp/implementing-fractional-indexing).
 
-Also see:
+Related implementations:
 
-- Clojure(Older version with known edge cases) https://github.com/Cumulo/bisection-key.cljs
-- Rust(not finished yet) https://github.com/Cumulo/bisection-key.rs
+- Legacy implementation kept for historical edge-case context: https://github.com/Cumulo/bisection-key.cljs
+- Experimental Rust implementation: https://github.com/Cumulo/bisection-key.rs
 
 ### Usage
 
@@ -42,6 +42,9 @@ node main.mjs
 For tests:
 
 ```bash
+caps --strict --ci
+yarn install --immutable
+caps verify --toolchain
 yarn test:calcit
 yarn test:js
 ```
