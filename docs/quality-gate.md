@@ -10,6 +10,8 @@ Run the same checks locally before changing public APIs:
 
     calcit calcit.cirru analyze check-types --summary-only --format json
     calcit calcit.cirru analyze weak-types --only schema-dynamic,code-dynamic --intent unresolved --summary-only --format json
+    calcit calcit.cirru analyze dynamic-methods --max 0
+    calcit calcit.cirru --entry test analyze dynamic-methods --max 18
     calcit calcit.cirru analyze quality --baseline config/calcit-quality.json --format json
 
 The first two commands are reports for diagnosis. The last command is the
@@ -20,6 +22,12 @@ and commit only the stricter result:
 
     calcit calcit.cirru analyze quality --write-baseline config/calcit-quality.json
 
-See Calcit’s [library-quality guide](https://github.com/calcit-lang/calcit/blob/main/docs/run/library-quality.md)
+The default entry has no unresolved dynamic method dispatch. The test entry's
+reviewed non-increase budget is 18 calls, currently concentrated in legacy
+Option helper usage in test and utility definitions. Prefer narrowing those
+schemas in a focused type-safety change; do not increase the budget or hide the
+calls behind unchecked coercion.
+
+See Calcit's [library-quality guide](https://github.com/calcit-lang/calcit/blob/main/docs/run/library-quality.md)
 for the policy, remediation choices, and release evidence expected from a
 library.

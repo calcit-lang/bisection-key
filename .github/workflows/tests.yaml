@@ -22,10 +22,15 @@ jobs:
         corepack prepare yarn@4.12.0 --activate
         yarn --version
 
-    - uses: calcit-lang/setup-calcit@3b5843cb725963bb4ee158cfe49dad877134963e # v1
+    - uses: calcit-lang/setup-calcit@v1
+      with:
+        cr-wasm: true
 
     - name: Install deps
-      run: caps --ci && yarn install --immutable
+      run: caps --strict --ci && yarn install --immutable
+
+    - name: Verify Calcit runtime toolchain
+      run: caps verify --toolchain
 
     - name: Check snapshot formatting
       run: |
@@ -36,6 +41,8 @@ jobs:
       run: |
         calcit calcit.cirru analyze check-types --summary-only --format json
         calcit calcit.cirru analyze weak-types --only schema-dynamic,code-dynamic --intent unresolved --summary-only --format json
+        calcit calcit.cirru analyze dynamic-methods --max 0
+        calcit calcit.cirru --entry test analyze dynamic-methods --max 18
         calcit calcit.cirru docs format-md README.md --check
         calcit calcit.cirru docs format-md docs/quality-gate.md --check
         calcit calcit.cirru docs check-md README.md --failures-only
@@ -49,3 +56,6 @@ jobs:
 
     - name: "test js"
       run: calcit calcit.cirru --entry test js && node test.mjs
+
+    - name: "test wasm"
+      run: yarn test:wasm
