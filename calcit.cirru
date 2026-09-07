@@ -469,6 +469,7 @@
             defn test-nth-ops () $ let
                 v $ {} (|a 1) (|b 2) (|c 3)
               do "|get key at nth"
+                is $ not (has-nth? v -1)
                 is $ = |a
                   .unwrap $ key-nth v 0
                 is $ = |b
@@ -531,7 +532,7 @@
         :code $ quote
           ns bisection-key.test $ :require
             bisection-key.core :refer $ max-id min-id mid-id bisect
-            bisection-key.util :refer $ key-before key-after assoc-before assoc-after key-prepend key-append assoc-prepend assoc-append get-min-key get-max-key key-nth val-nth assoc-nth assoc-before-nth assoc-after-nth key-index-of
+            bisection-key.util :refer $ key-before key-after assoc-before assoc-after key-prepend key-append assoc-prepend assoc-append get-min-key get-max-key key-nth val-nth assoc-nth assoc-before-nth assoc-after-nth key-index-of has-nth?
             calcit.test :refer $ is
     'bisection-key.util $ %{} 'FileEntry
       :defs $ {}
@@ -668,7 +669,8 @@
         'has-nth? $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn has-nth? (x n)
-              &< n $ count x
+              and (>= n 0)
+                < n $ count x
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'Bool)
