@@ -298,6 +298,9 @@
                     , x
               apply-args (0 |a)
                 fn (i x)
+                  hint-fn $ {}
+                    :args $ [] 'Number 'String
+                    :return 'Dynamic
                   let
                       new-id $ bisect x |x
                     println i x
@@ -320,7 +323,9 @@
           :code $ quote
             defn run-tests () (test-append) (test-assoc) (test-bisect) (test-frequent-append) (test-frequent-prepend) (test-get-key) (test-key-after) (test-key-before) (test-prepend) (test-shorten) (test-nth-ops)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn
+            {} (:return 'Unit)
+              :args $ []
         'test-append $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn test-append ()
@@ -336,7 +341,9 @@
                   , 2
                 {} (|a 1) (|g 2)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn
+            {} (:return 'Unit)
+              :args $ []
         'test-assoc $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn test-assoc ()
@@ -347,7 +354,9 @@
                 assoc-after (&{} |a 1 |b 1) |a 2
                 &{} |a 1 |b 1 |aT 2
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn
+            {} (:return 'Unit)
+              :args $ []
         'test-bisect $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn test-bisect ()
@@ -362,13 +371,18 @@
               is $ = (bisect |yyyz |z) |yz
               is $ = (bisect |uvx |uw) |uvy
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn
+            {} (:return 'Unit)
+              :args $ []
         'test-frequent-append $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn test-frequent-append () $ is
               =
                 apply-args (0 mid-id)
                   fn (i x)
+                    hint-fn $ {}
+                      :args $ [] 'Number 'String
+                      :return 'String
                     let
                         new-id $ bisect x max-id
                       if (<= i 40)
@@ -376,38 +390,46 @@
                         , x
                 , |zzx
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn
+            {} (:return 'Unit)
+              :args $ []
         'test-frequent-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn test-frequent-prepend () $ is
               =
-                loop
-                    i 0
-                    x max-id
-                  let
-                      new-id $ bisect min-id x
-                    if (<= i 40)
-                      recur (inc i) new-id
-                      , x
+                apply-args (0 max-id)
+                  fn (i x)
+                    hint-fn $ {}
+                      :args $ [] 'Number 'String
+                      :return 'String
+                    let
+                        new-id $ bisect min-id x
+                      if (<= i 40)
+                        recur (inc i) new-id
+                        , x
                 , |++++++-
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn
+            {} (:return 'Unit)
+              :args $ []
         'test-get-key $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn test-get-key ()
               do "|get min key" $ is
-                = |a $ get-min-key
-                  {} (|a 1) (|b 2)
+                = |a $ .unwrap
+                  get-min-key $ {} (|a 1) (|b 2)
               do "|get max key" $ is
                 = |b $ .unwrap
                   get-max-key $ {} (|a 1) (|b 2)
               do "|get nil"
-                is $ = nil
+                is $ .none?
                   get-min-key $ {}
                 is $ .none?
                   get-max-key $ {}
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn
+            {} (:return 'Unit)
+              :args $ []
         'test-key-after $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn test-key-after ()
@@ -422,7 +444,9 @@
                   , |b
                 , |h
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn
+            {} (:return 'Unit)
+              :args $ []
         'test-key-before $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn test-key-before ()
@@ -437,7 +461,9 @@
                   , |b
                 , |aT
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn
+            {} (:return 'Unit)
+              :args $ []
         'test-nth-ops $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn test-nth-ops () $ let
@@ -471,7 +497,9 @@
               do "|find key index missing" $ is
                 .none? $ key-index-of v |d
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn
+            {} (:return 'Unit)
+              :args $ []
         'test-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn test-prepend ()
@@ -487,14 +515,18 @@
                   , 2
                 {} (|a 1) (|G 2)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn
+            {} (:return 'Unit)
+              :args $ []
         'test-shorten $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn test-shorten ()
               is $ = |c (bisect |a34fd |f3554)
               is $ = |a35 (bisect |a34fd |a3554)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn
+            {} (:return 'Unit)
+              :args $ []
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote
           ns bisection-key.test $ :require
@@ -511,8 +543,10 @@
                 assoc dict new-key v
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'Map)
-              :args $ [] 'Map 'String 'Dynamic
+            {}
+              :args $ [] (:: 'Map 'String 'T) 'String 'T
+              :generics $ [] 'T
+              :return $ :: 'Map 'String 'T
         'assoc-after-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn assoc-after-nth (x n v)
@@ -522,8 +556,10 @@
                 assoc-after x k v
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'Map)
-              :args $ [] 'Map 'Number 'Dynamic
+            {}
+              :args $ [] (:: 'Map 'String 'T) 'Number 'T
+              :generics $ [] 'T
+              :return $ :: 'Map 'String 'T
         'assoc-append $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn assoc-append (dict v)
@@ -533,8 +569,10 @@
                 assoc dict k v
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'Map)
-              :args $ [] 'Map 'Dynamic
+            {}
+              :args $ [] (:: 'Map 'String 'T) 'T
+              :generics $ [] 'T
+              :return $ :: 'Map 'String 'T
         'assoc-before $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn assoc-before (dict base-key v)
@@ -543,8 +581,10 @@
                 assoc dict new-key v
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'Map)
-              :args $ [] 'Map 'String 'Dynamic
+            {}
+              :args $ [] (:: 'Map 'String 'T) 'String 'T
+              :generics $ [] 'T
+              :return $ :: 'Map 'String 'T
         'assoc-before-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn assoc-before-nth (x n v)
@@ -554,8 +594,10 @@
                 assoc-before x k v
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'Map)
-              :args $ [] 'Map 'Number 'Dynamic
+            {}
+              :args $ [] (:: 'Map 'String 'T) 'Number 'T
+              :generics $ [] 'T
+              :return $ :: 'Map 'String 'T
         'assoc-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn assoc-nth (x n v)
@@ -565,8 +607,10 @@
                 assoc x k v
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'Map)
-              :args $ [] 'Map 'Number 'Dynamic
+            {}
+              :args $ [] (:: 'Map 'String 'T) 'Number 'T
+              :generics $ [] 'T
+              :return $ :: 'Map 'String 'T
         'assoc-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn assoc-prepend (dict v)
@@ -576,28 +620,51 @@
                 assoc dict k v
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'Map)
-              :args $ [] 'Map 'Dynamic
+            {}
+              :args $ [] (:: 'Map 'String 'T) 'T
+              :generics $ [] 'T
+              :return $ :: 'Map 'String 'T
         'get-max-key $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn get-max-key (x)
-              last $ sort
-                &set:to-list $ keys x
-                , &compare
+              let
+                  key-list $ -> x (.keys) (.to-list)
+                assert-type key-list $ :: 'List 'String
+                let
+                    sorted-keys $ sort key-list
+                  assert-type sorted-keys $ :: 'List 'String
+                  if (empty? sorted-keys) (%none)
+                    let
+                        result $ &list:nth sorted-keys
+                          dec $ count sorted-keys
+                      assert-type result 'String
+                      %some result
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'Dynamic)
-              :args $ [] 'Map
+            {}
+              :args $ [] (:: 'Map 'String 'T)
+              :generics $ [] 'T
+              :return $ :: 'Option 'String
         'get-min-key $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn get-min-key (x)
-              &list:first $ sort
-                &set:to-list $ keys x
-                , &compare
+              let
+                  key-list $ -> x (.keys) (.to-list)
+                assert-type key-list $ :: 'List 'String
+                let
+                    sorted-keys $ sort key-list
+                  assert-type sorted-keys $ :: 'List 'String
+                  if (empty? sorted-keys) (%none)
+                    let
+                        result $ &list:nth sorted-keys 0
+                      assert-type result 'String
+                      %some result
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'Dynamic)
-              :args $ [] 'Map
+            {}
+              :args $ [] (:: 'Map 'String 'T)
+              :generics $ [] 'T
+              :return $ :: 'Option 'String
         'has-nth? $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn has-nth? (x n)
@@ -605,7 +672,8 @@
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'Bool)
-              :args $ [] 'Map 'Number
+              :args $ [] (:: 'Map 'String 'T) 'Number
+              :generics $ [] 'T
         'key-after $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn key-after (dict base-key)
@@ -624,7 +692,8 @@
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'String)
-              :args $ [] 'Map 'String
+              :args $ [] (:: 'Map 'String 'T) 'String
+              :generics $ [] 'T
         'key-append $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn key-append (dict)
@@ -635,7 +704,8 @@
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'String)
-              :args $ [] 'Map
+              :args $ [] (:: 'Map 'String 'T)
+              :generics $ [] 'T
         'key-before $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn key-before (dict base-key)
@@ -654,7 +724,8 @@
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'String)
-              :args $ [] 'Map 'String
+              :args $ [] (:: 'Map 'String 'T) 'String
+              :generics $ [] 'T
         'key-index-of $ %{} 'CodeEntry (:doc "|find index of `k`, returns `nil` if not found")
           :code $ quote
             defn key-index-of (x k)
@@ -665,39 +736,56 @@
                 index-of ks k
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'Dynamic)
-              :args $ [] 'Map 'String
+            {}
+              :args $ [] (:: 'Map 'String 'T) 'String
+              :generics $ [] 'T
+              :return $ :: 'Option 'Number
         'key-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn key-nth (x n)
-              nth
-                sort
-                  &set:to-list $ keys x
-                  , &compare
-                , n
+              let
+                  key-list $ -> x (.keys) (.to-list)
+                assert-type key-list $ :: 'List 'String
+                let
+                    sorted-keys $ sort key-list
+                  assert-type sorted-keys $ :: 'List 'String
+                  if
+                    or (< n 0)
+                      >= n $ count sorted-keys
+                    %none
+                    let
+                        result $ &list:nth sorted-keys n
+                      assert-type result 'String
+                      %some result
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'Dynamic)
-              :args $ [] 'Map 'Number
+            {}
+              :args $ [] (:: 'Map 'String 'T) 'Number
+              :generics $ [] 'T
+              :return $ :: 'Option 'String
         'key-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn key-prepend (dict)
               assert (map? dict) "|dict should be a map"
-              if (empty? dict) mid-id $ bisect min-id (get-min-key dict)
+              if (empty? dict) mid-id $ bisect min-id
+                .unwrap $ get-min-key dict
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'String)
-              :args $ [] 'Map
+              :args $ [] (:: 'Map 'String 'T)
+              :generics $ [] 'T
         'val-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn val-nth (x n)
-              option:let
-                  k $ key-nth x n
-                get x k
+              let
+                  key-option $ key-nth x n
+                if (key-option.none?) (%none) (x.get key-option.unwrap)
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'Dynamic)
-              :args $ [] 'Map 'Number
+            {}
+              :args $ [] (:: 'Map 'String 'T) 'Number
+              :generics $ [] 'T
+              :return $ :: 'Option 'T
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote
           ns bisection-key.util $ :require
