@@ -18,7 +18,7 @@ caps --strict --ci
 yarn install --immutable
 caps verify --toolchain
 calcit calcit.cirru analyze dynamic-methods --max 0
-calcit calcit.cirru --entry test analyze dynamic-methods --max 18
+calcit calcit.cirru --entry test analyze dynamic-methods --max 0
 yarn test:calcit
 yarn test:js
 yarn test:wasm:compile

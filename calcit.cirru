@@ -416,15 +416,15 @@
           :code $ quote
             defn test-get-key ()
               do "|get min key" $ is
-                = |a $ .unwrap
+                = |a $ option:unwrap
                   get-min-key $ {} (|a 1) (|b 2)
               do "|get max key" $ is
-                = |b $ .unwrap
+                = |b $ option:unwrap
                   get-max-key $ {} (|a 1) (|b 2)
               do "|get nil"
-                is $ .none?
+                is $ option:none?
                   get-min-key $ {}
-                is $ .none?
+                is $ option:none?
                   get-max-key $ {}
           :examples $ []
           :schema $ :: 'Fn
@@ -471,20 +471,20 @@
               do "|get key at nth"
                 is $ not (has-nth? v -1)
                 is $ = |a
-                  .unwrap $ key-nth v 0
+                  option:unwrap $ key-nth v 0
                 is $ = |b
-                  .unwrap $ key-nth v 1
+                  option:unwrap $ key-nth v 1
                 is $ = |c
-                  .unwrap $ key-nth v 2
-                is $ .none? (key-nth v 3)
+                  option:unwrap $ key-nth v 2
+                is $ option:none? (key-nth v 3)
               do "|get val at nth"
                 is $ = 1
-                  .unwrap $ val-nth v 0
+                  option:unwrap $ val-nth v 0
                 is $ = 2
-                  .unwrap $ val-nth v 1
+                  option:unwrap $ val-nth v 1
                 is $ = 3
-                  .unwrap $ val-nth v 2
-                is $ .none? (val-nth v 3)
+                  option:unwrap $ val-nth v 2
+                is $ option:none? (val-nth v 3)
               do "|set value at nth" $ is
                 = (assoc v |a 4) (assoc-nth v 0 4)
               do "|set value before nth" $ is
@@ -492,11 +492,11 @@
               do "|set value after nth" $ is
                 = (assoc v |bT 4) (assoc-after-nth v 1 4)
               do "|find key index a" $ is
-                = 0 $ .unwrap (key-index-of v |a)
+                = 0 $ option:unwrap (key-index-of v |a)
               do "|find key index c" $ is
-                = 2 $ .unwrap (key-index-of v |c)
+                = 2 $ option:unwrap (key-index-of v |c)
               do "|find key index missing" $ is
-                .none? $ key-index-of v |d
+                option:none? $ key-index-of v |d
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'Unit)
@@ -553,7 +553,7 @@
             defn assoc-after-nth (x n v)
               when-not (has-nth? x n) (raise "|Succeeded map size")
               let
-                  k $ .unwrap (key-nth x n)
+                  k $ option:unwrap (key-nth x n)
                 assoc-after x k v
           :examples $ []
           :schema $ :: 'Fn
@@ -591,7 +591,7 @@
             defn assoc-before-nth (x n v)
               when-not (has-nth? x n) (raise "|Succeeded map size")
               let
-                  k $ .unwrap (key-nth x n)
+                  k $ option:unwrap (key-nth x n)
                 assoc-before x k v
           :examples $ []
           :schema $ :: 'Fn
@@ -604,7 +604,7 @@
             defn assoc-nth (x n v)
               when-not (has-nth? x n) (raise "|Succeeded map size")
               let
-                  k $ .unwrap (key-nth x n)
+                  k $ option:unwrap (key-nth x n)
                 assoc x k v
           :examples $ []
           :schema $ :: 'Fn
@@ -629,7 +629,7 @@
           :code $ quote
             defn get-max-key (x)
               let
-                  key-list $ -> x (.keys) (.to-list)
+                  key-list $ &set:to-list (keys x)
                 assert-type key-list $ :: 'List 'String
                 let
                     sorted-keys $ sort key-list
@@ -650,7 +650,7 @@
           :code $ quote
             defn get-min-key (x)
               let
-                  key-list $ -> x (.keys) (.to-list)
+                  key-list $ &set:to-list (keys x)
                 assert-type key-list $ :: 'List 'String
                 let
                     sorted-keys $ sort key-list
@@ -684,9 +684,10 @@
               let
                   keys-set $ keys dict
                   existing-keys $ sort (&set:to-list keys-set) &compare
+                assert-type existing-keys $ :: 'List 'String
                 assert (&set:includes? keys-set base-key) "|base-key should be existed"
                 let
-                    position $ .unwrap (index-of existing-keys base-key)
+                    position $ option:unwrap (index-of existing-keys base-key)
                   bisect base-key $ if
                     = position $ dec (count existing-keys)
                     , max-id
@@ -701,7 +702,7 @@
             defn key-append (dict)
               assert (map? dict) "|dict should be a map"
               if (empty? dict) mid-id $ bisect
-                .unwrap $ get-max-key dict
+                option:unwrap $ get-max-key dict
                 , max-id
           :examples $ []
           :schema $ :: 'Fn
@@ -716,12 +717,12 @@
               let
                   keys-set $ keys dict
                   existing-keys $ sort (&set:to-list keys-set) &compare
+                assert-type existing-keys $ :: 'List 'String
                 assert (&set:includes? keys-set base-key) "|base-key should be existed"
                 let
-                    position $ .unwrap (index-of existing-keys base-key)
+                    position $ option:unwrap (index-of existing-keys base-key)
                   bisect
-                    if (= 0 position) min-id $ .unwrap
-                      get existing-keys $ dec position
+                    if (= 0 position) min-id $ &list:nth existing-keys (dec position)
                     , base-key
           :examples $ []
           :schema $ :: 'Fn
@@ -746,7 +747,7 @@
           :code $ quote
             defn key-nth (x n)
               let
-                  key-list $ -> x (.keys) (.to-list)
+                  key-list $ &set:to-list (keys x)
                 assert-type key-list $ :: 'List 'String
                 let
                     sorted-keys $ sort key-list
@@ -770,7 +771,7 @@
             defn key-prepend (dict)
               assert (map? dict) "|dict should be a map"
               if (empty? dict) mid-id $ bisect min-id
-                .unwrap $ get-min-key dict
+                option:unwrap $ get-min-key dict
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'String)
@@ -779,9 +780,9 @@
         'val-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn val-nth (x n)
-              let
-                  key-option $ key-nth x n
-                if (key-option.none?) (%none) (x.get key-option.unwrap)
+              match (key-nth x n)
+                (:some key) (get x key)
+                (:none) (%none)
           :examples $ []
           :schema $ :: 'Fn
             {}
