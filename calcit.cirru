@@ -210,7 +210,8 @@
           :code $ quote
             defn str-nth (s idx)
               if
-                &< idx $ &str:count s
+                and (&>= idx 0)
+                  &< idx $ &str:count s
                 %some $ &str:nth s idx
                 %none
           :examples $ []
@@ -500,6 +501,8 @@
                 is $ = 3
                   option:unwrap $ val-nth v 2
                 is $ option:none? (val-nth v 3)
+              do "|treat negative string indexes as out of bounds" $ is
+                option:none? $ str-nth |abc -1
               do "|set value at nth" $ is
                 = (assoc v |a 4) (assoc-nth v 0 4)
               do "|set value before nth" $ is
@@ -546,7 +549,7 @@
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote
           ns bisection-key.test $ :require
-            bisection-key.core :refer $ max-id min-id mid-id bisect
+            bisection-key.core :refer $ max-id min-id mid-id bisect str-nth
             bisection-key.util :refer $ key-before key-after assoc-before assoc-after key-prepend key-append assoc-prepend assoc-append get-min-key get-max-key key-nth val-nth assoc-nth assoc-before-nth assoc-after-nth key-index-of has-nth?
             calcit.test :refer $ is
     'bisection-key.util $ %{} 'FileEntry
@@ -1179,6 +1182,15 @@
           :schema $ :: 'Fn
             {} (:return 'Number)
               :args $ []
+        'probe-nth-negative $ %{} 'CodeEntry (:doc "|Confirms str-nth normalizes a negative index to Option none on WASM.")
+          :code $ quote
+            defn probe-nth-negative () $ if
+              option:none? $ str-nth |abc -1
+              , 1 0
+          :examples $ []
+          :schema $ :: 'Fn
+            {} (:return 'Number)
+              :args $ []
         'probe-str-3arg $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-str-3arg () $ str |a |b |c
@@ -1249,4 +1261,4 @@
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote
           ns bisection-key.wasm-probe $ :require
-            bisection-key.core :refer $ bisect bisect-vec min-id max-id mid-id c0 c1 c32 c64 trim-right lookup-i peek-tiny? dictionary
+            bisection-key.core :refer $ bisect bisect-vec min-id max-id mid-id c0 c1 c32 c64 trim-right lookup-i peek-tiny? dictionary str-nth

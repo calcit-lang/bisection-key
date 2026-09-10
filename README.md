@@ -63,7 +63,9 @@ yarn test:wasm
 CI enforces zero unresolved static-type debt. Run the same gate locally before
 changing public APIs:
 
-    calcit calcit.cirru analyze quality --format json
+```bash
+calcit calcit.cirru analyze quality --format json
+```
 
 The zero-debt policy and supporting reports are documented in
 [docs/quality-gate.md](docs/quality-gate.md).
