@@ -60,13 +60,13 @@ yarn test:wasm
 
 ### Type-quality gate
 
-CI records the existing static-type debt in a per-definition baseline and
-rejects regressions. Run the same gate locally before changing public APIs:
+CI enforces zero unresolved static-type debt. Run the same gate locally before
+changing public APIs:
 
-    calcit calcit.cirru analyze quality --baseline config/calcit-quality.json --format json
+    calcit calcit.cirru analyze quality --format json
 
-The baseline policy and commands for fixing or deliberately reviewing debt are
-in [docs/quality-gate.md](docs/quality-gate.md).
+The zero-debt policy and supporting reports are documented in
+[docs/quality-gate.md](docs/quality-gate.md).
 
 ### Special cases
 

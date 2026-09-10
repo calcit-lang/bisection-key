@@ -48,8 +48,8 @@ jobs:
         calcit calcit.cirru docs check-md README.md --failures-only
         calcit calcit.cirru docs check-md docs/quality-gate.md --failures-only
 
-    - name: Enforce static type-quality baseline
-      run: calcit calcit.cirru analyze quality --baseline config/calcit-quality.json --format json
+    - name: Enforce zero static type debt
+      run: calcit calcit.cirru analyze quality --format json
 
     - name: "test calcit"
       run: calcit calcit.cirru --entry test

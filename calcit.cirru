@@ -34,7 +34,7 @@
                   raise $ str "|unexpected identical ids: " xs0 "| " ys0
                 (&>= idx (&str:count xs0))
                   let
-                      c-y $ str-nth ys0 idx
+                      c-y $ str-nth! ys0 idx
                     if (&= c0 c-y)
                       if
                         &= (inc idx) (&str:count ys0)
@@ -45,30 +45,30 @@
                           peek-tiny? $ str-nth ys0 (inc idx)
                           str result c0 c32
                           str result c-y
-                        str result $ str-nth dictionary
+                        str result $ str-nth! dictionary
                           bit-shr (lookup-i c-y) 1
                 (&>= idx (&str:count ys0))
                   let
-                      c-x $ str-nth xs0 idx
+                      c-x $ str-nth! xs0 idx
                     if (&= c-x c64)
                       if
                         &= (inc idx) (&str:count xs0)
-                        str result c64 $ str-nth dictionary 16
+                        str result c64 $ str-nth! dictionary 16
                         recur (str result c64) xs0 ys0 $ inc idx
                       case-default c-x
-                        str result $ str-nth dictionary
+                        str result $ str-nth! dictionary
                           bit-shr
                             &+
                               &* 3 $ lookup-i c-x
                               , 64
                             , 2
                         c63 $ str result c64
-                        (str-nth dictionary 62) (str result c63)
-                        (str-nth dictionary 61)
-                          str result $ str-nth dictionary 62
+                        (str-nth! dictionary 62) (str result c63)
+                        (str-nth! dictionary 61)
+                          str result $ str-nth! dictionary 62
                 true $ let
-                    c-x $ str-nth xs0 idx
-                    c-y $ str-nth ys0 idx
+                    c-x $ str-nth! xs0 idx
+                    c-y $ str-nth! ys0 idx
                     x $ lookup-i c-x
                     y $ lookup-i c-y
                     delta $ &- y x
@@ -83,44 +83,44 @@
                           &= next $ &str:count xs0
                           str result c-x c32
                           if
-                            &= (str-nth xs0 next) c64
+                            &= (str-nth! xs0 next) c64
                             recur (str result c-x) xs0 | next
-                            str result c-x $ str-nth dictionary
+                            str result c-x $ str-nth! dictionary
                               bit-shr
                                 &+
-                                  lookup-i $ str-nth xs0 next
+                                  lookup-i $ str-nth! xs0 next
                                   , 65
                                 , 1
                         str result c-y
                     true $ str result
-                      str-nth dictionary $ bit-shr (&+ x y) 1
+                      str-nth! dictionary $ bit-shr (&+ x y) 1
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'String)
               :args $ [] 'String 'String 'String 'Number
         'c0 $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            def c0 $ str-nth dictionary 0
+            def c0 $ str-nth! dictionary 0
           :examples $ []
           :schema $ :: 'String
         'c1 $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            def c1 $ str-nth dictionary 1
+            def c1 $ str-nth! dictionary 1
           :examples $ []
           :schema $ :: 'String
         'c32 $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            def c32 $ str-nth dictionary 32
+            def c32 $ str-nth! dictionary 32
           :examples $ []
           :schema $ :: 'String
         'c63 $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            def c63 $ str-nth dictionary 63
+            def c63 $ str-nth! dictionary 63
           :examples $ []
           :schema $ :: 'String
         'c64 $ %{} 'CodeEntry (:doc |)
           :code $ quote
-            def c64 $ str-nth dictionary 64
+            def c64 $ str-nth! dictionary 64
           :examples $ []
           :schema $ :: 'String
         'char->int-map $ %{} 'CodeEntry (:doc |)
@@ -129,7 +129,7 @@
               map-indexed $ fn (idx char) ([] char idx)
               pairs-map
           :examples $ []
-          :schema $ :: 'Map
+          :schema $ :: 'Map 'String 'Number
         'dictionary $ %{} 'CodeEntry (:doc |)
           :code $ quote (def dictionary |+-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz)
           :examples $ []
@@ -140,7 +140,7 @@
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'Number)
-              :args $ [] 'Dynamic
+              :args $ [] 'String
         'max-id $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def max-id $ do (; "tricky value for largest") |
@@ -157,11 +157,13 @@
         'peek-tiny? $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn peek-tiny? (x)
-              or (nil? x) (&= c0 x)
+              match x
+                (:none) true
+                (:some value) (&= c0 value)
           :examples $ []
           :schema $ :: 'Fn
             {} (:return 'Bool)
-              :args $ [] 'Dynamic
+              :args $ [] (:: 'Option 'String)
         'probe-c32 $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn probe-c32 () c32
@@ -209,11 +211,20 @@
             defn str-nth (s idx)
               if
                 &< idx $ &str:count s
-                &str:nth s idx
-                , nil
+                %some $ &str:nth s idx
+                %none
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'Dynamic)
+            {}
+              :args $ [] 'String 'Number
+              :return $ :: 'Option 'String
+        'str-nth! $ %{} 'CodeEntry (:doc "|Returns the character at idx, raising when the index is outside the string.")
+          :code $ quote
+            defn str-nth! (s idx)
+              option:unwrap $ str-nth s idx
+          :examples $ []
+          :schema $ :: 'Fn
+            {} (:return 'String)
               :args $ [] 'String 'Number
         'trim-right $ %{} 'CodeEntry (:doc |)
           :code $ quote
@@ -253,7 +264,9 @@
                         , x new-id
                       recur (inc i) new-id
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn
+            {} (:return 'Unit)
+              :args $ []
         'list-appending-results $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn list-appending-results () $ loop
@@ -266,7 +279,9 @@
                   recur (inc i) new-id
                   , x
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn
+            {} (:return 'String)
+              :args $ []
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn main! () (run-bisection!) (println "|App started.")
@@ -300,16 +315,16 @@
                 fn (i x)
                   hint-fn $ {}
                     :args $ [] 'Number 'String
-                    :return 'Dynamic
+                    :return 'Unit
                   let
                       new-id $ bisect x |x
                     println i x
                     if (<= i 100)
                       recur (inc i) new-id
-                      , nil
+                      , &unit
           :examples $ []
           :schema $ :: 'Fn
-            {} (:return 'Dynamic)
+            {} (:return 'Unit)
               :args $ []
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote

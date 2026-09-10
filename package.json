@@ -2,7 +2,7 @@
   "version": "0.0.24",
   "packageManager": "yarn@4.12.0",
   "dependencies": {
-    "@calcit/procs": "0.14.5"
+    "@calcit/procs": "0.14.7"
   },
   "scripts": {
     "test:calcit": "calcit calcit.cirru --entry test",
