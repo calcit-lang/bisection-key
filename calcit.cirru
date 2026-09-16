@@ -3,17 +3,11 @@
   :about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --contract` before mutations; use `--full` for first orientation or changed contract digest. Manual edits must follow format and schema conventions, then run `calcit edit format`."
   :package |bisection-key
   :entries $ {}
-    :default $ {} (:description |)
-      :init-fn 'bisection-key.main/main!
-      :mode :native
-      :reload-fn 'bisection-key.main/reload!
+    :default $ {} (:description |) (:init-fn 'bisection-key.main/main!) (:mode :native) (:reload-fn 'bisection-key.main/reload!)
       :feature-policy $ {}
       :modules $ []
       :type-slots $ {}
-    :test $ {} (:description |)
-      :init-fn 'bisection-key.test/run-tests
-      :mode :native
-      :reload-fn 'bisection-key.test/run-tests
+    :test $ {} (:description |) (:init-fn 'bisection-key.test/run-tests) (:mode :native) (:reload-fn 'bisection-key.test/run-tests)
       :feature-policy $ {}
       :modules $ []
       :type-slots $ {}
@@ -137,9 +131,7 @@
             :args $ [] 'String
         'max-id $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def max-id
-            do
-              ; "tricky value for largest"
-              , |
+            do (; "tricky value for largest") |
           :examples $ []
           :schema $ :: 'String
         'mid-id $ %{} 'CodeEntry (:doc |)
@@ -269,9 +261,7 @@
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
         'run-bisection! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn run-bisection! ()
-            ; compare-random-ids
-            ; list-appending-results
+          :code $ quote $ defn run-bisection! () (; compare-random-ids) (; list-appending-results)
             ; println $ bisect |yyyz |z
             ; println $ bisect |1 |2
             ; println $ bisect |uvx |uw
@@ -307,15 +297,7 @@
     'bisection-key.test $ %{} 'FileEntry
       :defs $ {}
         'run-tests $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn run-tests () (test-append) (test-assoc) (test-bisect)
-            test-frequent-append
-            test-frequent-prepend
-            test-get-key
-            test-key-after
-            test-key-before
-            test-prepend
-            test-shorten
-            test-nth-ops
+          :code $ quote $ defn run-tests () (test-append) (test-assoc) (test-bisect) (test-frequent-append) (test-frequent-prepend) (test-get-key) (test-key-after) (test-key-before) (test-prepend) (test-shorten) (test-nth-ops)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -507,8 +489,7 @@
             :return $ :: 'Map 'String 'T
         'assoc-after-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn assoc-after-nth (x n v)
-            when-not (has-nth? x n)
-              raise "|Succeeded map size"
+            when-not (has-nth? x n) (raise "|Succeeded map size")
             let
                 k $ option:unwrap $ key-nth x n
               assoc-after x k v
@@ -540,8 +521,7 @@
             :return $ :: 'Map 'String 'T
         'assoc-before-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn assoc-before-nth (x n v)
-            when-not (has-nth? x n)
-              raise "|Succeeded map size"
+            when-not (has-nth? x n) (raise "|Succeeded map size")
             let
                 k $ option:unwrap $ key-nth x n
               assoc-before x k v
@@ -552,8 +532,7 @@
             :return $ :: 'Map 'String 'T
         'assoc-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn assoc-nth (x n v)
-            when-not (has-nth? x n)
-              raise "|Succeeded map size"
+            when-not (has-nth? x n) (raise "|Succeeded map size")
             let
                 k $ option:unwrap $ key-nth x n
               assoc x k v
@@ -663,8 +642,7 @@
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ [] (:: 'Map 'String 'T) 'String
             :generics $ [] 'T
-        'key-index-of $ %{} 'CodeEntry
-          :doc "|find index of `k`, returns `nil` if not found"
+        'key-index-of $ %{} 'CodeEntry (:doc "|find index of `k`, returns `nil` if not found")
           :code $ quote $ defn key-index-of (x k)
             let
                 ks $ sort
@@ -722,9 +700,7 @@
       :defs $ {}
         'probe-all-count $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-all-count ()
-            &+
-              probe-bisect-basic
-              probe-bisect-strings
+            &+ (probe-bisect-basic) (probe-bisect-strings)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
