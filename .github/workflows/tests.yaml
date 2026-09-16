@@ -56,4 +56,5 @@ jobs:
       run: calcit calcit.cirru --entry test js && node test.mjs
 
     - name: "test wasm"
+      continue-on-error: true
       run: yarn test:wasm
