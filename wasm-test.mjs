@@ -39,6 +39,13 @@ const checks = [
   ['probe-dictionary', 1],
   ['probe-bisect-basic', 5],
   ['probe-bisect-strings', 2],
+  ['probe-bisect-inner', 1],
+  ['probe-bisect-vec-ok', 1],
+  ['probe-delta', 1],
+  ['probe-lookup-1', 5],
+  ['probe-lookup-fresh', 4],
+  ['probe-lookup-i', 5],
+  ['probe-lookup-i1', 4],
   ['probe-all-count', 7],
 ];
 

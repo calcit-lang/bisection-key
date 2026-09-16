@@ -850,6 +850,14 @@
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ []
+        'probe-bisect-vec-ok $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn probe-bisect-vec-ok ()
+            if
+              = (probe-bisect-vec) |a
+              , 1 0
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Number)
+            :args $ []
         'probe-c0 $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-c0 () c0
           :examples $ []
