@@ -23,8 +23,6 @@ jobs:
         yarn --version
 
     - uses: calcit-lang/setup-calcit@v1
-      with:
-        cr-wasm: true
 
     - name: Install deps
       run: caps --strict --ci && yarn install --immutable
