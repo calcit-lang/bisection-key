@@ -5,7 +5,7 @@
   :entries $ {}
     :default $ {} (:description |) (:init-fn 'bisection-key.main/main!) (:mode :native) (:reload-fn 'bisection-key.main/reload!)
       :feature-policy $ {}
-      :modules $ []
+      :modules $ [] |calcit.std/
       :type-slots $ {}
     :test $ {} (:description |) (:init-fn 'bisection-key.test/run-tests) (:mode :native) (:reload-fn 'bisection-key.test/run-tests)
       :feature-policy $ {}
@@ -149,7 +149,7 @@
               (:some value) (&= c0 value)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Bool)
-            :args $ [] $ :: 'Option 'String
+            :args $ [] $ :: 'calcit.core/Option 'String
         'probe-c32 $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-c32 () c32
           :examples $ []
@@ -172,7 +172,9 @@
             :args $ []
         'probe-simple-map $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-simple-map ()
-            &map:get ({} c0 10 c1 20) c1
+            &map:get
+              {} (c0 10) (c1 20)
+              , c1
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
@@ -191,7 +193,7 @@
           :examples $ []
           :schema $ :: 'Fn $ {}
             :args $ [] 'String 'Number
-            :return $ :: 'Option 'String
+            :return $ :: 'calcit.core/Option 'String
         'str-nth! $ %{} 'CodeEntry
           :doc "|Returns the character at idx, raising when the index is outside the string."
           :code $ quote $ defn str-nth! (s idx)
@@ -220,7 +222,9 @@
               fn (i x)
                 if (< i 1000)
                   if
-                    > (rand 1) 0.5
+                    >
+                      rand (%none) (%none)
+                      , 0.5
                     let
                         new-id $ bisect x max-id
                       println |right:
@@ -378,14 +382,15 @@
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
         'test-get-key $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn test-get-key ()
-            do "|get min key" $ is $ = |a
-              option:unwrap $ get-min-key $ {} (|a 1) (|b 2)
-            do "|get max key" $ is $ = |b
-              option:unwrap $ get-max-key $ {} (|a 1) (|b 2)
-            do "|get nil"
-              is $ option:none? $ get-min-key ({})
-              is $ option:none? $ get-max-key ({})
+          :code $ quote $ defn test-get-key () "|get min key"
+            is $ = |a $ option:unwrap
+              get-min-key $ {} (|a 1) (|b 2)
+            , "|get max key"
+              is $ = |b $ option:unwrap
+                get-max-key $ {} (|a 1) (|b 2)
+              , "|get nil"
+                is $ option:none? $ get-min-key ({})
+                is $ option:none? $ get-max-key ({})
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -423,26 +428,30 @@
           :code $ quote $ defn test-nth-ops ()
             let
                 v $ {} (|a 1) (|b 2) (|c 3)
-              do "|get key at nth"
+              , "|get key at nth"
                 is $ not $ has-nth? v -1
                 is $ = |a $ option:unwrap (key-nth v 0)
                 is $ = |b $ option:unwrap (key-nth v 1)
                 is $ = |c $ option:unwrap (key-nth v 2)
                 is $ option:none? $ key-nth v 3
-              do "|get val at nth"
-                is $ = 1 $ option:unwrap (val-nth v 0)
-                is $ = 2 $ option:unwrap (val-nth v 1)
-                is $ = 3 $ option:unwrap (val-nth v 2)
-                is $ option:none? $ val-nth v 3
-              do "|treat negative string indexes as out of bounds" $ is $ option:none? (str-nth |abc -1)
-              do "|set value at nth" $ is $ = (assoc v |a 4) (assoc-nth v 0 4)
-              do "|set value before nth" $ is $ = (assoc v |aT 4) (assoc-before-nth v 1 4)
-              do "|set value after nth" $ is $ = (assoc v |bT 4) (assoc-after-nth v 1 4)
-              do "|find key index a" $ is $ = 0
-                option:unwrap $ key-index-of v |a
-              do "|find key index c" $ is $ = 2
-                option:unwrap $ key-index-of v |c
-              do "|find key index missing" $ is $ option:none? (key-index-of v |d)
+                , "|get val at nth"
+                  is $ = 1 $ option:unwrap (val-nth v 0)
+                  is $ = 2 $ option:unwrap (val-nth v 1)
+                  is $ = 3 $ option:unwrap (val-nth v 2)
+                  is $ option:none? $ val-nth v 3
+                  , "|treat negative string indexes as out of bounds"
+                    is $ option:none? $ str-nth |abc -1
+                    , "|set value at nth"
+                      is $ = (assoc v |a 4) (assoc-nth v 0 4)
+                      , "|set value before nth"
+                        is $ = (assoc v |aT 4) (assoc-before-nth v 1 4)
+                        , "|set value after nth"
+                          is $ = (assoc v |bT 4) (assoc-after-nth v 1 4)
+                          , "|find key index a"
+                            is $ = 0 $ option:unwrap (key-index-of v |a)
+                            , "|find key index c"
+                              is $ = 2 $ option:unwrap (key-index-of v |c)
+                              , "|find key index missing" $ is $ option:none? (key-index-of v |d)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -569,7 +578,7 @@
           :schema $ :: 'Fn $ {}
             :args $ [] $ :: 'Map 'String 'T
             :generics $ [] 'T
-            :return $ :: 'Option 'String
+            :return $ :: 'calcit.core/Option 'String
         'get-min-key $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn get-min-key (x)
             let
@@ -587,7 +596,7 @@
           :schema $ :: 'Fn $ {}
             :args $ [] $ :: 'Map 'String 'T
             :generics $ [] 'T
-            :return $ :: 'Option 'String
+            :return $ :: 'calcit.core/Option 'String
         'has-nth? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn has-nth? (x n)
             and (>= n 0)
@@ -653,7 +662,7 @@
           :schema $ :: 'Fn $ {}
             :args $ [] (:: 'Map 'String 'T) 'String
             :generics $ [] 'T
-            :return $ :: 'Option 'Number
+            :return $ :: 'calcit.core/Option 'Number
         'key-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn key-nth (x n)
             let
@@ -674,7 +683,7 @@
           :schema $ :: 'Fn $ {}
             :args $ [] (:: 'Map 'String 'T) 'Number
             :generics $ [] 'T
-            :return $ :: 'Option 'String
+            :return $ :: 'calcit.core/Option 'String
         'key-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn key-prepend (dict)
             assert (map? dict) "|dict should be a map"
@@ -692,7 +701,7 @@
           :schema $ :: 'Fn $ {}
             :args $ [] (:: 'Map 'String 'T) 'Number
             :generics $ [] 'T
-            :return $ :: 'Option 'T
+            :return $ :: 'calcit.core/Option 'T
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns bisection-key.util
           :require $ [] bisection-key.core :refer $ [] mid-id max-id min-id bisect
@@ -786,15 +795,15 @@
         'probe-bisect-inner $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-bisect-inner ()
             let
-                c-x $ &str:nth |1 0
-                c-y $ &str:nth |2 0
+                c-x $ option:unwrap $ optionally (&str:nth |1 0)
+                c-y $ option:unwrap $ optionally (&str:nth |2 0)
                 x $ lookup-i c-x
                 y $ lookup-i c-y
                 delta $ &- y x
                 next $ inc 0
               if (&= delta 1)
                 if
-                  peek-tiny? $ &str:nth |2 next
+                  peek-tiny? $ optionally $ &str:nth |2 next
                   &+ 1 0
                   &+ 0 0
                 &+ 0 0
@@ -831,7 +840,8 @@
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-bisect-vec $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-bisect-vec () (&str:nth |abc 0)
+          :code $ quote $ defn probe-bisect-vec ()
+            option:unwrap $ optionally $ &str:nth |abc 0
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ []
@@ -839,6 +849,14 @@
           :code $ quote $ defn probe-bisect-vec-call () (bisect-vec | |1 |2 0)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'String)
+            :args $ []
+        'probe-bisect-vec-ok $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn probe-bisect-vec-ok ()
+            if
+              = (probe-bisect-vec) |a
+              , 1 0
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-c0 $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-c0 () c0
@@ -876,8 +894,8 @@
         'probe-delta $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-delta ()
             &-
-              lookup-i $ &str:nth |12 1
-              lookup-i $ &str:nth |12 0
+              lookup-i $ option:unwrap $ optionally (&str:nth |12 1)
+              lookup-i $ option:unwrap $ optionally (&str:nth |12 0)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
@@ -942,7 +960,7 @@
             :args $ []
         'probe-lookup-1 $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-lookup-1 ()
-            lookup-i $ &str:nth |12 1
+            lookup-i $ option:unwrap $ optionally (&str:nth |12 1)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
@@ -953,19 +971,19 @@
             :args $ []
         'probe-lookup-fresh $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-lookup-fresh ()
-            &str:find-index dictionary $ &str:nth |1 0
+            &str:find-index dictionary $ option:unwrap $ optionally (&str:nth |1 0)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-lookup-i $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-lookup-i ()
-            &str:find-index dictionary $ &str:nth |12 1
+            &str:find-index dictionary $ option:unwrap $ optionally (&str:nth |12 1)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-lookup-i1 $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-lookup-i1 ()
-            lookup-i $ &str:nth |1 0
+            lookup-i $ option:unwrap $ optionally (&str:nth |1 0)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
