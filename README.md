@@ -57,6 +57,8 @@ yarn test:wasm
 ```
 
 `test:wasm` runs runtime assertions for probe APIs and will fail when WASM runtime behavior diverges from expected API semantics.
+The probe functions use explicit `defwasm-export` declarations so the core WASM
+module exposes the same stable test boundary on current Calcit releases.
 
 ### Type-quality gate
 
