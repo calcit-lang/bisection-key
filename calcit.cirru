@@ -708,7 +708,7 @@
     'bisection-key.wasm-probe $ %{} 'FileEntry
       :defs $ {}
         'probe-all-count $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-all-count ()
+          :code $ quote $ defwasm-export probe-all-count ()
             &+ (probe-bisect-basic) (probe-bisect-strings)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
@@ -759,7 +759,7 @@
           :schema $ :: 'Fn $ {} (:return 'Bool)
             :args $ []
         'probe-bisect-basic $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-bisect-basic ()
+          :code $ quote $ defwasm-export probe-bisect-basic ()
             &+
               &+
                 &+
@@ -793,7 +793,7 @@
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ []
         'probe-bisect-inner $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-bisect-inner ()
+          :code $ quote $ defwasm-export probe-bisect-inner ()
             let
                 c-x $ option:unwrap $ optionally (&str:nth |1 0)
                 c-y $ option:unwrap $ optionally (&str:nth |2 0)
@@ -828,7 +828,7 @@
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ []
         'probe-bisect-strings $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-bisect-strings ()
+          :code $ quote $ defwasm-export probe-bisect-strings ()
             &+
               if
                 = (bisect |yyyz |z) |yz
@@ -851,7 +851,7 @@
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ []
         'probe-bisect-vec-ok $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-bisect-vec-ok ()
+          :code $ quote $ defwasm-export probe-bisect-vec-ok ()
             if
               = (probe-bisect-vec) |a
               , 1 0
@@ -892,7 +892,7 @@
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-delta $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-delta ()
+          :code $ quote $ defwasm-export probe-delta ()
             &-
               lookup-i $ option:unwrap $ optionally (&str:nth |12 1)
               lookup-i $ option:unwrap $ optionally (&str:nth |12 0)
@@ -900,7 +900,7 @@
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-dictionary $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-dictionary ()
+          :code $ quote $ defwasm-export probe-dictionary ()
             if
               &> (&str:count dictionary) 0
               , 1 0
@@ -942,13 +942,13 @@
           :schema $ :: 'Fn $ {} (:return 'Bool)
             :args $ []
         'probe-find-index-literal-1 $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-find-index-literal-1 ()
+          :code $ quote $ defwasm-export probe-find-index-literal-1 ()
             &str:find-index |+-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz |1
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-find-index-literal-plus $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-find-index-literal-plus ()
+          :code $ quote $ defwasm-export probe-find-index-literal-plus ()
             &str:find-index |+-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz |+
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
@@ -959,7 +959,7 @@
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-lookup-1 $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-lookup-1 ()
+          :code $ quote $ defwasm-export probe-lookup-1 ()
             lookup-i $ option:unwrap $ optionally (&str:nth |12 1)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
@@ -970,19 +970,19 @@
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-lookup-fresh $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-lookup-fresh ()
+          :code $ quote $ defwasm-export probe-lookup-fresh ()
             &str:find-index dictionary $ option:unwrap $ optionally (&str:nth |1 0)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-lookup-i $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-lookup-i ()
+          :code $ quote $ defwasm-export probe-lookup-i ()
             &str:find-index dictionary $ option:unwrap $ optionally (&str:nth |12 1)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-lookup-i1 $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-lookup-i1 ()
+          :code $ quote $ defwasm-export probe-lookup-i1 ()
             lookup-i $ option:unwrap $ optionally (&str:nth |1 0)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
@@ -1012,7 +1012,7 @@
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-nth-literal-0 $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-nth-literal-0 ()
+          :code $ quote $ defwasm-export probe-nth-literal-0 ()
             if
               &= (&str:nth |+-/ 0) |+
               , 1 0
@@ -1020,7 +1020,7 @@
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-nth-literal-1 $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-nth-literal-1 ()
+          :code $ quote $ defwasm-export probe-nth-literal-1 ()
             if
               &= (&str:nth |+-/ 1) |-
               , 1 0
@@ -1029,7 +1029,7 @@
             :args $ []
         'probe-nth-negative $ %{} 'CodeEntry
           :doc "|Confirms str-nth normalizes a negative index to Option none on WASM."
-          :code $ quote $ defn probe-nth-negative ()
+          :code $ quote $ defwasm-export probe-nth-negative ()
             if
               option:none? $ str-nth |abc -1
               , 1 0
