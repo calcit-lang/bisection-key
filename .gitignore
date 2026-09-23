@@ -10,7 +10,8 @@ example/
 .calcit-snippets/*
 
 
-.yarn/*.gz
+.yarn/
+.pnp.*
 .calcit/
 
 .DS_Store
