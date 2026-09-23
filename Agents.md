@@ -17,8 +17,8 @@ Validation:
 caps --strict --ci
 yarn install --immutable
 caps verify --toolchain
-calcit calcit.cirru analyze dynamic-methods --max 0
-calcit calcit.cirru --entry test analyze dynamic-methods --max 0
+calcit calcit.cirru analyze dynamic-methods --format json | jq -e '.data.summary.findings == 0'
+calcit calcit.cirru --entry test analyze dynamic-methods --format json | jq -e '.data.summary.findings == 0'
 yarn test:calcit
 yarn test:js
 yarn test:wasm:compile

@@ -8,8 +8,8 @@ Run the same checks locally before changing public APIs:
 
     calcit calcit.cirru analyze check-types --summary-only --format json
     calcit calcit.cirru analyze weak-types --only schema-dynamic,code-dynamic --intent unresolved --summary-only --format json
-    calcit calcit.cirru analyze dynamic-methods --max 0
-    calcit calcit.cirru --entry test analyze dynamic-methods --max 0
+    calcit calcit.cirru analyze dynamic-methods --format json | jq -e '.data.summary.findings == 0'
+    calcit calcit.cirru --entry test analyze dynamic-methods --format json | jq -e '.data.summary.findings == 0'
     calcit calcit.cirru analyze quality --format json
 
 The first two commands are reports for diagnosis. The last command is the
