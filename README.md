@@ -23,6 +23,11 @@ Charset, base65:
 
 ### Development
 
+The development toolchain is Calcit / `@calcit/procs` 0.22.1, Node 24 and
+Yarn 4.18.0 with the node-modules linker. `calcit.std` remains pinned to the
+published 0.2.35 release. The Yarn age-gate exception is limited to the exact
+`@calcit/procs@0.22.1` runtime version.
+
 Install [Calcit](https://calcit-lang.org/) so the `calcit` command is available on
 your `PATH`, then run the demo:
 
@@ -45,6 +50,10 @@ For tests:
 caps --strict --ci
 yarn install --immutable
 caps verify --toolchain
+calcit calcit.cirru --strict-types --check-only
+calcit calcit.cirru --entry test --strict-types --check-only
+calcit calcit.cirru analyze check-public --ns bisection-key.core --ns bisection-key.util --summary-only --format json
+calcit calcit.cirru test --require-match
 yarn test:calcit
 yarn test:js
 ```
@@ -59,6 +68,9 @@ yarn test:wasm
 `test:wasm` runs runtime assertions for probe APIs and will fail when WASM runtime behavior diverges from expected API semantics.
 The probe functions use explicit `defwasm-export` declarations so the core WASM
 module exposes the same stable test boundary on current Calcit releases.
+The 16 exported probes are the tested WASM boundary, not a claim that every
+utility supports WASM. Code generation currently reports unsupported, uncalled
+dependencies as trapping stubs; native and JavaScript run the complete test entry.
 
 ### Type-quality gate
 

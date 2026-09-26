@@ -17,6 +17,10 @@ Validation:
 caps --strict --ci
 yarn install --immutable
 caps verify --toolchain
+calcit calcit.cirru --strict-types --check-only
+calcit calcit.cirru --entry test --strict-types --check-only
+calcit calcit.cirru analyze check-public --ns bisection-key.core --ns bisection-key.util --summary-only --format json
+calcit calcit.cirru test --require-match
 calcit calcit.cirru analyze dynamic-methods --format json | jq -e '.data.summary.findings == 0'
 calcit calcit.cirru --entry test analyze dynamic-methods --format json | jq -e '.data.summary.findings == 0'
 yarn test:calcit

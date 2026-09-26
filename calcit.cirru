@@ -3,7 +3,7 @@
   :about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --contract` before mutations; use `--full` for first orientation or changed contract digest. Manual edits must follow format and schema conventions, then run `calcit edit format`."
   :package |bisection-key
   :entries $ {}
-    :default $ {} (:description |) (:init-fn 'bisection-key.main/main!) (:mode :native) (:reload-fn 'bisection-key.main/reload!)
+    :default $ {} (:description |) (:init-fn 'bisection-key.main/main!) (:mode :native) (:reload-fn 'bisection-key.main/reload!) (:target :native)
       :feature-policy $ {}
       :modules $ [] |calcit.std/
       :type-slots $ {}
@@ -184,16 +184,19 @@
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ []
         'str-nth $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn str-nth (s idx)
-            if
-              and (&>= idx 0)
-                &< idx $ &str:count s
-              %some $ &str:nth s idx
-              %none
+          :code $ quote $ defn str-nth (s idx) (nth s idx)
           :examples $ []
           :schema $ :: 'Fn $ {}
             :args $ [] 'String 'Number
             :return $ :: 'calcit.core/Option 'String
+          :tests $ [] $ %{} 'TestEntry (:name |boundaries)
+            :code $ quote $ do
+              assert= (%some |a) (str-nth |abc 0)
+              assert= (%some |c) (str-nth |abc 2)
+              assert= (%none) (str-nth |abc -1)
+              assert= (%none) (str-nth |abc 3)
+              assert= (%none) (str-nth | 0)
+            :tags $ #{} :unit
         'str-nth! $ %{} 'CodeEntry
           :doc "|Returns the character at idx, raising when the index is outside the string."
           :code $ quote $ defn str-nth! (s idx)
