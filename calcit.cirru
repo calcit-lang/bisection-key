@@ -184,7 +184,9 @@
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ []
         'str-nth $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn str-nth (s idx) (nth s idx)
+          :code $ quote $ defn str-nth (s idx)
+            option:map (nth s idx)
+              fn (ch) (assert-type ch 'String)
           :examples $ []
           :schema $ :: 'Fn $ {}
             :args $ [] 'String 'Number
