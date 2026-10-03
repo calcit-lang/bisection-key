@@ -228,7 +228,7 @@
                 if (< i 1000)
                   if
                     >
-                      rand (%none) (%none)
+                      rand (Option :none) (Option :none)
                       , 0.5
                     let
                         new-id $ bisect x max-id
@@ -574,11 +574,11 @@
               let
                   sorted-keys $ sort key-list
                 assert-type sorted-keys $ :: 'List 'String
-                if (empty? sorted-keys) (%none)
+                if (empty? sorted-keys) (Option :none)
                   let
                       result $ &list:nth sorted-keys $ dec (count sorted-keys)
                     assert-type result 'String
-                    %some result
+                    Option :some result
           :examples $ []
           :schema $ :: 'Fn $ {}
             :args $ [] $ :: 'Map 'String 'T
@@ -592,11 +592,11 @@
               let
                   sorted-keys $ sort key-list
                 assert-type sorted-keys $ :: 'List 'String
-                if (empty? sorted-keys) (%none)
+                if (empty? sorted-keys) (Option :none)
                   let
                       result $ &list:nth sorted-keys 0
                     assert-type result 'String
-                    %some result
+                    Option :some result
           :examples $ []
           :schema $ :: 'Fn $ {}
             :args $ [] $ :: 'Map 'String 'T
@@ -679,11 +679,11 @@
                 if
                   or (< n 0)
                     >= n $ count sorted-keys
-                  %none
+                  Option :none
                   let
                       result $ &list:nth sorted-keys n
                     assert-type result 'String
-                    %some result
+                    Option :some result
           :examples $ []
           :schema $ :: 'Fn $ {}
             :args $ [] (:: 'Map 'String 'T) 'Number
@@ -701,7 +701,7 @@
           :code $ quote $ defn val-nth (x n)
             match (key-nth x n)
               (:some key) (get x key)
-              (:none) (%none)
+              (:none) (Option :none)
           :examples $ []
           :schema $ :: 'Fn $ {}
             :args $ [] (:: 'Map 'String 'T) 'Number

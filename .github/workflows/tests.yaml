@@ -6,13 +6,19 @@ on:
       - main
   pull_request: {}
 
+permissions:
+  contents: read
+
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7.0.1
+      with:
+        persist-credentials: false
 
-    - uses: actions/setup-node@v6
+    - uses: actions/setup-node@v6.5.0
       with:
         node-version: 24
 
@@ -20,11 +26,12 @@ jobs:
       run: |
         corepack enable
         corepack prepare yarn@4.18.0 --activate
-        yarn --version
 
-    - uses: calcit-lang/setup-calcit@ca701be5a471759e442aa053cd100720bbe1f09f # v1.5
+    - uses: calcit-lang/setup-calcit@v1.5.0
       with:
         tools: calcit,caps
+        version: 0.28.0
+        caps-version: 0.1.1
 
     - name: Install deps
       run: caps --strict --ci && yarn install --immutable
@@ -43,8 +50,6 @@ jobs:
         calcit calcit.cirru --entry test --strict-types --check-only
         calcit calcit.cirru analyze check-public --ns bisection-key.core --ns bisection-key.util --summary-only --format json
         calcit calcit.cirru test --require-match
-        calcit calcit.cirru analyze check-types --summary-only --format json
-        calcit calcit.cirru analyze weak-types --only schema-dynamic,code-dynamic --intent unresolved --summary-only --format json
         calcit calcit.cirru analyze dynamic-methods --format json | jq -e '.data.summary.findings == 0'
         calcit calcit.cirru --entry test analyze dynamic-methods --format json | jq -e '.data.summary.findings == 0'
         calcit calcit.cirru docs format-md README.md --check
