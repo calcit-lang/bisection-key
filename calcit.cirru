@@ -20,7 +20,11 @@
             assert "|[bisection] keys are identical!" $ not= x y
             assert "|[bisection] x > y" $ or (&= y |)
               < (&compare x y) 0
-            bisect-vec | x y 0
+            bisect-vec |
+              if
+                and (= x min-id) (not= y |)
+                , | x
+              , y 0
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ [] 'String 'String
@@ -44,7 +48,9 @@
                         peek-tiny? $ str-nth ys0 $ inc idx
                         str result c0 c32
                         str result c-y
-                      str result $ str-nth! dictionary $ bit-shr (lookup-i c-y) 1
+                      str result $ str-nth! dictionary $ bit-shr
+                        &* 3 $ lookup-i c-y
+                        , 2
               (&>= idx (&str:count ys0))
                 let
                     c-x $ str-nth! xs0 idx
@@ -305,8 +311,26 @@
             calcit.std.rand :refer $ rand
     'bisection-key.test $ %{} 'FileEntry
       :defs $ {}
+        'filter-not-zero-end $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn filter-not-zero-end (xs)
+            filter xs $ fn (k)
+              not=
+                &str:slice k
+                  dec $ &str:count k
+                  &str:count k
+                , |+
+          :examples $ []
+          :schema $ :: 'Fn $ {}
+            :args $ [] $ :: 'List 'String
+            :return $ :: 'List 'String
+        'nth-or-empty $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn nth-or-empty (xs i)
+            option:unwrap-or (nth xs i) |
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'String)
+            :args $ [] (:: 'List 'String) 'Number
         'run-tests $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn run-tests () (test-append) (test-assoc) (test-bisect) (test-frequent-append) (test-frequent-prepend) (test-get-key) (test-key-after) (test-key-before) (test-prepend) (test-shorten) (test-nth-ops)
+          :code $ quote $ defn run-tests () (test-append) (test-assoc) (test-bisect) (test-bisect-exhaustive) (test-bisect-random) (test-growth-bounds) (test-frequent-append) (test-frequent-prepend) (test-get-key) (test-key-after) (test-key-before) (test-prepend) (test-shorten) (test-nth-ops)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -330,7 +354,7 @@
           :code $ quote $ defn test-assoc ()
             is $ =
               assoc-before (&{} |a 1 |b 1) |a 2
-              &{} |a 1 |b 1 |G 2
+              &{} |a 1 |b 1 |Q 2
             is $ =
               assoc-after (&{} |a 1 |b 1) |a 2
               &{} |a 1 |b 1 |aT 2
@@ -349,6 +373,56 @@
             is $ = (bisect |11 |15) |13
             is $ = (bisect |yyyz |z) |yz
             is $ = (bisect |uvx |uw) |uvy
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ []
+        'test-bisect-exhaustive $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn test-bisect-exhaustive ()
+            let
+                alphabet $ [] |+ |- |/ |T |y |z
+                ones $ filter alphabet $ fn (c) (not= c |+)
+                twos $ mapcat alphabet $ fn (a)
+                  map alphabet $ fn (b) (str a b)
+                threes $ mapcat twos $ fn (a)
+                  map alphabet $ fn (b) (str a b)
+                all-keys $ concat (filter-not-zero-end ones) (filter-not-zero-end twos) (filter-not-zero-end threes)
+              is $ every? all-keys $ fn (x)
+                every?
+                  concat all-keys $ [] |
+                  fn (y)
+                    if
+                      and (not= x y)
+                        or (= y |)
+                          &< (&compare x y) 0
+                      valid-between? x y
+                      , true
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ []
+        'test-bisect-random $ %{} 'CodeEntry
+          :doc "|deterministic pseudo-random insertions keep order and stay short"
+          :code $ quote $ defn test-bisect-random ()
+            let
+                result $ apply-args
+                  0 12345 $ [] mid-id
+                  fn (i seed ks)
+                    hint-fn $ {}
+                      :args $ [] 'Number 'Number $ :: 'List 'String
+                      :return $ :: 'List 'String
+                    if (>= i 2000) ks $ let
+                        next-seed $ &number:rem
+                          &+ 74 $ &* seed 75
+                          , 65537
+                        total $ count ks
+                        pos $ &number:rem next-seed $ inc total
+                        sorted $ sort ks &compare
+                        a $ if (= pos 0) | $ nth-or-empty sorted (dec pos)
+                        b $ if (= pos total) | $ nth-or-empty sorted pos
+                      recur (inc i) next-seed $ conj sorted $ bisect a b
+                sorted $ sort result &compare
+              is $ &= 2001 $ &set:count (&list:to-set result)
+              is $ every? sorted $ fn (k)
+                <= (&str:count k) 8
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -382,7 +456,7 @@
                     if (<= i 40)
                       recur (inc i) new-id
                       , x
-              , |++++++-
+              , |++++F
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -396,6 +470,26 @@
               , "|get nil"
                 is $ option:none? $ get-min-key ({})
                 is $ option:none? $ get-max-key ({})
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ []
+        'test-growth-bounds $ %{} 'CodeEntry
+          :doc "|append/prepend 1000 times should stay within ~1 char per 15 appends and ~1 per 10 prepends"
+          :code $ quote $ defn test-growth-bounds ()
+            is $ >= 70 $ &str:count
+              apply-args (0 mid-id)
+                fn (i x)
+                  hint-fn $ {}
+                    :args $ [] 'Number 'String
+                    :return 'String
+                  if (>= i 1000) x $ recur (inc i) (bisect x max-id)
+            is $ >= 105 $ &str:count
+              apply-args (0 mid-id)
+                fn (i x)
+                  hint-fn $ {}
+                    :args $ [] 'Number 'String
+                    :return 'String
+                  if (>= i 1000) x $ recur (inc i) (bisect min-id x)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -420,7 +514,7 @@
               key-before
                 {} (|a 1) (|b 1)
                 , |a
-              , |G
+              , |Q
             is $ =
               key-before
                 {} (|a 1) (|b 1)
@@ -467,12 +561,12 @@
               , mid-id
             is $ =
               key-prepend $ {} $ |a 1
-              , |G
+              , |Q
             is $ =
               assoc-prepend
                 {} $ |a 1
                 , 2
-              {} (|a 1) (|G 2)
+              {} (|a 1) (|Q 2)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -483,6 +577,23 @@
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
+        'valid-between? $ %{} 'CodeEntry
+          :doc "|bisect x y must land strictly between them and must not end with the zero char"
+          :code $ quote $ defn valid-between? (x y)
+            let
+                r $ bisect x y
+              and
+                &< (&compare x r) 0
+                or (= y |)
+                  &< (&compare r y) 0
+                not=
+                  &str:slice r
+                    dec $ &str:count r
+                    &str:count r
+                  , |+
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Bool)
+            :args $ [] 'String 'String
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns bisection-key.test
           :require
