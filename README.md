@@ -24,7 +24,7 @@ Charset, base65:
 ### Development
 
 开发工具链使用正式 Calcit / `@calcit/procs` 0.28.0、Node 24 和 Yarn
-4.18.0（node-modules linker）。`calcit.std` 保持已发布的 0.2.35，
+4.18.0（node-modules linker）。`calcit.std` 使用正式发布的 0.2.37，
 Yarn 安装审批仅覆盖精确的运行时及其 `finger-vec` 依赖。
 
 Install [Calcit](https://calcit-lang.org/) so the `calcit` command is available on
