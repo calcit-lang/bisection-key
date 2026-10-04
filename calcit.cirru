@@ -396,6 +396,7 @@
                           &< (&compare x y) 0
                       valid-between? x y
                       , true
+              is $ every? all-keys $ fn (y) (valid-between? min-id y)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
