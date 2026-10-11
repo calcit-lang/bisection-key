@@ -7,7 +7,7 @@
       :feature-policy $ {}
       :modules $ [] |calcit.std/
       :type-slots $ {}
-    :test $ {} (:description |) (:init-fn 'bisection-key.test/run-tests) (:mode :native) (:reload-fn 'bisection-key.test/run-tests)
+    :test $ {} (:description |) (:init-fn 'bisection-key.test/run-tests) (:mode :native) (:reload-fn 'bisection-key.test/run-tests) (:target :native)
       :feature-policy $ {}
       :modules $ []
       :type-slots $ {}
@@ -59,16 +59,19 @@
                       &= (inc idx) (&str:count xs0)
                       str result c64 $ str-nth! dictionary 16
                       recur (str result c64) xs0 ys0 $ inc idx
-                    case-default c-x
-                      str result $ str-nth! dictionary $ bit-shr
-                        &+
-                          &* 3 $ lookup-i c-x
-                          , 64
-                        , 2
-                      c63 $ str result c64
-                      (str-nth! dictionary 62) (str result c63)
-                      (str-nth! dictionary 61)
+                    cond
+                        &= c-x c63
+                        str result c64
+                      (&= c-x (str-nth! dictionary 62))
+                        str result c63
+                      (&= c-x (str-nth! dictionary 61))
                         str result $ str-nth! dictionary 62
+                      true $ str result $ str-nth! dictionary
+                        bit-shr
+                          &+
+                            &* 3 $ lookup-i c-x
+                            , 64
+                          , 2
               true $ let
                   c-x $ str-nth! xs0 idx
                   c-y $ str-nth! ys0 idx
@@ -229,25 +232,26 @@
       :defs $ {}
         'compare-random-ids $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn compare-random-ids ()
-            apply-args (0 mid-id)
-              fn (i x)
-                if (< i 1000)
-                  if
-                    >
-                      rand (Option :none) (Option :none)
-                      , 0.5
-                    let
-                        new-id $ bisect x max-id
-                      println |right:
-                        = -1 $ &compare x new-id
-                        , x new-id
-                      recur (inc i) new-id
-                    let
-                        new-id $ bisect min-id x
-                      println "|left: "
-                        = 1 $ &compare x new-id
-                        , x new-id
-                      recur (inc i) new-id
+            loop
+                i 0
+                x mid-id
+              if (< i 1000)
+                if
+                  >
+                    rand (Option :none) (Option :none)
+                    , 0.5
+                  let
+                      new-id $ bisect x max-id
+                    println |right:
+                      = -1 $ &compare x new-id
+                      , x new-id
+                    recur (inc i) new-id
+                  let
+                      new-id $ bisect min-id x
+                    println "|left: "
+                      = 1 $ &compare x new-id
+                      , x new-id
+                    recur (inc i) new-id
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -289,17 +293,18 @@
                 if (<= i 400)
                   recur (inc i) new-id
                   , x
-            apply-args (0 |a)
-              fn (i x)
-                hint-fn $ {}
-                  :args $ [] 'Number 'String
-                  :return 'Unit
-                let
-                    new-id $ bisect x |x
-                  println i x
-                  if (<= i 100)
-                    recur (inc i) new-id
-                    , &unit
+            loop
+                i 0
+                x |a
+              hint-fn $ {}
+                :args $ [] 'Number 'String
+                :return 'Unit
+              let
+                  new-id $ bisect x |x
+                println i x
+                if (<= i 100)
+                  recur (inc i) new-id
+                  , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -404,22 +409,23 @@
           :doc "|deterministic pseudo-random insertions keep order and stay short"
           :code $ quote $ defn test-bisect-random ()
             let
-                result $ apply-args
-                  0 12345 $ [] mid-id
-                  fn (i seed ks)
-                    hint-fn $ {}
-                      :args $ [] 'Number 'Number $ :: 'List 'String
-                      :return $ :: 'List 'String
-                    if (>= i 2000) ks $ let
-                        next-seed $ &number:rem
-                          &+ 74 $ &* seed 75
-                          , 65537
-                        total $ count ks
-                        pos $ &number:rem next-seed $ inc total
-                        sorted $ sort ks &compare
-                        a $ if (= pos 0) | $ nth-or-empty sorted (dec pos)
-                        b $ if (= pos total) | $ nth-or-empty sorted pos
-                      recur (inc i) next-seed $ conj sorted $ bisect a b
+                result $ loop
+                    i 0
+                    seed 12345
+                    ks $ [] mid-id
+                  hint-fn $ {}
+                    :args $ [] 'Number 'Number $ :: 'List 'String
+                    :return $ :: 'List 'String
+                  if (>= i 2000) ks $ let
+                      next-seed $ &number:rem
+                        &+ 74 $ &* seed 75
+                        , 65537
+                      total $ count ks
+                      pos $ &number:rem next-seed $ inc total
+                      sorted $ sort ks &compare
+                      a $ if (= pos 0) | $ nth-or-empty sorted (dec pos)
+                      b $ if (= pos total) | $ nth-or-empty sorted pos
+                    recur (inc i) next-seed $ conj sorted $ bisect a b
                 sorted $ sort result &compare
               is $ &= 2001 $ &set:count (&list:to-set result)
               is $ every? sorted $ fn (k)
@@ -430,16 +436,17 @@
         'test-frequent-append $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn test-frequent-append ()
             is $ =
-              apply-args (0 mid-id)
-                fn (i x)
-                  hint-fn $ {}
-                    :args $ [] 'Number 'String
-                    :return 'String
-                  let
-                      new-id $ bisect x max-id
-                    if (<= i 40)
-                      recur (inc i) new-id
-                      , x
+              loop
+                  i 0
+                  x mid-id
+                hint-fn $ {}
+                  :args $ [] 'Number 'String
+                  :return 'String
+                let
+                    new-id $ bisect x max-id
+                  if (<= i 40)
+                    recur (inc i) new-id
+                    , x
               , |zzx
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
@@ -447,16 +454,17 @@
         'test-frequent-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn test-frequent-prepend ()
             is $ =
-              apply-args (0 max-id)
-                fn (i x)
-                  hint-fn $ {}
-                    :args $ [] 'Number 'String
-                    :return 'String
-                  let
-                      new-id $ bisect min-id x
-                    if (<= i 40)
-                      recur (inc i) new-id
-                      , x
+              loop
+                  i 0
+                  x max-id
+                hint-fn $ {}
+                  :args $ [] 'Number 'String
+                  :return 'String
+                let
+                    new-id $ bisect min-id x
+                  if (<= i 40)
+                    recur (inc i) new-id
+                    , x
               , |++++F
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
@@ -478,19 +486,21 @@
           :doc "|append/prepend 1000 times should stay within ~1 char per 15 appends and ~1 per 10 prepends"
           :code $ quote $ defn test-growth-bounds ()
             is $ >= 70 $ &str:count
-              apply-args (0 mid-id)
-                fn (i x)
-                  hint-fn $ {}
-                    :args $ [] 'Number 'String
-                    :return 'String
-                  if (>= i 1000) x $ recur (inc i) (bisect x max-id)
+              loop
+                  i 0
+                  x mid-id
+                hint-fn $ {}
+                  :args $ [] 'Number 'String
+                  :return 'String
+                if (>= i 1000) x $ recur (inc i) (bisect x max-id)
             is $ >= 105 $ &str:count
-              apply-args (0 mid-id)
-                fn (i x)
-                  hint-fn $ {}
-                    :args $ [] 'Number 'String
-                    :return 'String
-                  if (>= i 1000) x $ recur (inc i) (bisect min-id x)
+              loop
+                  i 0
+                  x mid-id
+                hint-fn $ {}
+                  :args $ [] 'Number 'String
+                  :return 'String
+                if (>= i 1000) x $ recur (inc i) (bisect min-id x)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -912,15 +922,15 @@
         'probe-bisect-inner $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defwasm-export probe-bisect-inner ()
             let
-                c-x $ option:unwrap $ optionally (&str:nth |1 0)
-                c-y $ option:unwrap $ optionally (&str:nth |2 0)
+                c-x $ option:unwrap $ nil->option (&str:nth |1 0)
+                c-y $ option:unwrap $ nil->option (&str:nth |2 0)
                 x $ lookup-i c-x
                 y $ lookup-i c-y
                 delta $ &- y x
                 next $ inc 0
               if (&= delta 1)
                 if
-                  peek-tiny? $ optionally $ &str:nth |2 next
+                  peek-tiny? $ nil->option $ &str:nth |2 next
                   &+ 1 0
                   &+ 0 0
                 &+ 0 0
@@ -958,7 +968,7 @@
             :args $ []
         'probe-bisect-vec $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-bisect-vec ()
-            option:unwrap $ optionally $ &str:nth |abc 0
+            option:unwrap $ nil->option $ &str:nth |abc 0
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ []
@@ -1011,8 +1021,8 @@
         'probe-delta $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defwasm-export probe-delta ()
             &-
-              lookup-i $ option:unwrap $ optionally (&str:nth |12 1)
-              lookup-i $ option:unwrap $ optionally (&str:nth |12 0)
+              lookup-i $ option:unwrap $ nil->option (&str:nth |12 1)
+              lookup-i $ option:unwrap $ nil->option (&str:nth |12 0)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
@@ -1077,7 +1087,7 @@
             :args $ []
         'probe-lookup-1 $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defwasm-export probe-lookup-1 ()
-            lookup-i $ option:unwrap $ optionally (&str:nth |12 1)
+            lookup-i $ option:unwrap $ nil->option (&str:nth |12 1)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
@@ -1088,19 +1098,19 @@
             :args $ []
         'probe-lookup-fresh $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defwasm-export probe-lookup-fresh ()
-            &str:find-index dictionary $ option:unwrap $ optionally (&str:nth |1 0)
+            &str:find-index dictionary $ option:unwrap $ nil->option (&str:nth |1 0)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-lookup-i $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defwasm-export probe-lookup-i ()
-            &str:find-index dictionary $ option:unwrap $ optionally (&str:nth |12 1)
+            &str:find-index dictionary $ option:unwrap $ nil->option (&str:nth |12 1)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-lookup-i1 $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defwasm-export probe-lookup-i1 ()
-            lookup-i $ option:unwrap $ optionally (&str:nth |1 0)
+            lookup-i $ option:unwrap $ nil->option (&str:nth |1 0)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []

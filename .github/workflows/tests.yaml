@@ -30,7 +30,7 @@ jobs:
     - uses: calcit-lang/setup-calcit@v1.5.0
       with:
         tools: calcit,caps
-        version: 0.28.0
+        version: 0.29.0
         caps-version: 0.1.1
 
     - name: Install deps
@@ -46,19 +46,22 @@ jobs:
 
     - name: Report static type coverage
       run: |
-        calcit calcit.cirru --strict-types --check-only
+        calcit calcit.cirru --strict-types --check-only --all-defs
         calcit calcit.cirru --entry test --strict-types --check-only
-        calcit calcit.cirru analyze check-public --ns bisection-key.core --ns bisection-key.util --summary-only --format json
+        calcit calcit.cirru --entry test --check-only --ns bisection-key.core --ns bisection-key.util --summary-only --format json
         calcit calcit.cirru test --require-match
-        calcit calcit.cirru analyze dynamic-methods --format json | jq -e '.data.summary.findings == 0'
-        calcit calcit.cirru --entry test analyze dynamic-methods --format json | jq -e '.data.summary.findings == 0'
+        calcit calcit.cirru analyze weak-types --only dynamic-method --format json | jq -e '.data.summary.findings == 0'
+        calcit calcit.cirru --entry test analyze weak-types --only dynamic-method --format json | jq -e '.data.summary.findings == 0'
         calcit calcit.cirru docs format-md README.md --check
         calcit calcit.cirru docs format-md docs/quality-gate.md --check
         calcit calcit.cirru docs check-md README.md --failures-only
         calcit calcit.cirru docs check-md docs/quality-gate.md --failures-only
 
     - name: Enforce zero static type debt
-      run: calcit calcit.cirru analyze quality --format json
+      run: |
+        calcit calcit.cirru analyze weak-types --summary-only --format json | jq -e '.data.summary.hits == 0'
+        calcit calcit.cirru analyze weak-types --only coverage --coverage-level none,partial --summary-only --format json | jq -e '.data.summary.definitions == 0'
+        calcit calcit.cirru analyze weak-types --only deprecated-call --summary-only --format json | jq -e '.data.summary.calls == 0'
 
     - name: "test calcit"
       run: calcit calcit.cirru --entry test

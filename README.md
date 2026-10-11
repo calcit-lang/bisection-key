@@ -23,8 +23,8 @@ Charset, base65:
 
 ### Development
 
-开发工具链使用正式 Calcit / `@calcit/procs` 0.28.0、Node 24 和 Yarn
-4.18.0（node-modules linker）。`calcit.std` 使用正式发布的 0.2.37，
+开发工具链使用正式 Calcit / `@calcit/procs` 0.29.0、Node 24 和 Yarn
+4.18.0（node-modules linker）。`calcit.std` 使用正式发布的 0.2.41，
 Yarn 安装审批仅覆盖精确的运行时及其 `finger-vec` 依赖。
 
 Install [Calcit](https://calcit-lang.org/) so the `calcit` command is available on
@@ -49,9 +49,9 @@ For tests:
 caps --strict --ci
 yarn install --immutable
 caps verify --toolchain
-calcit calcit.cirru --strict-types --check-only
+calcit calcit.cirru --strict-types --check-only --all-defs
 calcit calcit.cirru --entry test --strict-types --check-only
-calcit calcit.cirru analyze check-public --ns bisection-key.core --ns bisection-key.util --summary-only --format json
+calcit calcit.cirru --entry test --check-only --ns bisection-key.core --ns bisection-key.util --summary-only --format json
 calcit calcit.cirru test --require-match
 yarn test:calcit
 yarn test:js
@@ -77,7 +77,9 @@ CI enforces zero unresolved static-type debt. Run the same gate locally before
 changing public APIs:
 
 ```bash
-calcit calcit.cirru analyze quality --format json
+calcit calcit.cirru analyze weak-types --summary-only --format json | jq -e '.data.summary.hits == 0'
+calcit calcit.cirru analyze weak-types --only coverage --coverage-level none,partial --summary-only --format json | jq -e '.data.summary.definitions == 0'
+calcit calcit.cirru analyze weak-types --only deprecated-call --summary-only --format json | jq -e '.data.summary.calls == 0'
 ```
 
 The zero-debt policy and supporting reports are documented in
