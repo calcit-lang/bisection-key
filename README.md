@@ -51,6 +51,7 @@ yarn install --immutable
 caps verify --toolchain
 calcit calcit.cirru --check-only --all-defs
 calcit calcit.cirru --entry test --check-only
+calcit calcit.cirru fix --workflow strict --verify
 calcit calcit.cirru --entry test --check-only --ns bisection-key.core --ns bisection-key.util --summary-only --format json
 calcit calcit.cirru test --require-match
 yarn test:calcit
