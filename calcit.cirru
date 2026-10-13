@@ -252,6 +252,7 @@
                       = 1 $ &compare x new-id
                       , x new-id
                     recur (inc i) new-id
+            , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -270,12 +271,12 @@
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ []
         'main! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn main! () (run-bisection!) (println "|App started.")
+          :code $ quote $ defn main! () (run-bisection!) (println "|App started.") &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
         'reload! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn reload! () (run-bisection!) (println "|Code updated.")
+          :code $ quote $ defn reload! () (run-bisection!) (println "|Code updated.") &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
