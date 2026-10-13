@@ -6,8 +6,8 @@ directly, without a baseline.
 
 Run the same checks locally before changing public APIs:
 
-    calcit calcit.cirru --strict-types --check-only --all-defs
-    calcit calcit.cirru --entry test --strict-types --check-only
+    calcit calcit.cirru --check-only --all-defs
+    calcit calcit.cirru --entry test --check-only
     calcit calcit.cirru --entry test --check-only --ns bisection-key.core --ns bisection-key.util --summary-only --format json
     calcit calcit.cirru analyze weak-types --summary-only --format json | jq -e '.data.summary.hits == 0'
     calcit calcit.cirru analyze weak-types --only coverage --coverage-level none,partial --summary-only --format json | jq -e '.data.summary.definitions == 0'
