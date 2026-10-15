@@ -181,7 +181,7 @@
             :args $ []
         'probe-simple-map $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-simple-map ()
-            &map:get
+            .unwrap $ get
               {} (c0 10) (c1 20)
               , c1
           :examples $ []
@@ -923,15 +923,15 @@
         'probe-bisect-inner $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defwasm-export probe-bisect-inner ()
             let
-                c-x $ option:unwrap $ nil->option (&str:nth |1 0)
-                c-y $ option:unwrap $ nil->option (&str:nth |2 0)
+                c-x $ .unwrap $ nth |1 0
+                c-y $ .unwrap $ nth |2 0
                 x $ lookup-i c-x
                 y $ lookup-i c-y
                 delta $ &- y x
                 next $ inc 0
               if (&= delta 1)
                 if
-                  peek-tiny? $ nil->option $ &str:nth |2 next
+                  peek-tiny? $ nth |2 next
                   &+ 1 0
                   &+ 0 0
                 &+ 0 0
@@ -946,7 +946,7 @@
         'probe-bisect-step2 $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-bisect-step2 ()
             let
-                c-x $ &str:nth |1 0
+                c-x $ .unwrap $ nth |1 0
                 next $ inc 0
               if
                 &= next $ &str:count |1
@@ -969,7 +969,7 @@
             :args $ []
         'probe-bisect-vec $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-bisect-vec ()
-            option:unwrap $ nil->option $ &str:nth |abc 0
+            .unwrap $ nth |abc 0
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ []
@@ -1022,8 +1022,8 @@
         'probe-delta $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defwasm-export probe-delta ()
             &-
-              lookup-i $ option:unwrap $ nil->option (&str:nth |12 1)
-              lookup-i $ option:unwrap $ nil->option (&str:nth |12 0)
+              lookup-i $ .unwrap $ nth |12 1
+              lookup-i $ .unwrap $ nth |12 0
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
@@ -1088,7 +1088,7 @@
             :args $ []
         'probe-lookup-1 $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defwasm-export probe-lookup-1 ()
-            lookup-i $ option:unwrap $ nil->option (&str:nth |12 1)
+            lookup-i $ .unwrap $ nth |12 1
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
@@ -1099,19 +1099,19 @@
             :args $ []
         'probe-lookup-fresh $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defwasm-export probe-lookup-fresh ()
-            &str:find-index dictionary $ option:unwrap $ nil->option (&str:nth |1 0)
+            &str:find-index dictionary $ .unwrap $ nth |1 0
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-lookup-i $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defwasm-export probe-lookup-i ()
-            &str:find-index dictionary $ option:unwrap $ nil->option (&str:nth |12 1)
+            &str:find-index dictionary $ .unwrap $ nth |12 1
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
         'probe-lookup-i1 $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defwasm-export probe-lookup-i1 ()
-            lookup-i $ option:unwrap $ nil->option (&str:nth |1 0)
+            lookup-i $ .unwrap $ nth |1 0
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
@@ -1134,7 +1134,7 @@
         'probe-nil-check $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-nil-check ()
             if
-              nil? $ &str:nth |1 5
+              .none? $ nth |1 5
               , 1 0
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
@@ -1142,7 +1142,9 @@
         'probe-nth-literal-0 $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defwasm-export probe-nth-literal-0 ()
             if
-              &= (&str:nth |+-/ 0) |+
+              &=
+                .unwrap $ nth |+-/ 0
+                , |+
               , 1 0
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
@@ -1150,7 +1152,9 @@
         'probe-nth-literal-1 $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defwasm-export probe-nth-literal-1 ()
             if
-              &= (&str:nth |+-/ 1) |-
+              &=
+                .unwrap $ nth |+-/ 1
+                , |-
               , 1 0
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
@@ -1172,7 +1176,7 @@
         'probe-str-concat $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-str-concat ()
             let
-                c-x $ &str:nth |1 0
+                c-x $ .unwrap $ nth |1 0
               str | c-x c32
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'String)
