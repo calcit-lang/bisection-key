@@ -312,8 +312,8 @@
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns bisection-key.main
           :require
-            [] bisection-key.core :refer $ [] bisect min-id max-id mid-id
-            [] bisection-key.test :refer $ run-tests
+            bisection-key.core :refer $ bisect min-id max-id mid-id
+            bisection-key.test :refer $ run-tests
             calcit.std.rand :refer $ rand
     'bisection-key.test $ %{} 'FileEntry
       :defs $ {}
@@ -832,7 +832,7 @@
             :return $ :: 'calcit.core/Option 'T
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns bisection-key.util
-          :require $ [] bisection-key.core :refer $ [] mid-id max-id min-id bisect
+          :require $ bisection-key.core :refer $ mid-id max-id min-id bisect
     'bisection-key.wasm-probe $ %{} 'FileEntry
       :defs $ {}
         'probe-all-count $ %{} 'CodeEntry (:doc |)
