@@ -23,9 +23,15 @@ Charset, base65:
 
 ### Development
 
-开发工具链使用正式 Calcit / `@calcit/procs` 0.29.3、Node 24 和 Yarn
-4.18.0（node-modules linker）。`calcit.std` 使用正式发布的 0.2.41，
-Yarn 安装审批仅覆盖精确的运行时及其 `finger-vec` 依赖。
+0.0.32 候选使用正式 Calcit / `@calcit/procs` 0.30.0、Node 24 和 Yarn
+4.18.0（node-modules linker），`calcit.std` 使用正式发布的 0.2.43。
+CLI 与 JS runtime 必须配对升级，不能只更改其中一个；没有 alpha/hash 依赖或安装年龄例外。
+本轮不改变算法源码、字符集、返回值、原断言或 WASM 导出探针；
+候选版本号不表示已发版，正式 tag 仍需最新 CI/review 与精确 main 验收。
+0.30.1 尚无正式版，其兼容性单独验证，不把当前稳定配对当作完整 0.30.1 验收。
+相对旧正式 0.0.31，本补丁还将交付主分支此前已合并的公开 Option 读取迁移；
+本次版本更新提交自身不改 Snapshot 或原测试。独立 Tabletwo 候选副本通过完整 strict、
+原 51+2 项定义测试、构建及真实 native WSS/合成持久化回放；候选覆盖不等于正式 tag 安装。
 
 Install [Calcit](https://calcit-lang.org/) so the `calcit` command is available on
 your `PATH`, then run the demo:
