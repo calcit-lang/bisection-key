@@ -23,15 +23,11 @@ Charset, base65:
 
 ### Development
 
-0.0.32 候选使用正式 Calcit / `@calcit/procs` 0.30.0、Node 24 和 Yarn
-4.18.0（node-modules linker），`calcit.std` 使用正式发布的 0.2.43。
-CLI 与 JS runtime 必须配对升级，不能只更改其中一个；没有 alpha/hash 依赖或安装年龄例外。
-本轮不改变算法源码、字符集、返回值、原断言或 WASM 导出探针；
-候选版本号不表示已发版，正式 tag 仍需最新 CI/review 与精确 main 验收。
-0.30.1 尚无正式版，其兼容性单独验证，不把当前稳定配对当作完整 0.30.1 验收。
-相对旧正式 0.0.31，本补丁还将交付主分支此前已合并的公开 Option 读取迁移；
-本次版本更新提交自身不改 Snapshot 或原测试。独立 Tabletwo 候选副本通过完整 strict、
-原 51+2 项定义测试、构建及真实 native WSS/合成持久化回放；候选覆盖不等于正式 tag 安装。
+0.0.33 候选配对已发布 Calcit / `@calcit/procs` **0.30.1-alpha.4**，编译器仍为预发布版，不是假称稳定 0.30.1。Node 24、Yarn 4.18.0（node-modules linker）和正式 `calcit.std` 0.2.43 保持不变。
+
+使用者的排序键、字符集、顺序、返回值、原断言及 16 个 WASM 导出探针都不改变；不需要重写已有排序数据。本轮不更改 Snapshot 或原测试，不以新增强转、默认值或基线完成升级。CLI 与 JS runtime 必须配对，不能只改其中一个；模块依赖没有 alpha/hash 或安装年龄例外。候选版本号不代表已发版，正式 tag 仍需最新 CI/review 与精确 main 验收。
+
+WASM 验收需要完整 CLI。官方 Linux 标准资产 `calcit` 包含 WASM；`calcit-ubuntu22.04-x86_64-no-wasm` 不包含。自行构建精确发布版时不要使用 `--no-default-features`；可显式用 `cargo install calcit --version 0.30.1-alpha.4 --features wasm --locked`。缺少构建功能不能当作算法失败，也不能删除原 WASM 测试绕过。
 
 Install [Calcit](https://calcit-lang.org/) so the `calcit` command is available on
 your `PATH`, then run the demo:
