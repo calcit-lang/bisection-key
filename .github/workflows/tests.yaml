@@ -46,9 +46,10 @@ jobs:
 
     - name: Report static type coverage
       run: |
+        set -euo pipefail
         calcit calcit.cirru --check-only --all-defs
         calcit calcit.cirru --entry test --check-only
-        calcit calcit.cirru fix --workflow strict --verify
+        calcit calcit.cirru fix --workflow strict --verify --format json | jq -e '.data.workflow.status == "passed" and .diagnostics == []'
         calcit calcit.cirru --entry test --check-only --ns bisection-key.core --ns bisection-key.util --summary-only --format json
         calcit calcit.cirru test --require-match
         calcit calcit.cirru analyze weak-types --only dynamic-method --format json | jq -e '.data.summary.findings == 0'

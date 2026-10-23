@@ -194,7 +194,7 @@
             :args $ []
         'str-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn str-nth (s idx)
-            option:map (nth s idx)
+            .map (nth s idx)
               fn (ch) (assert-type ch 'String)
           :examples $ []
           :schema $ :: 'Fn $ {}
@@ -202,16 +202,16 @@
             :return $ :: 'calcit.core/Option 'String
           :tests $ [] $ %{} 'TestEntry (:name |boundaries)
             :code $ quote $ do
-              assert= (%some |a) (str-nth |abc 0)
-              assert= (%some |c) (str-nth |abc 2)
-              assert= (%none) (str-nth |abc -1)
-              assert= (%none) (str-nth |abc 3)
-              assert= (%none) (str-nth | 0)
+              assert= (Option :some |a) (str-nth |abc 0)
+              assert= (Option :some |c) (str-nth |abc 2)
+              assert= (Option :none) (str-nth |abc -1)
+              assert= (Option :none) (str-nth |abc 3)
+              assert= (Option :none) (str-nth | 0)
             :tags $ #{} :unit
         'str-nth! $ %{} 'CodeEntry
           :doc "|Returns the character at idx, raising when the index is outside the string."
           :code $ quote $ defn str-nth! (s idx)
-            option:unwrap $ str-nth s idx
+            .unwrap $ str-nth s idx
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ [] 'String 'Number
@@ -331,7 +331,7 @@
             :return $ :: 'List 'String
         'nth-or-empty $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn nth-or-empty (xs i)
-            option:unwrap-or (nth xs i) |
+            .unwrap-or (nth xs i) |
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ [] (:: 'List 'String) 'Number
@@ -391,10 +391,10 @@
                   map alphabet $ fn (b) (str a b)
                 threes $ mapcat twos $ fn (a)
                   map alphabet $ fn (b) (str a b)
-                all-keys $ concat (filter-not-zero-end ones) (filter-not-zero-end twos) (filter-not-zero-end threes)
+                all-keys $ .concat (filter-not-zero-end ones) (filter-not-zero-end twos) (filter-not-zero-end threes)
               is $ every? all-keys $ fn (x)
                 every?
-                  concat all-keys $ [] |
+                  .concat all-keys $ [] |
                   fn (y)
                     if
                       and (not= x y)
@@ -472,14 +472,14 @@
             :args $ []
         'test-get-key $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn test-get-key () "|get min key"
-            is $ = |a $ option:unwrap
+            is $ = |a $ .unwrap
               get-min-key $ {} (|a 1) (|b 2)
             , "|get max key"
-              is $ = |b $ option:unwrap
+              is $ = |b $ .unwrap
                 get-max-key $ {} (|a 1) (|b 2)
               , "|get nil"
-                is $ option:none? $ get-min-key ({})
-                is $ option:none? $ get-max-key ({})
+                is $ .none? $ get-min-key ({})
+                is $ .none? $ get-max-key ({})
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -541,17 +541,17 @@
                 v $ {} (|a 1) (|b 2) (|c 3)
               , "|get key at nth"
                 is $ not $ has-nth? v -1
-                is $ = |a $ option:unwrap (key-nth v 0)
-                is $ = |b $ option:unwrap (key-nth v 1)
-                is $ = |c $ option:unwrap (key-nth v 2)
-                is $ option:none? $ key-nth v 3
+                is $ = |a $ .unwrap (key-nth v 0)
+                is $ = |b $ .unwrap (key-nth v 1)
+                is $ = |c $ .unwrap (key-nth v 2)
+                is $ .none? $ key-nth v 3
                 , "|get val at nth"
-                  is $ = 1 $ option:unwrap (val-nth v 0)
-                  is $ = 2 $ option:unwrap (val-nth v 1)
-                  is $ = 3 $ option:unwrap (val-nth v 2)
-                  is $ option:none? $ val-nth v 3
+                  is $ = 1 $ .unwrap (val-nth v 0)
+                  is $ = 2 $ .unwrap (val-nth v 1)
+                  is $ = 3 $ .unwrap (val-nth v 2)
+                  is $ .none? $ val-nth v 3
                   , "|treat negative string indexes as out of bounds"
-                    is $ option:none? $ str-nth |abc -1
+                    is $ .none? $ str-nth |abc -1
                     , "|set value at nth"
                       is $ = (assoc v |a 4) (assoc-nth v 0 4)
                       , "|set value before nth"
@@ -559,10 +559,10 @@
                         , "|set value after nth"
                           is $ = (assoc v |bT 4) (assoc-after-nth v 1 4)
                           , "|find key index a"
-                            is $ = 0 $ option:unwrap (key-index-of v |a)
+                            is $ = 0 $ .unwrap (key-index-of v |a)
                             , "|find key index c"
-                              is $ = 2 $ option:unwrap (key-index-of v |c)
-                              , "|find key index missing" $ is $ option:none? (key-index-of v |d)
+                              is $ = 2 $ .unwrap (key-index-of v |c)
+                              , "|find key index missing" $ is $ .none? (key-index-of v |d)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -628,7 +628,7 @@
           :code $ quote $ defn assoc-after-nth (x n v)
             when-not (has-nth? x n) (raise "|Succeeded map size")
             let
-                k $ option:unwrap $ key-nth x n
+                k $ .unwrap $ key-nth x n
               assoc-after x k v
           :examples $ []
           :schema $ :: 'Fn $ {}
@@ -660,7 +660,7 @@
           :code $ quote $ defn assoc-before-nth (x n v)
             when-not (has-nth? x n) (raise "|Succeeded map size")
             let
-                k $ option:unwrap $ key-nth x n
+                k $ .unwrap $ key-nth x n
               assoc-before x k v
           :examples $ []
           :schema $ :: 'Fn $ {}
@@ -671,7 +671,7 @@
           :code $ quote $ defn assoc-nth (x n v)
             when-not (has-nth? x n) (raise "|Succeeded map size")
             let
-                k $ option:unwrap $ key-nth x n
+                k $ .unwrap $ key-nth x n
               assoc x k v
           :examples $ []
           :schema $ :: 'Fn $ {}
@@ -743,7 +743,7 @@
               assert-type existing-keys $ :: 'List 'String
               assert (&set:includes? keys-set base-key) "|base-key should be existed"
               let
-                  position $ option:unwrap $ index-of existing-keys base-key
+                  position $ .unwrap $ index-of existing-keys base-key
                 bisect base-key $ if
                   = position $ dec $ count existing-keys
                   , max-id $ &list:nth existing-keys (inc position)
@@ -755,7 +755,7 @@
           :code $ quote $ defn key-append (dict)
             assert (map? dict) "|dict should be a map"
             if (empty? dict) mid-id $ bisect
-              option:unwrap $ get-max-key dict
+              .unwrap $ get-max-key dict
               , max-id
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'String)
@@ -771,7 +771,7 @@
               assert-type existing-keys $ :: 'List 'String
               assert (&set:includes? keys-set base-key) "|base-key should be existed"
               let
-                  position $ option:unwrap $ index-of existing-keys base-key
+                  position $ .unwrap $ index-of existing-keys base-key
                 bisect
                   if (= 0 position) min-id $ &list:nth existing-keys $ dec position
                   , base-key
@@ -815,7 +815,7 @@
         'key-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn key-prepend (dict)
             assert (map? dict) "|dict should be a map"
-            if (empty? dict) mid-id $ bisect min-id $ option:unwrap (get-min-key dict)
+            if (empty? dict) mid-id $ bisect min-id $ .unwrap (get-min-key dict)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ [] $ :: 'Map 'String 'T
@@ -1163,7 +1163,7 @@
           :doc "|Confirms str-nth normalizes a negative index to Option none on WASM."
           :code $ quote $ defwasm-export probe-nth-negative ()
             if
-              option:none? $ str-nth |abc -1
+              .none? $ str-nth |abc -1
               , 1 0
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)

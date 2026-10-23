@@ -23,9 +23,11 @@ Charset, base65:
 
 ### Development
 
-0.0.35 候选将 Calcit / `@calcit/procs` 成对升级到正式 **0.30.1**，不再依赖 alpha 编译器或 runtime。仍需 Calcit 0.30.0 的消费者应保留模块 0.0.32。Node 24、Yarn 4.18.0（node-modules linker）和正式 `calcit.std` 0.2.43 保持不变。候选提交不等于已发布模块，发布状态以正式 Git tag 为准。
+0.0.36 候选沿用已发布 0.0.35 配对的正式 Calcit / `@calcit/procs` **0.30.1**，不依赖 alpha 编译器或 runtime。仍需 Calcit 0.30.0 的消费者应保留模块 0.0.32。Node 24、Yarn 4.18.0（node-modules linker）和正式 `calcit.std` 0.2.43 保持不变。候选提交不等于已发布模块，发布状态以正式 Git tag 为准。
 
-使用者的排序键、字符集、顺序、返回值、原断言及 16 个 WASM 导出探针都不改变；不需要重写已有排序数据。本轮不更改 Snapshot 或原测试，不以新增强转、默认值或基线完成升级。CLI 与 JS runtime 必须配对，不能只改其中一个；模块依赖没有 alpha/hash 或安装年龄例外。发布状态以 GitHub Release 为准，正式 tag 须对应通过 CI/review 与精确 main 验收的提交。
+使用者的排序键、字符集、顺序、返回值、原断言及 16 个 WASM 导出探针都不改变；不需要重写已有排序数据。本轮迁移 27 处 Option helper 为已证明的接收者方法、两处 List concat 为 `.concat`、原附带边界测试的五处 Option 构造为直接名义构造。保留全部参数/返回/泛型 schema、类型断言、失败行为与测试预期，不以强转、默认值或基线完成升级。临时事务和审计视图不进入发布源码，不新增永久测试脚本或编译器改写规则。
+
+CLI 与 JS runtime 必须配对，不能只改其中一个；模块依赖没有 alpha/hash 或安装年龄例外。发布状态以 GitHub Release 为准，正式 tag 须对应通过 CI/review 与精确 main 验收的提交。
 
 WASM 验收需要完整 CLI。官方 Linux 标准资产 `calcit` 包含 WASM；`calcit-ubuntu22.04-x86_64-no-wasm` 不包含。自行构建精确发布版时不要使用 `--no-default-features`；可显式用 `cargo install calcit --version 0.30.1 --features wasm --locked`。缺少构建功能不能当作算法失败，也不能删除原 WASM 测试绕过。
 
