@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - prepare/bisection0036-formal031
   pull_request: {}
 
 permissions:
@@ -41,8 +42,11 @@ jobs:
 
     - name: Check snapshot formatting
       run: |
+        set -euo pipefail
+        calcit fix --workflow strict --verify --format json | jq -e '.data.workflow.status == "passed" and .diagnostics == []'
+        node acceptance/prepare.mjs
         calcit calcit.cirru edit format
-        git diff --exit-code -- calcit.cirru
+        test "$(git hash-object calcit.cirru)" = "$(cat acceptance/snapshot-blob.txt)"
 
     - name: Report static type coverage
       run: |
@@ -72,3 +76,15 @@ jobs:
 
     - name: "test wasm"
       run: yarn test:wasm
+
+    - name: Preserve prepared source and official views
+      if: always()
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      with:
+        name: bisection-prepared
+        path: |
+          calcit.cirru
+          acceptance/
+          js-out/
+        if-no-files-found: error
+        retention-days: 7

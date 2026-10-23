@@ -1,0 +1,8267 @@
+[
+  {
+    "code": [
+      "def",
+      "calcit-dirname",
+      "|"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.$meta/calcit-dirname",
+    "js_ffi": null,
+    "schema": null,
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "calcit-filename",
+      "|calcit.cirru"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.$meta/calcit-filename",
+    "js_ffi": null,
+    "schema": null,
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "bisect",
+      [
+        "x",
+        "y"
+      ],
+      [
+        "assert",
+        "|[bitsect] arguments should be strings!",
+        [
+          "and",
+          [
+            "string?",
+            "x"
+          ],
+          [
+            "string?",
+            "y"
+          ]
+        ]
+      ],
+      [
+        "assert",
+        "|[bisection] keys are identical!",
+        [
+          "not=",
+          "x",
+          "y"
+        ]
+      ],
+      [
+        "assert",
+        "|[bisection] x > y",
+        [
+          "or",
+          [
+            "&=",
+            "y",
+            "|"
+          ],
+          [
+            "<",
+            [
+              "&compare",
+              "x",
+              "y"
+            ],
+            "0"
+          ]
+        ]
+      ],
+      [
+        "bisect-vec",
+        "|",
+        [
+          "if",
+          [
+            "and",
+            [
+              "=",
+              "x",
+              "min-id"
+            ],
+            [
+              "not=",
+              "y",
+              "|"
+            ]
+          ],
+          "|",
+          "x"
+        ],
+        "y",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/bisect",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'String",
+          "'String"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "bisect-vec",
+      [
+        "result",
+        "xs0",
+        "ys0",
+        "idx"
+      ],
+      [
+        ";",
+        "print-values",
+        "result",
+        "xs0",
+        "ys0",
+        "idx"
+      ],
+      [
+        "cond",
+        [
+          [
+            "and",
+            [
+              "&>=",
+              "idx",
+              [
+                "&str:count",
+                "xs0"
+              ]
+            ],
+            [
+              "&>=",
+              "idx",
+              [
+                "&str:count",
+                "ys0"
+              ]
+            ]
+          ],
+          [
+            "raise",
+            [
+              "str",
+              "|unexpected identical ids: ",
+              "xs0",
+              "| ",
+              "ys0"
+            ]
+          ]
+        ],
+        [
+          [
+            "&>=",
+            "idx",
+            [
+              "&str:count",
+              "xs0"
+            ]
+          ],
+          [
+            "let",
+            [
+              [
+                "c-y",
+                [
+                  "str-nth!",
+                  "ys0",
+                  "idx"
+                ]
+              ]
+            ],
+            [
+              "if",
+              [
+                "&=",
+                "c0",
+                "c-y"
+              ],
+              [
+                "if",
+                [
+                  "&=",
+                  [
+                    "inc",
+                    "idx"
+                  ],
+                  [
+                    "&str:count",
+                    "ys0"
+                  ]
+                ],
+                [
+                  "raise",
+                  [
+                    "str",
+                    "|invalid position: ",
+                    "xs0",
+                    "| ",
+                    "ys0"
+                  ]
+                ],
+                [
+                  "recur",
+                  [
+                    "str",
+                    "result",
+                    "c0"
+                  ],
+                  "xs0",
+                  "ys0",
+                  [
+                    "inc",
+                    "idx"
+                  ]
+                ]
+              ],
+              [
+                "if",
+                [
+                  "&=",
+                  "c1",
+                  "c-y"
+                ],
+                [
+                  "if",
+                  [
+                    "peek-tiny?",
+                    [
+                      "str-nth",
+                      "ys0",
+                      [
+                        "inc",
+                        "idx"
+                      ]
+                    ]
+                  ],
+                  [
+                    "str",
+                    "result",
+                    "c0",
+                    "c32"
+                  ],
+                  [
+                    "str",
+                    "result",
+                    "c-y"
+                  ]
+                ],
+                [
+                  "str",
+                  "result",
+                  [
+                    "str-nth!",
+                    "dictionary",
+                    [
+                      "bit-shr",
+                      [
+                        "&*",
+                        "3",
+                        [
+                          "lookup-i",
+                          "c-y"
+                        ]
+                      ],
+                      "2"
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          [
+            "&>=",
+            "idx",
+            [
+              "&str:count",
+              "ys0"
+            ]
+          ],
+          [
+            "let",
+            [
+              [
+                "c-x",
+                [
+                  "str-nth!",
+                  "xs0",
+                  "idx"
+                ]
+              ]
+            ],
+            [
+              "if",
+              [
+                "&=",
+                "c-x",
+                "c64"
+              ],
+              [
+                "if",
+                [
+                  "&=",
+                  [
+                    "inc",
+                    "idx"
+                  ],
+                  [
+                    "&str:count",
+                    "xs0"
+                  ]
+                ],
+                [
+                  "str",
+                  "result",
+                  "c64",
+                  [
+                    "str-nth!",
+                    "dictionary",
+                    "16"
+                  ]
+                ],
+                [
+                  "recur",
+                  [
+                    "str",
+                    "result",
+                    "c64"
+                  ],
+                  "xs0",
+                  "ys0",
+                  [
+                    "inc",
+                    "idx"
+                  ]
+                ]
+              ],
+              [
+                "cond",
+                [
+                  [
+                    "&=",
+                    "c-x",
+                    "c63"
+                  ],
+                  [
+                    "str",
+                    "result",
+                    "c64"
+                  ]
+                ],
+                [
+                  [
+                    "&=",
+                    "c-x",
+                    [
+                      "str-nth!",
+                      "dictionary",
+                      "62"
+                    ]
+                  ],
+                  [
+                    "str",
+                    "result",
+                    "c63"
+                  ]
+                ],
+                [
+                  [
+                    "&=",
+                    "c-x",
+                    [
+                      "str-nth!",
+                      "dictionary",
+                      "61"
+                    ]
+                  ],
+                  [
+                    "str",
+                    "result",
+                    [
+                      "str-nth!",
+                      "dictionary",
+                      "62"
+                    ]
+                  ]
+                ],
+                [
+                  "true",
+                  [
+                    "str",
+                    "result",
+                    [
+                      "str-nth!",
+                      "dictionary",
+                      [
+                        "bit-shr",
+                        [
+                          "&+",
+                          [
+                            "&*",
+                            "3",
+                            [
+                              "lookup-i",
+                              "c-x"
+                            ]
+                          ],
+                          "64"
+                        ],
+                        "2"
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          "true",
+          [
+            "let",
+            [
+              [
+                "c-x",
+                [
+                  "str-nth!",
+                  "xs0",
+                  "idx"
+                ]
+              ],
+              [
+                "c-y",
+                [
+                  "str-nth!",
+                  "ys0",
+                  "idx"
+                ]
+              ],
+              [
+                "x",
+                [
+                  "lookup-i",
+                  "c-x"
+                ]
+              ],
+              [
+                "y",
+                [
+                  "lookup-i",
+                  "c-y"
+                ]
+              ],
+              [
+                "delta",
+                [
+                  "&-",
+                  "y",
+                  "x"
+                ]
+              ],
+              [
+                "next",
+                [
+                  "inc",
+                  "idx"
+                ]
+              ]
+            ],
+            [
+              "cond",
+              [
+                [
+                  "&=",
+                  "delta",
+                  "0"
+                ],
+                [
+                  "recur",
+                  [
+                    "str",
+                    "result",
+                    "c-x"
+                  ],
+                  "xs0",
+                  "ys0",
+                  [
+                    "inc",
+                    "idx"
+                  ]
+                ]
+              ],
+              [
+                [
+                  "&=",
+                  "delta",
+                  "1"
+                ],
+                [
+                  "if",
+                  [
+                    "peek-tiny?",
+                    [
+                      "str-nth",
+                      "ys0",
+                      "next"
+                    ]
+                  ],
+                  [
+                    "if",
+                    [
+                      "&=",
+                      "next",
+                      [
+                        "&str:count",
+                        "xs0"
+                      ]
+                    ],
+                    [
+                      "str",
+                      "result",
+                      "c-x",
+                      "c32"
+                    ],
+                    [
+                      "if",
+                      [
+                        "&=",
+                        [
+                          "str-nth!",
+                          "xs0",
+                          "next"
+                        ],
+                        "c64"
+                      ],
+                      [
+                        "recur",
+                        [
+                          "str",
+                          "result",
+                          "c-x"
+                        ],
+                        "xs0",
+                        "|",
+                        "next"
+                      ],
+                      [
+                        "str",
+                        "result",
+                        "c-x",
+                        [
+                          "str-nth!",
+                          "dictionary",
+                          [
+                            "bit-shr",
+                            [
+                              "&+",
+                              [
+                                "lookup-i",
+                                [
+                                  "str-nth!",
+                                  "xs0",
+                                  "next"
+                                ]
+                              ],
+                              "65"
+                            ],
+                            "1"
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "str",
+                    "result",
+                    "c-y"
+                  ]
+                ]
+              ],
+              [
+                "true",
+                [
+                  "str",
+                  "result",
+                  [
+                    "str-nth!",
+                    "dictionary",
+                    [
+                      "bit-shr",
+                      [
+                        "&+",
+                        "x",
+                        "y"
+                      ],
+                      "1"
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/bisect-vec",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'String",
+          "'String",
+          "'String",
+          "'Number"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "c0",
+      [
+        "str-nth!",
+        "dictionary",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/c0",
+    "js_ffi": null,
+    "schema": "'String",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "c1",
+      [
+        "str-nth!",
+        "dictionary",
+        "1"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/c1",
+    "js_ffi": null,
+    "schema": "'String",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "c32",
+      [
+        "str-nth!",
+        "dictionary",
+        "32"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/c32",
+    "js_ffi": null,
+    "schema": "'String",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "c63",
+      [
+        "str-nth!",
+        "dictionary",
+        "63"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/c63",
+    "js_ffi": null,
+    "schema": "'String",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "c64",
+      [
+        "str-nth!",
+        "dictionary",
+        "64"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/c64",
+    "js_ffi": null,
+    "schema": "'String",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "char->int-map",
+      [
+        "->",
+        [
+          "split",
+          "dictionary",
+          "|"
+        ],
+        [
+          "map-indexed",
+          [
+            "fn",
+            [
+              "idx",
+              "char"
+            ],
+            [
+              "[]",
+              "char",
+              "idx"
+            ]
+          ]
+        ],
+        [
+          "pairs-map"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/char->int-map",
+    "js_ffi": null,
+    "schema": [
+      "::",
+      "'Map",
+      "'String",
+      "'Number"
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "dictionary",
+      "|+-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/dictionary",
+    "js_ffi": null,
+    "schema": "'String",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "lookup-i",
+      [
+        "c"
+      ],
+      [
+        "&str:find-index",
+        "dictionary",
+        "c"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/lookup-i",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'String"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "max-id",
+      [
+        "do",
+        [
+          ";",
+          "tricky value for largest"
+        ],
+        "|"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/max-id",
+    "js_ffi": null,
+    "schema": "'String",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "mid-id",
+      "c32"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/mid-id",
+    "js_ffi": null,
+    "schema": "'String",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "def",
+      "min-id",
+      "c0"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/min-id",
+    "js_ffi": null,
+    "schema": "'String",
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "peek-tiny?",
+      [
+        "x"
+      ],
+      [
+        "match",
+        "x",
+        [
+          [
+            ":none"
+          ],
+          "true"
+        ],
+        [
+          [
+            ":some",
+            "value"
+          ],
+          [
+            "&=",
+            "c0",
+            "value"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/peek-tiny?",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Bool"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'calcit.core/Option",
+            "'String"
+          ]
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-c32",
+      [],
+      "c32"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/probe-c32",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-c64",
+      [],
+      "c64"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/probe-c64",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-mapget-c1",
+      [],
+      [
+        "&str:find-index",
+        "dictionary",
+        "c1"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/probe-mapget-c1",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-mapget-core",
+      [],
+      [
+        "&str:find-index",
+        "dictionary",
+        "c0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/probe-mapget-core",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-simple-map",
+      [],
+      [
+        ".unwrap",
+        [
+          "get",
+          [
+            "{}",
+            [
+              "c0",
+              "10"
+            ],
+            [
+              "c1",
+              "20"
+            ]
+          ],
+          "c1"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/probe-simple-map",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-str-append",
+      [],
+      [
+        "str",
+        "|",
+        "c0",
+        "c32"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/probe-str-append",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "str-nth",
+      [
+        "s",
+        "idx"
+      ],
+      [
+        "option:map",
+        [
+          "nth",
+          "s",
+          "idx"
+        ],
+        [
+          "fn",
+          [
+            "ch"
+          ],
+          [
+            "assert-type",
+            "ch",
+            "'String"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/str-nth",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'String",
+          "'Number"
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'calcit.core/Option",
+          "'String"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": [
+      {
+        "code": [
+          "do",
+          [
+            "assert=",
+            [
+              "%some",
+              "|a"
+            ],
+            [
+              "str-nth",
+              "|abc",
+              "0"
+            ]
+          ],
+          [
+            "assert=",
+            [
+              "%some",
+              "|c"
+            ],
+            [
+              "str-nth",
+              "|abc",
+              "2"
+            ]
+          ],
+          [
+            "assert=",
+            [
+              "%none"
+            ],
+            [
+              "str-nth",
+              "|abc",
+              "-1"
+            ]
+          ],
+          [
+            "assert=",
+            [
+              "%none"
+            ],
+            [
+              "str-nth",
+              "|abc",
+              "3"
+            ]
+          ],
+          [
+            "assert=",
+            [
+              "%none"
+            ],
+            [
+              "str-nth",
+              "|",
+              "0"
+            ]
+          ]
+        ],
+        "name": "boundaries",
+        "tags": [
+          "unit"
+        ]
+      }
+    ]
+  },
+  {
+    "code": [
+      "defn",
+      "str-nth!",
+      [
+        "s",
+        "idx"
+      ],
+      [
+        "option:unwrap",
+        [
+          "str-nth",
+          "s",
+          "idx"
+        ]
+      ]
+    ],
+    "doc": "Returns the character at idx, raising when the index is outside the string.",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/str-nth!",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'String",
+          "'Number"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "trim-right",
+      [
+        "x"
+      ],
+      [
+        "if",
+        [
+          "empty?",
+          "x"
+        ],
+        "x",
+        [
+          "let",
+          [
+            [
+              "end",
+              [
+                "dec",
+                [
+                  "count",
+                  "x"
+                ]
+              ]
+            ]
+          ],
+          [
+            "if",
+            [
+              "&=",
+              "|+",
+              [
+                "slice",
+                "x",
+                "end"
+              ]
+            ],
+            [
+              "recur",
+              [
+                "slice",
+                "x",
+                "0",
+                "end"
+              ]
+            ],
+            "x"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.core/trim-right",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'String"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "compare-random-ids",
+      [],
+      [
+        "loop",
+        [
+          [
+            "i",
+            "0"
+          ],
+          [
+            "x",
+            "mid-id"
+          ]
+        ],
+        [
+          "if",
+          [
+            "<",
+            "i",
+            "1000"
+          ],
+          [
+            "if",
+            [
+              ">",
+              [
+                "rand",
+                [
+                  "Option",
+                  ":none"
+                ],
+                [
+                  "Option",
+                  ":none"
+                ]
+              ],
+              "0.5"
+            ],
+            [
+              "let",
+              [
+                [
+                  "new-id",
+                  [
+                    "bisect",
+                    "x",
+                    "max-id"
+                  ]
+                ]
+              ],
+              [
+                "println",
+                "|right:",
+                [
+                  "=",
+                  "-1",
+                  [
+                    "&compare",
+                    "x",
+                    "new-id"
+                  ]
+                ],
+                "x",
+                "new-id"
+              ],
+              [
+                "recur",
+                [
+                  "inc",
+                  "i"
+                ],
+                "new-id"
+              ]
+            ],
+            [
+              "let",
+              [
+                [
+                  "new-id",
+                  [
+                    "bisect",
+                    "min-id",
+                    "x"
+                  ]
+                ]
+              ],
+              [
+                "println",
+                "|left: ",
+                [
+                  "=",
+                  "1",
+                  [
+                    "&compare",
+                    "x",
+                    "new-id"
+                  ]
+                ],
+                "x",
+                "new-id"
+              ],
+              [
+                "recur",
+                [
+                  "inc",
+                  "i"
+                ],
+                "new-id"
+              ]
+            ]
+          ]
+        ]
+      ],
+      "&unit"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.main/compare-random-ids",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "list-appending-results",
+      [],
+      [
+        "loop",
+        [
+          [
+            "i",
+            "0"
+          ],
+          [
+            "x",
+            "mid-id"
+          ]
+        ],
+        [
+          "let",
+          [
+            [
+              "new-id",
+              [
+                "bisect",
+                "x",
+                "max-id"
+              ]
+            ]
+          ],
+          [
+            "println",
+            "|generating id:",
+            "new-id"
+          ],
+          [
+            "if",
+            [
+              "<=",
+              "i",
+              "40"
+            ],
+            [
+              "recur",
+              [
+                "inc",
+                "i"
+              ],
+              "new-id"
+            ],
+            "x"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.main/list-appending-results",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "main!",
+      [],
+      [
+        "run-bisection!"
+      ],
+      [
+        "println",
+        "|App started."
+      ],
+      "&unit"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.main/main!",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "reload!",
+      [],
+      [
+        "run-bisection!"
+      ],
+      [
+        "println",
+        "|Code updated."
+      ],
+      "&unit"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.main/reload!",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "run-bisection!",
+      [],
+      [
+        ";",
+        "compare-random-ids"
+      ],
+      [
+        ";",
+        "list-appending-results"
+      ],
+      [
+        ";",
+        "println",
+        [
+          "bisect",
+          "|yyyz",
+          "|z"
+        ]
+      ],
+      [
+        ";",
+        "println",
+        [
+          "bisect",
+          "|1",
+          "|2"
+        ]
+      ],
+      [
+        ";",
+        "println",
+        [
+          "bisect",
+          "|uvx",
+          "|uw"
+        ]
+      ],
+      [
+        ";",
+        "println",
+        [
+          "bisect",
+          "|sz",
+          "|t"
+        ]
+      ],
+      [
+        ";",
+        "loop",
+        [
+          [
+            "i",
+            "0"
+          ],
+          [
+            "x",
+            "mid-id"
+          ]
+        ],
+        [
+          "let",
+          [
+            [
+              "new-id",
+              [
+                "bisect",
+                "x",
+                "|"
+              ]
+            ]
+          ],
+          [
+            "println",
+            "i",
+            "x"
+          ],
+          [
+            "if",
+            [
+              "<=",
+              "i",
+              "400"
+            ],
+            [
+              "recur",
+              [
+                "inc",
+                "i"
+              ],
+              "new-id"
+            ],
+            "x"
+          ]
+        ]
+      ],
+      [
+        "loop",
+        [
+          [
+            "i",
+            "0"
+          ],
+          [
+            "x",
+            "|a"
+          ]
+        ],
+        [
+          "hint-fn",
+          [
+            "{}",
+            [
+              ":args",
+              [
+                "[]",
+                "'Number",
+                "'String"
+              ]
+            ],
+            [
+              ":return",
+              "'Unit"
+            ]
+          ]
+        ],
+        [
+          "let",
+          [
+            [
+              "new-id",
+              [
+                "bisect",
+                "x",
+                "|x"
+              ]
+            ]
+          ],
+          [
+            "println",
+            "i",
+            "x"
+          ],
+          [
+            "if",
+            [
+              "<=",
+              "i",
+              "100"
+            ],
+            [
+              "recur",
+              [
+                "inc",
+                "i"
+              ],
+              "new-id"
+            ],
+            "&unit"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.main/run-bisection!",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "filter-not-zero-end",
+      [
+        "xs"
+      ],
+      [
+        "filter",
+        "xs",
+        [
+          "fn",
+          [
+            "k"
+          ],
+          [
+            "not=",
+            [
+              "&str:slice",
+              "k",
+              [
+                "dec",
+                [
+                  "&str:count",
+                  "k"
+                ]
+              ],
+              [
+                "&str:count",
+                "k"
+              ]
+            ],
+            "|+"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/filter-not-zero-end",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'List",
+            "'String"
+          ]
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'List",
+          "'String"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "nth-or-empty",
+      [
+        "xs",
+        "i"
+      ],
+      [
+        "option:unwrap-or",
+        [
+          "nth",
+          "xs",
+          "i"
+        ],
+        "|"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/nth-or-empty",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'List",
+            "'String"
+          ],
+          "'Number"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "run-tests",
+      [],
+      [
+        "test-append"
+      ],
+      [
+        "test-assoc"
+      ],
+      [
+        "test-bisect"
+      ],
+      [
+        "test-bisect-exhaustive"
+      ],
+      [
+        "test-bisect-random"
+      ],
+      [
+        "test-growth-bounds"
+      ],
+      [
+        "test-frequent-append"
+      ],
+      [
+        "test-frequent-prepend"
+      ],
+      [
+        "test-get-key"
+      ],
+      [
+        "test-key-after"
+      ],
+      [
+        "test-key-before"
+      ],
+      [
+        "test-prepend"
+      ],
+      [
+        "test-shorten"
+      ],
+      [
+        "test-nth-ops"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/run-tests",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "test-append",
+      [],
+      [
+        "is",
+        [
+          "=",
+          [
+            "key-append",
+            [
+              "{}"
+            ]
+          ],
+          "mid-id"
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "key-append",
+            [
+              "{}",
+              [
+                "|a",
+                "1"
+              ]
+            ]
+          ],
+          "|g"
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "assoc-append",
+            [
+              "{}",
+              [
+                "|a",
+                "1"
+              ]
+            ],
+            "2"
+          ],
+          [
+            "{}",
+            [
+              "|a",
+              "1"
+            ],
+            [
+              "|g",
+              "2"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/test-append",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "test-assoc",
+      [],
+      [
+        "is",
+        [
+          "=",
+          [
+            "assoc-before",
+            [
+              "&{}",
+              "|a",
+              "1",
+              "|b",
+              "1"
+            ],
+            "|a",
+            "2"
+          ],
+          [
+            "&{}",
+            "|a",
+            "1",
+            "|b",
+            "1",
+            "|Q",
+            "2"
+          ]
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "assoc-after",
+            [
+              "&{}",
+              "|a",
+              "1",
+              "|b",
+              "1"
+            ],
+            "|a",
+            "2"
+          ],
+          [
+            "&{}",
+            "|a",
+            "1",
+            "|b",
+            "1",
+            "|aT",
+            "2"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/test-assoc",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "test-bisect",
+      [],
+      [
+        "is",
+        [
+          "=",
+          [
+            "bisect",
+            "|1",
+            "|2"
+          ],
+          "|1T"
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "bisect",
+            "|1",
+            "|3"
+          ],
+          "|2"
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "bisect",
+            "|1",
+            "|4"
+          ],
+          "|2"
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "bisect",
+            "|1",
+            "|5"
+          ],
+          "|3"
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "bisect",
+            "|11",
+            "|12"
+          ],
+          "|11T"
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "bisect",
+            "|11",
+            "|13"
+          ],
+          "|12"
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "bisect",
+            "|11",
+            "|14"
+          ],
+          "|12"
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "bisect",
+            "|11",
+            "|15"
+          ],
+          "|13"
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "bisect",
+            "|yyyz",
+            "|z"
+          ],
+          "|yz"
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "bisect",
+            "|uvx",
+            "|uw"
+          ],
+          "|uvy"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/test-bisect",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "test-bisect-exhaustive",
+      [],
+      [
+        "let",
+        [
+          [
+            "alphabet",
+            [
+              "[]",
+              "|+",
+              "|-",
+              "|/",
+              "|T",
+              "|y",
+              "|z"
+            ]
+          ],
+          [
+            "ones",
+            [
+              "filter",
+              "alphabet",
+              [
+                "fn",
+                [
+                  "c"
+                ],
+                [
+                  "not=",
+                  "c",
+                  "|+"
+                ]
+              ]
+            ]
+          ],
+          [
+            "twos",
+            [
+              "mapcat",
+              "alphabet",
+              [
+                "fn",
+                [
+                  "a"
+                ],
+                [
+                  "map",
+                  "alphabet",
+                  [
+                    "fn",
+                    [
+                      "b"
+                    ],
+                    [
+                      "str",
+                      "a",
+                      "b"
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          [
+            "threes",
+            [
+              "mapcat",
+              "twos",
+              [
+                "fn",
+                [
+                  "a"
+                ],
+                [
+                  "map",
+                  "alphabet",
+                  [
+                    "fn",
+                    [
+                      "b"
+                    ],
+                    [
+                      "str",
+                      "a",
+                      "b"
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          [
+            "all-keys",
+            [
+              "concat",
+              [
+                "filter-not-zero-end",
+                "ones"
+              ],
+              [
+                "filter-not-zero-end",
+                "twos"
+              ],
+              [
+                "filter-not-zero-end",
+                "threes"
+              ]
+            ]
+          ]
+        ],
+        [
+          "is",
+          [
+            "every?",
+            "all-keys",
+            [
+              "fn",
+              [
+                "x"
+              ],
+              [
+                "every?",
+                [
+                  "concat",
+                  "all-keys",
+                  [
+                    "[]",
+                    "|"
+                  ]
+                ],
+                [
+                  "fn",
+                  [
+                    "y"
+                  ],
+                  [
+                    "if",
+                    [
+                      "and",
+                      [
+                        "not=",
+                        "x",
+                        "y"
+                      ],
+                      [
+                        "or",
+                        [
+                          "=",
+                          "y",
+                          "|"
+                        ],
+                        [
+                          "&<",
+                          [
+                            "&compare",
+                            "x",
+                            "y"
+                          ],
+                          "0"
+                        ]
+                      ]
+                    ],
+                    [
+                      "valid-between?",
+                      "x",
+                      "y"
+                    ],
+                    "true"
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          "is",
+          [
+            "every?",
+            "all-keys",
+            [
+              "fn",
+              [
+                "y"
+              ],
+              [
+                "valid-between?",
+                "min-id",
+                "y"
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/test-bisect-exhaustive",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "test-bisect-random",
+      [],
+      [
+        "let",
+        [
+          [
+            "result",
+            [
+              "loop",
+              [
+                [
+                  "i",
+                  "0"
+                ],
+                [
+                  "seed",
+                  "12345"
+                ],
+                [
+                  "ks",
+                  [
+                    "[]",
+                    "mid-id"
+                  ]
+                ]
+              ],
+              [
+                "hint-fn",
+                [
+                  "{}",
+                  [
+                    ":args",
+                    [
+                      "[]",
+                      "'Number",
+                      "'Number",
+                      [
+                        "::",
+                        "'List",
+                        "'String"
+                      ]
+                    ]
+                  ],
+                  [
+                    ":return",
+                    [
+                      "::",
+                      "'List",
+                      "'String"
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "if",
+                [
+                  ">=",
+                  "i",
+                  "2000"
+                ],
+                "ks",
+                [
+                  "let",
+                  [
+                    [
+                      "next-seed",
+                      [
+                        "&number:rem",
+                        [
+                          "&+",
+                          "74",
+                          [
+                            "&*",
+                            "seed",
+                            "75"
+                          ]
+                        ],
+                        "65537"
+                      ]
+                    ],
+                    [
+                      "total",
+                      [
+                        "count",
+                        "ks"
+                      ]
+                    ],
+                    [
+                      "pos",
+                      [
+                        "&number:rem",
+                        "next-seed",
+                        [
+                          "inc",
+                          "total"
+                        ]
+                      ]
+                    ],
+                    [
+                      "sorted",
+                      [
+                        "sort",
+                        "ks",
+                        "&compare"
+                      ]
+                    ],
+                    [
+                      "a",
+                      [
+                        "if",
+                        [
+                          "=",
+                          "pos",
+                          "0"
+                        ],
+                        "|",
+                        [
+                          "nth-or-empty",
+                          "sorted",
+                          [
+                            "dec",
+                            "pos"
+                          ]
+                        ]
+                      ]
+                    ],
+                    [
+                      "b",
+                      [
+                        "if",
+                        [
+                          "=",
+                          "pos",
+                          "total"
+                        ],
+                        "|",
+                        [
+                          "nth-or-empty",
+                          "sorted",
+                          "pos"
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "recur",
+                    [
+                      "inc",
+                      "i"
+                    ],
+                    "next-seed",
+                    [
+                      "conj",
+                      "sorted",
+                      [
+                        "bisect",
+                        "a",
+                        "b"
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          [
+            "sorted",
+            [
+              "sort",
+              "result",
+              "&compare"
+            ]
+          ]
+        ],
+        [
+          "is",
+          [
+            "&=",
+            "2001",
+            [
+              "&set:count",
+              [
+                "&list:to-set",
+                "result"
+              ]
+            ]
+          ]
+        ],
+        [
+          "is",
+          [
+            "every?",
+            "sorted",
+            [
+              "fn",
+              [
+                "k"
+              ],
+              [
+                "<=",
+                [
+                  "&str:count",
+                  "k"
+                ],
+                "8"
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "deterministic pseudo-random insertions keep order and stay short",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/test-bisect-random",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "test-frequent-append",
+      [],
+      [
+        "is",
+        [
+          "=",
+          [
+            "loop",
+            [
+              [
+                "i",
+                "0"
+              ],
+              [
+                "x",
+                "mid-id"
+              ]
+            ],
+            [
+              "hint-fn",
+              [
+                "{}",
+                [
+                  ":args",
+                  [
+                    "[]",
+                    "'Number",
+                    "'String"
+                  ]
+                ],
+                [
+                  ":return",
+                  "'String"
+                ]
+              ]
+            ],
+            [
+              "let",
+              [
+                [
+                  "new-id",
+                  [
+                    "bisect",
+                    "x",
+                    "max-id"
+                  ]
+                ]
+              ],
+              [
+                "if",
+                [
+                  "<=",
+                  "i",
+                  "40"
+                ],
+                [
+                  "recur",
+                  [
+                    "inc",
+                    "i"
+                  ],
+                  "new-id"
+                ],
+                "x"
+              ]
+            ]
+          ],
+          "|zzx"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/test-frequent-append",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "test-frequent-prepend",
+      [],
+      [
+        "is",
+        [
+          "=",
+          [
+            "loop",
+            [
+              [
+                "i",
+                "0"
+              ],
+              [
+                "x",
+                "max-id"
+              ]
+            ],
+            [
+              "hint-fn",
+              [
+                "{}",
+                [
+                  ":args",
+                  [
+                    "[]",
+                    "'Number",
+                    "'String"
+                  ]
+                ],
+                [
+                  ":return",
+                  "'String"
+                ]
+              ]
+            ],
+            [
+              "let",
+              [
+                [
+                  "new-id",
+                  [
+                    "bisect",
+                    "min-id",
+                    "x"
+                  ]
+                ]
+              ],
+              [
+                "if",
+                [
+                  "<=",
+                  "i",
+                  "40"
+                ],
+                [
+                  "recur",
+                  [
+                    "inc",
+                    "i"
+                  ],
+                  "new-id"
+                ],
+                "x"
+              ]
+            ]
+          ],
+          "|++++F"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/test-frequent-prepend",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "test-get-key",
+      [],
+      "|get min key",
+      [
+        "is",
+        [
+          "=",
+          "|a",
+          [
+            "option:unwrap",
+            [
+              "get-min-key",
+              [
+                "{}",
+                [
+                  "|a",
+                  "1"
+                ],
+                [
+                  "|b",
+                  "2"
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      "|get max key",
+      [
+        "is",
+        [
+          "=",
+          "|b",
+          [
+            "option:unwrap",
+            [
+              "get-max-key",
+              [
+                "{}",
+                [
+                  "|a",
+                  "1"
+                ],
+                [
+                  "|b",
+                  "2"
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      "|get nil",
+      [
+        "is",
+        [
+          "option:none?",
+          [
+            "get-min-key",
+            [
+              "{}"
+            ]
+          ]
+        ]
+      ],
+      [
+        "is",
+        [
+          "option:none?",
+          [
+            "get-max-key",
+            [
+              "{}"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/test-get-key",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "test-growth-bounds",
+      [],
+      [
+        "is",
+        [
+          ">=",
+          "70",
+          [
+            "&str:count",
+            [
+              "loop",
+              [
+                [
+                  "i",
+                  "0"
+                ],
+                [
+                  "x",
+                  "mid-id"
+                ]
+              ],
+              [
+                "hint-fn",
+                [
+                  "{}",
+                  [
+                    ":args",
+                    [
+                      "[]",
+                      "'Number",
+                      "'String"
+                    ]
+                  ],
+                  [
+                    ":return",
+                    "'String"
+                  ]
+                ]
+              ],
+              [
+                "if",
+                [
+                  ">=",
+                  "i",
+                  "1000"
+                ],
+                "x",
+                [
+                  "recur",
+                  [
+                    "inc",
+                    "i"
+                  ],
+                  [
+                    "bisect",
+                    "x",
+                    "max-id"
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      [
+        "is",
+        [
+          ">=",
+          "105",
+          [
+            "&str:count",
+            [
+              "loop",
+              [
+                [
+                  "i",
+                  "0"
+                ],
+                [
+                  "x",
+                  "mid-id"
+                ]
+              ],
+              [
+                "hint-fn",
+                [
+                  "{}",
+                  [
+                    ":args",
+                    [
+                      "[]",
+                      "'Number",
+                      "'String"
+                    ]
+                  ],
+                  [
+                    ":return",
+                    "'String"
+                  ]
+                ]
+              ],
+              [
+                "if",
+                [
+                  ">=",
+                  "i",
+                  "1000"
+                ],
+                "x",
+                [
+                  "recur",
+                  [
+                    "inc",
+                    "i"
+                  ],
+                  [
+                    "bisect",
+                    "min-id",
+                    "x"
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "append/prepend 1000 times should stay within ~1 char per 15 appends and ~1 per 10 prepends",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/test-growth-bounds",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "test-key-after",
+      [],
+      [
+        "is",
+        [
+          "=",
+          [
+            "key-after",
+            [
+              "{}",
+              [
+                "|a",
+                "1"
+              ],
+              [
+                "|b",
+                "1"
+              ]
+            ],
+            "|a"
+          ],
+          "|aT"
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "key-after",
+            [
+              "{}",
+              [
+                "|a",
+                "1"
+              ],
+              [
+                "|b",
+                "1"
+              ]
+            ],
+            "|b"
+          ],
+          "|h"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/test-key-after",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "test-key-before",
+      [],
+      [
+        "is",
+        [
+          "=",
+          [
+            "key-before",
+            [
+              "{}",
+              [
+                "|a",
+                "1"
+              ],
+              [
+                "|b",
+                "1"
+              ]
+            ],
+            "|a"
+          ],
+          "|Q"
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "key-before",
+            [
+              "{}",
+              [
+                "|a",
+                "1"
+              ],
+              [
+                "|b",
+                "1"
+              ]
+            ],
+            "|b"
+          ],
+          "|aT"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/test-key-before",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "test-nth-ops",
+      [],
+      [
+        "let",
+        [
+          [
+            "v",
+            [
+              "{}",
+              [
+                "|a",
+                "1"
+              ],
+              [
+                "|b",
+                "2"
+              ],
+              [
+                "|c",
+                "3"
+              ]
+            ]
+          ]
+        ],
+        "|get key at nth",
+        [
+          "is",
+          [
+            "not",
+            [
+              "has-nth?",
+              "v",
+              "-1"
+            ]
+          ]
+        ],
+        [
+          "is",
+          [
+            "=",
+            "|a",
+            [
+              "option:unwrap",
+              [
+                "key-nth",
+                "v",
+                "0"
+              ]
+            ]
+          ]
+        ],
+        [
+          "is",
+          [
+            "=",
+            "|b",
+            [
+              "option:unwrap",
+              [
+                "key-nth",
+                "v",
+                "1"
+              ]
+            ]
+          ]
+        ],
+        [
+          "is",
+          [
+            "=",
+            "|c",
+            [
+              "option:unwrap",
+              [
+                "key-nth",
+                "v",
+                "2"
+              ]
+            ]
+          ]
+        ],
+        [
+          "is",
+          [
+            "option:none?",
+            [
+              "key-nth",
+              "v",
+              "3"
+            ]
+          ]
+        ],
+        "|get val at nth",
+        [
+          "is",
+          [
+            "=",
+            "1",
+            [
+              "option:unwrap",
+              [
+                "val-nth",
+                "v",
+                "0"
+              ]
+            ]
+          ]
+        ],
+        [
+          "is",
+          [
+            "=",
+            "2",
+            [
+              "option:unwrap",
+              [
+                "val-nth",
+                "v",
+                "1"
+              ]
+            ]
+          ]
+        ],
+        [
+          "is",
+          [
+            "=",
+            "3",
+            [
+              "option:unwrap",
+              [
+                "val-nth",
+                "v",
+                "2"
+              ]
+            ]
+          ]
+        ],
+        [
+          "is",
+          [
+            "option:none?",
+            [
+              "val-nth",
+              "v",
+              "3"
+            ]
+          ]
+        ],
+        "|treat negative string indexes as out of bounds",
+        [
+          "is",
+          [
+            "option:none?",
+            [
+              "str-nth",
+              "|abc",
+              "-1"
+            ]
+          ]
+        ],
+        "|set value at nth",
+        [
+          "is",
+          [
+            "=",
+            [
+              "assoc",
+              "v",
+              "|a",
+              "4"
+            ],
+            [
+              "assoc-nth",
+              "v",
+              "0",
+              "4"
+            ]
+          ]
+        ],
+        "|set value before nth",
+        [
+          "is",
+          [
+            "=",
+            [
+              "assoc",
+              "v",
+              "|aT",
+              "4"
+            ],
+            [
+              "assoc-before-nth",
+              "v",
+              "1",
+              "4"
+            ]
+          ]
+        ],
+        "|set value after nth",
+        [
+          "is",
+          [
+            "=",
+            [
+              "assoc",
+              "v",
+              "|bT",
+              "4"
+            ],
+            [
+              "assoc-after-nth",
+              "v",
+              "1",
+              "4"
+            ]
+          ]
+        ],
+        "|find key index a",
+        [
+          "is",
+          [
+            "=",
+            "0",
+            [
+              "option:unwrap",
+              [
+                "key-index-of",
+                "v",
+                "|a"
+              ]
+            ]
+          ]
+        ],
+        "|find key index c",
+        [
+          "is",
+          [
+            "=",
+            "2",
+            [
+              "option:unwrap",
+              [
+                "key-index-of",
+                "v",
+                "|c"
+              ]
+            ]
+          ]
+        ],
+        "|find key index missing",
+        [
+          "is",
+          [
+            "option:none?",
+            [
+              "key-index-of",
+              "v",
+              "|d"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/test-nth-ops",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "test-prepend",
+      [],
+      [
+        "is",
+        [
+          "=",
+          [
+            "key-prepend",
+            [
+              "{}"
+            ]
+          ],
+          "mid-id"
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "key-prepend",
+            [
+              "{}",
+              [
+                "|a",
+                "1"
+              ]
+            ]
+          ],
+          "|Q"
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          [
+            "assoc-prepend",
+            [
+              "{}",
+              [
+                "|a",
+                "1"
+              ]
+            ],
+            "2"
+          ],
+          [
+            "{}",
+            [
+              "|a",
+              "1"
+            ],
+            [
+              "|Q",
+              "2"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/test-prepend",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "test-shorten",
+      [],
+      [
+        "is",
+        [
+          "=",
+          "|c",
+          [
+            "bisect",
+            "|a34fd",
+            "|f3554"
+          ]
+        ]
+      ],
+      [
+        "is",
+        [
+          "=",
+          "|a35",
+          [
+            "bisect",
+            "|a34fd",
+            "|a3554"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/test-shorten",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Unit"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "valid-between?",
+      [
+        "x",
+        "y"
+      ],
+      [
+        "let",
+        [
+          [
+            "r",
+            [
+              "bisect",
+              "x",
+              "y"
+            ]
+          ]
+        ],
+        [
+          "and",
+          [
+            "&<",
+            [
+              "&compare",
+              "x",
+              "r"
+            ],
+            "0"
+          ],
+          [
+            "or",
+            [
+              "=",
+              "y",
+              "|"
+            ],
+            [
+              "&<",
+              [
+                "&compare",
+                "r",
+                "y"
+              ],
+              "0"
+            ]
+          ],
+          [
+            "not=",
+            [
+              "&str:slice",
+              "r",
+              [
+                "dec",
+                [
+                  "&str:count",
+                  "r"
+                ]
+              ],
+              [
+                "&str:count",
+                "r"
+              ]
+            ],
+            "|+"
+          ]
+        ]
+      ]
+    ],
+    "doc": "bisect x y must land strictly between them and must not end with the zero char",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.test/valid-between?",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Bool"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          "'String",
+          "'String"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "assoc-after",
+      [
+        "dict",
+        "base-key",
+        "v"
+      ],
+      [
+        "let",
+        [
+          [
+            "new-key",
+            [
+              "key-after",
+              "dict",
+              "base-key"
+            ]
+          ]
+        ],
+        [
+          "assoc",
+          "dict",
+          "new-key",
+          "v"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/assoc-after",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ],
+          "'String",
+          "'T"
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'Map",
+          "'String",
+          "'T"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "assoc-after-nth",
+      [
+        "x",
+        "n",
+        "v"
+      ],
+      [
+        "when-not",
+        [
+          "has-nth?",
+          "x",
+          "n"
+        ],
+        [
+          "raise",
+          "|Succeeded map size"
+        ]
+      ],
+      [
+        "let",
+        [
+          [
+            "k",
+            [
+              "option:unwrap",
+              [
+                "key-nth",
+                "x",
+                "n"
+              ]
+            ]
+          ]
+        ],
+        [
+          "assoc-after",
+          "x",
+          "k",
+          "v"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/assoc-after-nth",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ],
+          "'Number",
+          "'T"
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'Map",
+          "'String",
+          "'T"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "assoc-append",
+      [
+        "dict",
+        "v"
+      ],
+      [
+        "assert",
+        [
+          "map?",
+          "dict"
+        ],
+        "|dict should be a map"
+      ],
+      [
+        "let",
+        [
+          [
+            "k",
+            [
+              "key-append",
+              "dict"
+            ]
+          ]
+        ],
+        [
+          "assoc",
+          "dict",
+          "k",
+          "v"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/assoc-append",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ],
+          "'T"
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'Map",
+          "'String",
+          "'T"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "assoc-before",
+      [
+        "dict",
+        "base-key",
+        "v"
+      ],
+      [
+        "let",
+        [
+          [
+            "new-key",
+            [
+              "key-before",
+              "dict",
+              "base-key"
+            ]
+          ]
+        ],
+        [
+          "assoc",
+          "dict",
+          "new-key",
+          "v"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/assoc-before",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ],
+          "'String",
+          "'T"
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'Map",
+          "'String",
+          "'T"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "assoc-before-nth",
+      [
+        "x",
+        "n",
+        "v"
+      ],
+      [
+        "when-not",
+        [
+          "has-nth?",
+          "x",
+          "n"
+        ],
+        [
+          "raise",
+          "|Succeeded map size"
+        ]
+      ],
+      [
+        "let",
+        [
+          [
+            "k",
+            [
+              "option:unwrap",
+              [
+                "key-nth",
+                "x",
+                "n"
+              ]
+            ]
+          ]
+        ],
+        [
+          "assoc-before",
+          "x",
+          "k",
+          "v"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/assoc-before-nth",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ],
+          "'Number",
+          "'T"
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'Map",
+          "'String",
+          "'T"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "assoc-nth",
+      [
+        "x",
+        "n",
+        "v"
+      ],
+      [
+        "when-not",
+        [
+          "has-nth?",
+          "x",
+          "n"
+        ],
+        [
+          "raise",
+          "|Succeeded map size"
+        ]
+      ],
+      [
+        "let",
+        [
+          [
+            "k",
+            [
+              "option:unwrap",
+              [
+                "key-nth",
+                "x",
+                "n"
+              ]
+            ]
+          ]
+        ],
+        [
+          "assoc",
+          "x",
+          "k",
+          "v"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/assoc-nth",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ],
+          "'Number",
+          "'T"
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'Map",
+          "'String",
+          "'T"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "assoc-prepend",
+      [
+        "dict",
+        "v"
+      ],
+      [
+        "assert",
+        [
+          "map?",
+          "dict"
+        ],
+        "|dict should be a map"
+      ],
+      [
+        "let",
+        [
+          [
+            "k",
+            [
+              "key-prepend",
+              "dict"
+            ]
+          ]
+        ],
+        [
+          "assoc",
+          "dict",
+          "k",
+          "v"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/assoc-prepend",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ],
+          "'T"
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'Map",
+          "'String",
+          "'T"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "get-max-key",
+      [
+        "x"
+      ],
+      [
+        "let",
+        [
+          [
+            "key-list",
+            [
+              "&set:to-list",
+              [
+                "keys",
+                "x"
+              ]
+            ]
+          ]
+        ],
+        [
+          "assert-type",
+          "key-list",
+          [
+            "::",
+            "'List",
+            "'String"
+          ]
+        ],
+        [
+          "let",
+          [
+            [
+              "sorted-keys",
+              [
+                "sort",
+                "key-list"
+              ]
+            ]
+          ],
+          [
+            "assert-type",
+            "sorted-keys",
+            [
+              "::",
+              "'List",
+              "'String"
+            ]
+          ],
+          [
+            "if",
+            [
+              "empty?",
+              "sorted-keys"
+            ],
+            [
+              "Option",
+              ":none"
+            ],
+            [
+              "let",
+              [
+                [
+                  "result",
+                  [
+                    "&list:nth",
+                    "sorted-keys",
+                    [
+                      "dec",
+                      [
+                        "count",
+                        "sorted-keys"
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "assert-type",
+                "result",
+                "'String"
+              ],
+              [
+                "Option",
+                ":some",
+                "result"
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/get-max-key",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ]
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'calcit.core/Option",
+          "'String"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "get-min-key",
+      [
+        "x"
+      ],
+      [
+        "let",
+        [
+          [
+            "key-list",
+            [
+              "&set:to-list",
+              [
+                "keys",
+                "x"
+              ]
+            ]
+          ]
+        ],
+        [
+          "assert-type",
+          "key-list",
+          [
+            "::",
+            "'List",
+            "'String"
+          ]
+        ],
+        [
+          "let",
+          [
+            [
+              "sorted-keys",
+              [
+                "sort",
+                "key-list"
+              ]
+            ]
+          ],
+          [
+            "assert-type",
+            "sorted-keys",
+            [
+              "::",
+              "'List",
+              "'String"
+            ]
+          ],
+          [
+            "if",
+            [
+              "empty?",
+              "sorted-keys"
+            ],
+            [
+              "Option",
+              ":none"
+            ],
+            [
+              "let",
+              [
+                [
+                  "result",
+                  [
+                    "&list:nth",
+                    "sorted-keys",
+                    "0"
+                  ]
+                ]
+              ],
+              [
+                "assert-type",
+                "result",
+                "'String"
+              ],
+              [
+                "Option",
+                ":some",
+                "result"
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/get-min-key",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ]
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'calcit.core/Option",
+          "'String"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "has-nth?",
+      [
+        "x",
+        "n"
+      ],
+      [
+        "and",
+        [
+          ">=",
+          "n",
+          "0"
+        ],
+        [
+          "<",
+          "n",
+          [
+            "count",
+            "x"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/has-nth?",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Bool"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ],
+          "'Number"
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "key-after",
+      [
+        "dict",
+        "base-key"
+      ],
+      [
+        "assert",
+        [
+          "string?",
+          "base-key"
+        ],
+        "|base-key should be string"
+      ],
+      [
+        "assert",
+        [
+          "map?",
+          "dict"
+        ],
+        "|dict should be a map"
+      ],
+      [
+        "let",
+        [
+          [
+            "keys-set",
+            [
+              "keys",
+              "dict"
+            ]
+          ],
+          [
+            "existing-keys",
+            [
+              "sort",
+              [
+                "&set:to-list",
+                "keys-set"
+              ],
+              "&compare"
+            ]
+          ]
+        ],
+        [
+          "assert-type",
+          "existing-keys",
+          [
+            "::",
+            "'List",
+            "'String"
+          ]
+        ],
+        [
+          "assert",
+          [
+            "&set:includes?",
+            "keys-set",
+            "base-key"
+          ],
+          "|base-key should be existed"
+        ],
+        [
+          "let",
+          [
+            [
+              "position",
+              [
+                "option:unwrap",
+                [
+                  "index-of",
+                  "existing-keys",
+                  "base-key"
+                ]
+              ]
+            ]
+          ],
+          [
+            "bisect",
+            "base-key",
+            [
+              "if",
+              [
+                "=",
+                "position",
+                [
+                  "dec",
+                  [
+                    "count",
+                    "existing-keys"
+                  ]
+                ]
+              ],
+              "max-id",
+              [
+                "&list:nth",
+                "existing-keys",
+                [
+                  "inc",
+                  "position"
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/key-after",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ],
+          "'String"
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "key-append",
+      [
+        "dict"
+      ],
+      [
+        "assert",
+        [
+          "map?",
+          "dict"
+        ],
+        "|dict should be a map"
+      ],
+      [
+        "if",
+        [
+          "empty?",
+          "dict"
+        ],
+        "mid-id",
+        [
+          "bisect",
+          [
+            "option:unwrap",
+            [
+              "get-max-key",
+              "dict"
+            ]
+          ],
+          "max-id"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/key-append",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ]
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "key-before",
+      [
+        "dict",
+        "base-key"
+      ],
+      [
+        "assert",
+        [
+          "string?",
+          "base-key"
+        ],
+        "|base-key should be string"
+      ],
+      [
+        "assert",
+        [
+          "map?",
+          "dict"
+        ],
+        "|dict should be a map"
+      ],
+      [
+        "let",
+        [
+          [
+            "keys-set",
+            [
+              "keys",
+              "dict"
+            ]
+          ],
+          [
+            "existing-keys",
+            [
+              "sort",
+              [
+                "&set:to-list",
+                "keys-set"
+              ],
+              "&compare"
+            ]
+          ]
+        ],
+        [
+          "assert-type",
+          "existing-keys",
+          [
+            "::",
+            "'List",
+            "'String"
+          ]
+        ],
+        [
+          "assert",
+          [
+            "&set:includes?",
+            "keys-set",
+            "base-key"
+          ],
+          "|base-key should be existed"
+        ],
+        [
+          "let",
+          [
+            [
+              "position",
+              [
+                "option:unwrap",
+                [
+                  "index-of",
+                  "existing-keys",
+                  "base-key"
+                ]
+              ]
+            ]
+          ],
+          [
+            "bisect",
+            [
+              "if",
+              [
+                "=",
+                "0",
+                "position"
+              ],
+              "min-id",
+              [
+                "&list:nth",
+                "existing-keys",
+                [
+                  "dec",
+                  "position"
+                ]
+              ]
+            ],
+            "base-key"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/key-before",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ],
+          "'String"
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "key-index-of",
+      [
+        "x",
+        "k"
+      ],
+      [
+        "let",
+        [
+          [
+            "ks",
+            [
+              "sort",
+              [
+                "&set:to-list",
+                [
+                  "keys",
+                  "x"
+                ]
+              ],
+              "&compare"
+            ]
+          ]
+        ],
+        [
+          "index-of",
+          "ks",
+          "k"
+        ]
+      ]
+    ],
+    "doc": "find index of `k`, returns `nil` if not found",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/key-index-of",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ],
+          "'String"
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'calcit.core/Option",
+          "'Number"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "key-nth",
+      [
+        "x",
+        "n"
+      ],
+      [
+        "let",
+        [
+          [
+            "key-list",
+            [
+              "&set:to-list",
+              [
+                "keys",
+                "x"
+              ]
+            ]
+          ]
+        ],
+        [
+          "assert-type",
+          "key-list",
+          [
+            "::",
+            "'List",
+            "'String"
+          ]
+        ],
+        [
+          "let",
+          [
+            [
+              "sorted-keys",
+              [
+                "sort",
+                "key-list"
+              ]
+            ]
+          ],
+          [
+            "assert-type",
+            "sorted-keys",
+            [
+              "::",
+              "'List",
+              "'String"
+            ]
+          ],
+          [
+            "if",
+            [
+              "or",
+              [
+                "<",
+                "n",
+                "0"
+              ],
+              [
+                ">=",
+                "n",
+                [
+                  "count",
+                  "sorted-keys"
+                ]
+              ]
+            ],
+            [
+              "Option",
+              ":none"
+            ],
+            [
+              "let",
+              [
+                [
+                  "result",
+                  [
+                    "&list:nth",
+                    "sorted-keys",
+                    "n"
+                  ]
+                ]
+              ],
+              [
+                "assert-type",
+                "result",
+                "'String"
+              ],
+              [
+                "Option",
+                ":some",
+                "result"
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/key-nth",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ],
+          "'Number"
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'calcit.core/Option",
+          "'String"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "key-prepend",
+      [
+        "dict"
+      ],
+      [
+        "assert",
+        [
+          "map?",
+          "dict"
+        ],
+        "|dict should be a map"
+      ],
+      [
+        "if",
+        [
+          "empty?",
+          "dict"
+        ],
+        "mid-id",
+        [
+          "bisect",
+          "min-id",
+          [
+            "option:unwrap",
+            [
+              "get-min-key",
+              "dict"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/key-prepend",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ]
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "val-nth",
+      [
+        "x",
+        "n"
+      ],
+      [
+        "match",
+        [
+          "key-nth",
+          "x",
+          "n"
+        ],
+        [
+          [
+            ":some",
+            "key"
+          ],
+          [
+            "get",
+            "x",
+            "key"
+          ]
+        ],
+        [
+          [
+            ":none"
+          ],
+          [
+            "Option",
+            ":none"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.util/val-nth",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":args",
+        [
+          "[]",
+          [
+            "::",
+            "'Map",
+            "'String",
+            "'T"
+          ],
+          "'Number"
+        ]
+      ],
+      [
+        ":generics",
+        [
+          "[]",
+          "'T"
+        ]
+      ],
+      [
+        ":return",
+        [
+          "::",
+          "'calcit.core/Option",
+          "'T"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-all-count",
+      [],
+      [
+        "&+",
+        [
+          "probe-bisect-basic"
+        ],
+        [
+          "probe-bisect-strings"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-all-count",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-assert-neq",
+      [],
+      [
+        "if",
+        [
+          "not=",
+          "|1",
+          "|2"
+        ],
+        "1",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-assert-neq",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-assert-order",
+      [],
+      [
+        "if",
+        [
+          "or",
+          [
+            "&=",
+            "|2",
+            "|"
+          ],
+          [
+            "<",
+            [
+              "&compare",
+              "|1",
+              "|2"
+            ],
+            "0"
+          ]
+        ],
+        "1",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-assert-order",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-assert-str",
+      [],
+      [
+        "and",
+        [
+          "string?",
+          "|1"
+        ],
+        [
+          "string?",
+          "|2"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-assert-str",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Bool"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-assert1",
+      [],
+      [
+        "and",
+        [
+          "string?",
+          "|1"
+        ],
+        [
+          "string?",
+          "|2"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-assert1",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Bool"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-assert2",
+      [],
+      [
+        "not=",
+        "|1",
+        "|2"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-assert2",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Bool"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-assert3",
+      [],
+      [
+        "<",
+        [
+          "&compare",
+          "|1",
+          "|2"
+        ],
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-assert3",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Bool"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-bisect-assert",
+      [],
+      [
+        "and",
+        [
+          "not=",
+          "|1",
+          "|2"
+        ],
+        [
+          "<",
+          [
+            "&compare",
+            "|1",
+            "|2"
+          ],
+          "0"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-bisect-assert",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Bool"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-bisect-basic",
+      [],
+      [
+        "&+",
+        [
+          "&+",
+          [
+            "&+",
+            [
+              "&+",
+              [
+                "if",
+                [
+                  "=",
+                  [
+                    "bisect",
+                    "|1",
+                    "|2"
+                  ],
+                  "|1T"
+                ],
+                "1",
+                "0"
+              ],
+              [
+                "if",
+                [
+                  "=",
+                  [
+                    "bisect",
+                    "|1",
+                    "|3"
+                  ],
+                  "|2"
+                ],
+                "1",
+                "0"
+              ]
+            ],
+            [
+              "if",
+              [
+                "=",
+                [
+                  "bisect",
+                  "|1",
+                  "|4"
+                ],
+                "|2"
+              ],
+              "1",
+              "0"
+            ]
+          ],
+          [
+            "if",
+            [
+              "=",
+              [
+                "bisect",
+                "|11",
+                "|12"
+              ],
+              "|11T"
+            ],
+            "1",
+            "0"
+          ]
+        ],
+        [
+          "if",
+          [
+            "=",
+            [
+              "bisect",
+              "|11",
+              "|13"
+            ],
+            "|12"
+          ],
+          "1",
+          "0"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-bisect-basic",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-bisect-call",
+      [],
+      [
+        "bisect",
+        "|1",
+        "|2"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-bisect-call",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-bisect-direct",
+      [],
+      [
+        "bisect-vec",
+        "|",
+        "|1",
+        "|2",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-bisect-direct",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-bisect-inner",
+      [],
+      [
+        "let",
+        [
+          [
+            "c-x",
+            [
+              ".unwrap",
+              [
+                "nth",
+                "|1",
+                "0"
+              ]
+            ]
+          ],
+          [
+            "c-y",
+            [
+              ".unwrap",
+              [
+                "nth",
+                "|2",
+                "0"
+              ]
+            ]
+          ],
+          [
+            "x",
+            [
+              "lookup-i",
+              "c-x"
+            ]
+          ],
+          [
+            "y",
+            [
+              "lookup-i",
+              "c-y"
+            ]
+          ],
+          [
+            "delta",
+            [
+              "&-",
+              "y",
+              "x"
+            ]
+          ],
+          [
+            "next",
+            [
+              "inc",
+              "0"
+            ]
+          ]
+        ],
+        [
+          "if",
+          [
+            "&=",
+            "delta",
+            "1"
+          ],
+          [
+            "if",
+            [
+              "peek-tiny?",
+              [
+                "nth",
+                "|2",
+                "next"
+              ]
+            ],
+            [
+              "&+",
+              "1",
+              "0"
+            ],
+            [
+              "&+",
+              "0",
+              "0"
+            ]
+          ],
+          [
+            "&+",
+            "0",
+            "0"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-bisect-inner",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-bisect-result1",
+      [],
+      [
+        "bisect",
+        "|1",
+        "|2"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-bisect-result1",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-bisect-step2",
+      [],
+      [
+        "let",
+        [
+          [
+            "c-x",
+            [
+              ".unwrap",
+              [
+                "nth",
+                "|1",
+                "0"
+              ]
+            ]
+          ],
+          [
+            "next",
+            [
+              "inc",
+              "0"
+            ]
+          ]
+        ],
+        [
+          "if",
+          [
+            "&=",
+            "next",
+            [
+              "&str:count",
+              "|1"
+            ]
+          ],
+          [
+            "str",
+            "|",
+            "c-x",
+            "c32"
+          ],
+          [
+            "str",
+            "|",
+            "|X"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-bisect-step2",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-bisect-strings",
+      [],
+      [
+        "&+",
+        [
+          "if",
+          [
+            "=",
+            [
+              "bisect",
+              "|yyyz",
+              "|z"
+            ],
+            "|yz"
+          ],
+          "1",
+          "0"
+        ],
+        [
+          "if",
+          [
+            "=",
+            [
+              "bisect",
+              "|a34fd",
+              "|f3554"
+            ],
+            "|c"
+          ],
+          "1",
+          "0"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-bisect-strings",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-bisect-vec",
+      [],
+      [
+        ".unwrap",
+        [
+          "nth",
+          "|abc",
+          "0"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-bisect-vec",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-bisect-vec-call",
+      [],
+      [
+        "bisect-vec",
+        "|",
+        "|1",
+        "|2",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-bisect-vec-call",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-bisect-vec-ok",
+      [],
+      [
+        "if",
+        [
+          "=",
+          [
+            "probe-bisect-vec"
+          ],
+          "|a"
+        ],
+        "1",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-bisect-vec-ok",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-c0",
+      [],
+      "c0"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-c0",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-c32",
+      [],
+      "c32"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-c32",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-c32-val",
+      [],
+      "c32"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-c32-val",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-c64",
+      [],
+      "c64"
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-c64",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-char-map",
+      [],
+      [
+        "if",
+        [
+          "&>=",
+          [
+            "&str:find-index",
+            "dictionary",
+            "|1"
+          ],
+          "0"
+        ],
+        "1",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-char-map",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-compare",
+      [],
+      [
+        "&compare",
+        "|1",
+        "|2"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-compare",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-delta",
+      [],
+      [
+        "&-",
+        [
+          "lookup-i",
+          [
+            ".unwrap",
+            [
+              "nth",
+              "|12",
+              "1"
+            ]
+          ]
+        ],
+        [
+          "lookup-i",
+          [
+            ".unwrap",
+            [
+              "nth",
+              "|12",
+              "0"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-delta",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-dictionary",
+      [],
+      [
+        "if",
+        [
+          "&>",
+          [
+            "&str:count",
+            "dictionary"
+          ],
+          "0"
+        ],
+        "1",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-dictionary",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-eq-1-1",
+      [],
+      [
+        "&=",
+        "1",
+        "1"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-eq-1-1",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Bool"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-eq-direct",
+      [],
+      [
+        "if",
+        [
+          "&=",
+          [
+            "inc",
+            "0"
+          ],
+          [
+            "&str:count",
+            "|1"
+          ]
+        ],
+        [
+          "&+",
+          "1",
+          "0"
+        ],
+        [
+          "&+",
+          "0",
+          "0"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-eq-direct",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-eq-inc-1",
+      [],
+      [
+        "&=",
+        [
+          "inc",
+          "0"
+        ],
+        "1"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-eq-inc-1",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Bool"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-eq-let",
+      [],
+      [
+        "let",
+        [
+          [
+            "next",
+            [
+              "inc",
+              "0"
+            ]
+          ]
+        ],
+        [
+          "if",
+          [
+            "&=",
+            "next",
+            "1"
+          ],
+          [
+            "&+",
+            "1",
+            "0"
+          ],
+          [
+            "&+",
+            "0",
+            "0"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-eq-let",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-eq-str-count",
+      [],
+      [
+        "&=",
+        "1",
+        [
+          "&str:count",
+          "|1"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-eq-str-count",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Bool"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-find-index-literal-1",
+      [],
+      [
+        "&str:find-index",
+        "|+-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+        "|1"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-find-index-literal-1",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-find-index-literal-plus",
+      [],
+      [
+        "&str:find-index",
+        "|+-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+        "|+"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-find-index-literal-plus",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-inc0",
+      [],
+      [
+        "inc",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-inc0",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-lookup-1",
+      [],
+      [
+        "lookup-i",
+        [
+          ".unwrap",
+          [
+            "nth",
+            "|12",
+            "1"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-lookup-1",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-lookup-c1",
+      [],
+      [
+        "lookup-i",
+        "c1"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-lookup-c1",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-lookup-fresh",
+      [],
+      [
+        "&str:find-index",
+        "dictionary",
+        [
+          ".unwrap",
+          [
+            "nth",
+            "|1",
+            "0"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-lookup-fresh",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-lookup-i",
+      [],
+      [
+        "&str:find-index",
+        "dictionary",
+        [
+          ".unwrap",
+          [
+            "nth",
+            "|12",
+            "1"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-lookup-i",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-lookup-i1",
+      [],
+      [
+        "lookup-i",
+        [
+          ".unwrap",
+          [
+            "nth",
+            "|1",
+            "0"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-lookup-i1",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-mapget",
+      [],
+      [
+        "&str:find-index",
+        "dictionary",
+        "c0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-mapget",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-next-eq",
+      [],
+      [
+        "let",
+        [
+          [
+            "next",
+            [
+              "inc",
+              "0"
+            ]
+          ]
+        ],
+        [
+          "if",
+          [
+            "&=",
+            "next",
+            [
+              "&str:count",
+              "|1"
+            ]
+          ],
+          [
+            "&+",
+            "1",
+            "0"
+          ],
+          [
+            "&+",
+            "0",
+            "0"
+          ]
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-next-eq",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-nil-check",
+      [],
+      [
+        "if",
+        [
+          ".none?",
+          [
+            "nth",
+            "|1",
+            "5"
+          ]
+        ],
+        "1",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-nil-check",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-nth-literal-0",
+      [],
+      [
+        "if",
+        [
+          "&=",
+          [
+            ".unwrap",
+            [
+              "nth",
+              "|+-/",
+              "0"
+            ]
+          ],
+          "|+"
+        ],
+        "1",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-nth-literal-0",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-nth-literal-1",
+      [],
+      [
+        "if",
+        [
+          "&=",
+          [
+            ".unwrap",
+            [
+              "nth",
+              "|+-/",
+              "1"
+            ]
+          ],
+          "|-"
+        ],
+        "1",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-nth-literal-1",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defwasm-export",
+      "probe-nth-negative",
+      [],
+      [
+        "if",
+        [
+          "option:none?",
+          [
+            "str-nth",
+            "|abc",
+            "-1"
+          ]
+        ],
+        "1",
+        "0"
+      ]
+    ],
+    "doc": "Confirms str-nth normalizes a negative index to Option none on WASM.",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-nth-negative",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-str-3arg",
+      [],
+      [
+        "str",
+        "|a",
+        "|b",
+        "|c"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-str-3arg",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-str-concat",
+      [],
+      [
+        "let",
+        [
+          [
+            "c-x",
+            [
+              ".unwrap",
+              [
+                "nth",
+                "|1",
+                "0"
+              ]
+            ]
+          ]
+        ],
+        [
+          "str",
+          "|",
+          "c-x",
+          "c32"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-str-concat",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'String"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-str-count",
+      [],
+      [
+        "count",
+        [
+          "str",
+          "|ab",
+          "|cd"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-str-count",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-str-count-1",
+      [],
+      [
+        "&str:count",
+        "|1"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-str-count-1",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-str-eq1",
+      [],
+      [
+        "=",
+        [
+          "bisect",
+          "|1",
+          "|2"
+        ],
+        "|1T"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-str-eq1",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Bool"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-str-inline",
+      [],
+      [
+        "count",
+        [
+          "str",
+          "|+-/",
+          "|0123456789",
+          "|ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+          "|abcdefghijklmnopqrstuvwxyz"
+        ]
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-str-inline",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-str-q",
+      [],
+      [
+        "if",
+        [
+          "string?",
+          "|hello"
+        ],
+        "1",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-str-q",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-string-eq",
+      [],
+      [
+        "if",
+        [
+          "=",
+          "|hello",
+          "|hello"
+        ],
+        "1",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-string-eq",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  },
+  {
+    "code": [
+      "defn",
+      "probe-stringq2",
+      [],
+      [
+        "if",
+        [
+          "and",
+          [
+            "string?",
+            "|1"
+          ],
+          [
+            "string?",
+            "|2"
+          ]
+        ],
+        "1",
+        "0"
+      ]
+    ],
+    "doc": "",
+    "examples": [],
+    "ffi": null,
+    "ffi_edn": null,
+    "id": "bisection-key.wasm-probe/probe-stringq2",
+    "js_ffi": null,
+    "schema": [
+      "{}",
+      [
+        ":kind",
+        ":fn"
+      ],
+      [
+        ":return",
+        "'Number"
+      ],
+      [
+        ":args",
+        [
+          "[]"
+        ]
+      ]
+    ],
+    "tags": [],
+    "tests": []
+  }
+]
