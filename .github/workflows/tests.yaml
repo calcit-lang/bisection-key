@@ -77,6 +77,47 @@ jobs:
     - name: "test wasm"
       run: yarn test:wasm
 
+    - name: Check out current formal Pudica Schedule consumer
+      uses: actions/checkout@v7.0.1
+      with:
+        repository: Memkits/pudica-schedule
+        ref: ab531df6be2a34400c36bb6584b4db50c2cb3722
+        path: .calcit/consumer
+        persist-credentials: false
+
+    - name: Validate published consumer then source candidate
+      run: |
+        set -euo pipefail
+        cd "$GITHUB_WORKSPACE/.calcit/consumer"
+        caps --strict --ci
+        yarn install --immutable
+        caps verify --toolchain
+        original_snapshot="$(git hash-object calcit.cirru)"
+        test "$original_snapshot" = 384b02146bdb379fb78dc4d7a47d9363f64d8e13
+        calcit calcit.cirru edit format
+        git diff --exit-code -- calcit.cirru
+        calcit calcit.cirru --check-only --all-defs
+        calcit calcit.cirru --check-only --ns app.schema --ns app.updater --ns app.storage --summary-only
+        calcit calcit.cirru fix --workflow strict --verify --format json | jq -e '.data.workflow.status == "passed" and .diagnostics == []'
+        calcit calcit.cirru analyze weak-types --only deprecated-call --summary-only --format json | jq -e '.data.summary.calls == 0'
+        VITE_BASE_URL=./ yarn build
+        node --test tests/*.test.mjs
+        # Explicit source-candidate integration, NOT a released 0.0.36 Caps install.
+        # Dereference into a separate project-local graph; never write the Caps store.
+        cp -RL .calcit/modules .calcit/candidate-modules
+        mv .calcit/modules .calcit/published-modules
+        mv .calcit/candidate-modules .calcit/modules
+        test ! -L .calcit/modules/bisection-key
+        cp "$GITHUB_WORKSPACE/calcit.cirru" .calcit/modules/bisection-key/calcit.cirru
+        calcit calcit.cirru --check-only --all-defs
+        calcit calcit.cirru --check-only --ns app.schema --ns app.updater --ns app.storage --summary-only
+        calcit calcit.cirru fix --workflow strict --verify --format json | jq -e '.data.workflow.status == "passed" and .diagnostics == []'
+        calcit calcit.cirru analyze weak-types --only deprecated-call --summary-only --format json | jq -e '.data.summary.calls == 0'
+        VITE_BASE_URL=./ yarn build
+        node --test tests/*.test.mjs
+        test "$(git hash-object calcit.cirru)" = "$original_snapshot"
+        git diff --exit-code -- calcit.cirru deps.cirru package.json yarn.lock tests/
+
     - name: Preserve prepared source and official views
       if: always()
       uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -86,5 +127,7 @@ jobs:
           calcit.cirru
           acceptance/
           js-out/
+          .calcit/consumer/dist/
+        include-hidden-files: true
         if-no-files-found: error
         retention-days: 7
