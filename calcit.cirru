@@ -218,7 +218,7 @@
         'trim-right $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn trim-right (x)
             if (empty? x) x $ let
-                end $ dec $ count x
+                end $ dec $ .len x
               if
                 &= |+ $ slice x end
                 recur $ slice x 0 end
@@ -421,7 +421,7 @@
                       next-seed $ &number:rem
                         &+ 74 $ &* seed 75
                         , 65537
-                      total $ count ks
+                      total $ .len ks
                       pos $ &number:rem next-seed $ inc total
                       sorted $ sort ks &compare
                       a $ if (= pos 0) | $ nth-or-empty sorted (dec pos)
@@ -699,7 +699,7 @@
                 assert-type sorted-keys $ :: 'List 'String
                 if (empty? sorted-keys) (Option :none)
                   let
-                      result $ &list:nth sorted-keys $ dec (count sorted-keys)
+                      result $ &list:nth sorted-keys $ dec (.len sorted-keys)
                     assert-type result 'String
                     Option :some result
           :examples $ []
@@ -728,7 +728,7 @@
         'has-nth? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn has-nth? (x n)
             and (>= n 0)
-              < n $ count x
+              < n $ .len x
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Bool)
             :args $ [] (:: 'Map 'String 'T) 'Number
@@ -745,7 +745,7 @@
               let
                   position $ .unwrap $ index-of existing-keys base-key
                 bisect base-key $ if
-                  = position $ dec $ count existing-keys
+                  = position $ dec $ .len existing-keys
                   , max-id $ &list:nth existing-keys (inc position)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'String)
@@ -801,7 +801,7 @@
                 assert-type sorted-keys $ :: 'List 'String
                 if
                   or (< n 0)
-                    >= n $ count sorted-keys
+                    >= n $ .len sorted-keys
                   Option :none
                   let
                       result $ &list:nth sorted-keys n
@@ -1182,8 +1182,8 @@
           :schema $ :: 'Fn $ {} (:return 'String)
             :args $ []
         'probe-str-count $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-str-count ()
-            count $ str |ab |cd
+          :code $ quote $ defwasm-export probe-str-count ()
+            .len $ str |ab |cd
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
@@ -1199,8 +1199,8 @@
           :schema $ :: 'Fn $ {} (:return 'Bool)
             :args $ []
         'probe-str-inline $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn probe-str-inline ()
-            count $ str |+-/ |0123456789 |ABCDEFGHIJKLMNOPQRSTUVWXYZ |abcdefghijklmnopqrstuvwxyz
+          :code $ quote $ defwasm-export probe-str-inline ()
+            .len $ str |+-/ |0123456789 |ABCDEFGHIJKLMNOPQRSTUVWXYZ |abcdefghijklmnopqrstuvwxyz
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ []
