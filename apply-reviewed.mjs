@@ -9,6 +9,9 @@ mkdirSync('acceptance',{recursive:true});assert.equal(run('-v').trim(),'0.30.1')
 const before=norm(JSON.parse(readFileSync('reviewed.json','utf8'))),expected=structuredClone(before),ops=[],types=[];
 assert.equal(before.length,119);assert.equal(before.reduce((n,d)=>n+d.tests.length,0),1);assert.equal(before.reduce((n,d)=>n+d.examples.length,0),0);
 const config=q('config'),namespaces=q('ns').namespaces.map(n=>q('ns',n));
+const methods=["'String",":: 'List 'String",":: 'Map 'String 'Number"].map(t=>({type:t,method:q('type',t).methods.find(m=>m.name==='.len')}));
+for(const {method} of methods){assert.equal(method.status,'proven');assert.equal(method.return_type,'number');assert.equal(method.parameter_types.length,0);assert.ok(method.definition.startsWith('calcit.core/'));}
+writeFileSync('acceptance/length-contracts.json',JSON.stringify(methods,null,2));
 const receivers={
   'bisection-key.core/trim-right':['x','string'],
   'bisection-key.test/test-bisect-random':['ks','list'],
@@ -32,9 +35,15 @@ function walk(x,path,id){
   }
   return x.map((v,i)=>walk(v,[...path,i],id));
 }
-for(const d of expected){assert.deepEqual(q('def',d.id),before.find(x=>x.id===d.id));d.code=walk(d.code,[],d.id);}
-assert.equal(ops.length,8);assert.deepEqual(types.map(t=>t.id).sort(),Object.keys(receivers).sort());
+for(const d of expected){
+  assert.deepEqual(q('def',d.id),before.find(x=>x.id===d.id));d.code=walk(d.code,[],d.id);
+  if(['bisection-key.wasm-probe/probe-str-count','bisection-key.wasm-probe/probe-str-inline'].includes(d.id)){
+    assert.equal(d.code[0],'defn');assert.equal(JSON.parse(run('tree','show',d.id,'--path','@0','--format','json')).tree,'defn');
+    ops.push(['tree','replace',d.id,'--path','@0','--input-format','json-ast','--code',JSON.stringify('defwasm-export'),'--expect','quote defn']);d.code[0]='defwasm-export';
+  }
+}
+assert.equal(ops.length,10);assert.deepEqual(types.map(t=>t.id).sort(),Object.keys(receivers).sort());
 writeFileSync('acceptance/before.json',JSON.stringify(before,null,2));writeFileSync('acceptance/operations.json',JSON.stringify(ops,null,2));
 const args=['edit','transaction','--file','acceptance/operations.json','--format','json'];const preview=JSON.parse(run(...args,'--dry-run'));assert.ok(preview.scoped_revision);writeFileSync('acceptance/transaction-preview.json',JSON.stringify(preview,null,2));writeFileSync('acceptance/transaction-applied.json',run(...args,'--expect-revision',preview.scoped_revision));
 const actual=[];for(const ns of namespaces){const names=run('query','defs',ns.namespace).split('\n').filter(x=>/^  \S/.test(x)).map(x=>x.trim().split(' ')[0]);assert.equal(names.length,ns.definition_count);for(const n of names)actual.push(q('def',`${ns.namespace}/${n}`));}assert.deepEqual(actual,expected);assert.deepEqual(q('config'),config);assert.deepEqual(q('ns').namespaces.map(ns=>q('ns',ns)),namespaces);
-writeFileSync('acceptance/after.json',JSON.stringify(actual,null,2));writeFileSync('acceptance/snapshot-after-blob.txt',blob());writeFileSync('acceptance/summary.json',JSON.stringify({definitions:119,attachedTests:1,examples:0,operations:8,types:types.map(t=>({id:t.id,type:t.evidence.data.inferred_type})),preserved:'All schemas/generics/FFI/metadata/config/imports, original assertions, data charset/base65/order and failure semantics unchanged; no unsafe or baseline added. Temporary editor not included in final PR.'},null,2));
+writeFileSync('acceptance/after.json',JSON.stringify(actual,null,2));writeFileSync('acceptance/snapshot-after-blob.txt',blob());writeFileSync('acceptance/summary.json',JSON.stringify({definitions:119,attachedTests:1,examples:0,operations:10,lengthCalls:8,existingProbesExplicitlyExported:2,types:types.map(t=>({id:t.id,type:t.evidence.data.inferred_type})),preserved:'All schemas/generics/FFI/metadata/config/imports, original assertions, data charset/base65/order and failure semantics unchanged; no unsafe or baseline added. Temporary editor not included in final PR.'},null,2));

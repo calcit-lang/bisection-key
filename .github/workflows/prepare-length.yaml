@@ -61,6 +61,44 @@ jobs:
           yarn test:js
           yarn test:wasm
           cp calcit.cirru acceptance/snapshot.cirru
+      - name: Current formal real consumer
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: Memkits/pudica-schedule
+          ref: 0296d2538634916b34ceb5ac5885b0d32566397d
+          path: .calcit/consumer
+          persist-credentials: false
+      - name: Original consumer published and source-candidate regression
+        run: |
+          set -euo pipefail
+          cd "$GITHUB_WORKSPACE/.calcit/consumer"
+          caps --strict --ci
+          yarn install --immutable
+          caps verify --toolchain
+          original_snapshot="$(git hash-object calcit.cirru)"
+          test "$original_snapshot" = 16b7501e1217fdd440d430f1ab013c4aa3299dff
+          calcit calcit.cirru edit format
+          git diff --exit-code -- calcit.cirru
+          calcit calcit.cirru --check-only --all-defs
+          calcit calcit.cirru --check-only --ns app.schema --ns app.updater --ns app.storage --summary-only
+          calcit calcit.cirru fix --workflow strict --verify --format json | jq -e '.data.workflow.status == "passed" and .diagnostics == []'
+          VITE_BASE_URL=./ yarn build
+          node --test tests/*.test.mjs
+          # A source-candidate overlay is not a released Caps installation.
+          # Copy/dereference into a new project-local graph, never modify the store.
+          cp -RL .calcit/modules .calcit/candidate-modules
+          mv .calcit/modules .calcit/published-modules
+          mv .calcit/candidate-modules .calcit/modules
+          test ! -L .calcit/modules/bisection-key
+          cp "$GITHUB_WORKSPACE/calcit.cirru" .calcit/modules/bisection-key/calcit.cirru
+          calcit calcit.cirru --check-only --all-defs
+          calcit calcit.cirru --check-only --ns app.schema --ns app.updater --ns app.storage --summary-only
+          calcit calcit.cirru fix --workflow strict --verify --format json | jq -e '.data.workflow.status == "passed" and .diagnostics == []'
+          VITE_BASE_URL=./ yarn build
+          node --test tests/*.test.mjs
+          test "$(git hash-object calcit.cirru)" = "$original_snapshot"
+          git diff --exit-code -- calcit.cirru deps.cirru package.json yarn.lock tests/
+          cp -R dist "$GITHUB_WORKSPACE/acceptance/consumer-dist"
       - name: Retain official evidence
         if: always()
         uses: actions/upload-artifact@v7.0.2
