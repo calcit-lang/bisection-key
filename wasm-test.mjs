@@ -31,6 +31,8 @@ try {
 }
 
 const checks = [
+  ['probe-str-count', 4],
+  ['probe-str-inline', 65],
   ['probe-find-index-literal-plus', 0],
   ['probe-find-index-literal-1', 4],
   ['probe-nth-literal-0', 1],
