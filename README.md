@@ -23,6 +23,13 @@ Charset, base65:
 
 ### Development
 
+当前候选将 CLI 与 `@calcit/procs` 成对升级到正式 **0.31.0**，保留排序键、字符集、Unicode
+计数及公开合同；只将 trim-right 原 slice 数字终点显式包成 Option :some，索引与递归保持。
+使用者不需要重写排序数据，需配对工具链并重新生成 JS；原完整 strict、
+零债务和 native/JS/WASM 门禁保持，WASM 仍需完整 CLI。不把候选当作已发布模块。
+
+#### 0.30.1 历史源码清理
+
 0.0.37 候选沿用已发布 0.0.36 配对的正式 Calcit / `@calcit/procs` **0.30.1**，不依赖 alpha 编译器或 runtime。仍需 Calcit 0.30.0 的消费者应保留模块 0.0.32。Node 24、Yarn 4.18.0（node-modules linker）和正式 `calcit.std` 0.2.43 保持不变。候选提交不等于已发布模块，发布状态以正式 Git tag 为准。
 
 使用者不需要重写已有排序数据：排序键、base65 字符集、顺序、公开签名、返回值及失败行为不变。本轮仅将 8 处已知 String/List/Map 的前缀 `count` 调用改为公开 `.len`；String 仍按 Unicode 标量计数，不改成 JS UTF-16 或 UTF-8 字节长度。保留全部参数/返回/泛型 schema、类型断言与原断言，不以强转、默认值或基线完成升级。

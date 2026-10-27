@@ -221,7 +221,7 @@
                 end $ dec $ .len x
               if
                 &= |+ $ slice x end
-                recur $ slice x 0 end
+                recur $ slice x 0 $ Option :some end
                 , x
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'String)
