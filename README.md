@@ -23,6 +23,8 @@ Charset, base65:
 
 ### Development
 
+0.0.38 候选将标准库依赖配对到已发布的 `calcit.std` **0.2.45**，消除与新迁移消费者的依赖版本冲突。排序数据和公开接口不变；排序算法源码、本仓库原测试及零债务门禁不变。发布前以候选验收结果为准。
+
 当前候选将 CLI 与 `@calcit/procs` 成对升级到正式 **0.31.0**，保留排序键、字符集、Unicode
 计数及公开合同；只将 trim-right 原 slice 数字终点显式包成 Option :some，索引与递归保持。
 使用者不需要重写排序数据，需配对工具链并重新生成 JS；原完整 strict、
@@ -37,9 +39,9 @@ Charset, base65:
 
 现有 WASM runner 保留原 16 项断言；两个原有字符串探针改为显式 `defwasm-export`，使其可被实际执行（结果分别为 4、65），合计 18 项。临时事务和审计视图不进入发布源码，不新增永久测试脚本或编译器改写规则。
 
-CLI 与 JS runtime 必须配对，不能只改其中一个；模块依赖没有 alpha/hash 或安装年龄例外。发布状态以 GitHub Release 为准，正式 tag 须对应通过 CI/review 与精确 main 验收的提交。
+CLI 与 JS runtime 必须配对，不能只改其中一个；模块依赖没有 alpha/hash 或安装年龄例外。发布状态以正式 Git tag 为准；tag 须对应通过 CI/review 与精确 main 验收的提交。
 
-WASM 验收需要完整 CLI。官方 Linux 标准资产 `calcit` 包含 WASM；`calcit-ubuntu22.04-x86_64-no-wasm` 不包含。自行构建精确发布版时不要使用 `--no-default-features`；可显式用 `cargo install calcit --version 0.30.1 --features wasm --locked`。缺少构建功能不能当作算法失败，也不能删除原 WASM 测试绕过。
+WASM 验收需要完整 CLI。官方 Linux 标准资产 `calcit` 包含 WASM；`calcit-ubuntu22.04-x86_64-no-wasm` 不包含。自行构建精确发布版时不要使用 `--no-default-features`；可显式用 `cargo install calcit --version 0.31.0 --features wasm --locked`。缺少构建功能不能当作算法失败，也不能删除原 WASM 测试绕过。
 
 Install [Calcit](https://calcit-lang.org/) so the `calcit` command is available on
 your `PATH`, then run the demo:
