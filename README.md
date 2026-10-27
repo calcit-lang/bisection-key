@@ -41,7 +41,7 @@ Charset, base65:
 
 CLI 与 JS runtime 必须配对，不能只改其中一个；模块依赖没有 alpha/hash 或安装年龄例外。发布状态以正式 Git tag 为准；tag 须对应通过 CI/review 与精确 main 验收的提交。
 
-WASM 验收需要完整 CLI。官方 Linux 标准资产 `calcit` 包含 WASM；`calcit-ubuntu22.04-x86_64-no-wasm` 不包含。自行构建精确发布版时不要使用 `--no-default-features`；可显式用 `cargo install calcit --version 0.30.1 --features wasm --locked`。缺少构建功能不能当作算法失败，也不能删除原 WASM 测试绕过。
+WASM 验收需要完整 CLI。官方 Linux 标准资产 `calcit` 包含 WASM；`calcit-ubuntu22.04-x86_64-no-wasm` 不包含。自行构建精确发布版时不要使用 `--no-default-features`；可显式用 `cargo install calcit --version 0.31.0 --features wasm --locked`。缺少构建功能不能当作算法失败，也不能删除原 WASM 测试绕过。
 
 Install [Calcit](https://calcit-lang.org/) so the `calcit` command is available on
 your `PATH`, then run the demo:
