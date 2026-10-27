@@ -13,6 +13,7 @@ try {
       cos: Math.cos,
     },
     io: {
+      log_line: () => {},
       log_value: () => 0,
       log_str: () => 0,
       read_file_str: () => 0,
