@@ -1,8 +1,8 @@
 {
-  "version": "0.0.39",
+  "version": "0.0.40",
   "packageManager": "yarn@4.18.0",
   "dependencies": {
-    "@calcit/procs": "0.32.0"
+    "@calcit/procs": "0.32.1"
   },
   "scripts": {
     "test:calcit": "calcit calcit.cirru --entry test",
