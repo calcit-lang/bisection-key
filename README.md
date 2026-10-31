@@ -31,6 +31,7 @@ bisection-key.core/bisect |a |b
 ## 开发与验证
 
 使用 Node.js 24、Yarn 4.18.0、Calcit 0.32.1。项目只使用 `calcit.cirru`、`deps.cirru`。
+`caps` 是独立发行的包管理器；先准备 Rust/Cargo，再安装与 CI 匹配的版本：`cargo install calcit-caps --version 0.1.1 --locked`。CI 由 setup action 安装同版二进制。
 
 ```sh
 caps --strict --ci
