@@ -1,71 +1,39 @@
-## Bisection Keys
+# Bisection Keys
 
-> Order keys generating algorithm. Similar to [fractional indexing](https://observablehq.com/@dgreensp/implementing-fractional-indexing).
+排序键生成算法，类似 [fractional indexing](https://observablehq.com/@dgreensp/implementing-fractional-indexing)。
+历史边界参考：[ClojureScript 实现](https://github.com/Cumulo/bisection-key.cljs)；实验性 [Rust 实现](https://github.com/Cumulo/bisection-key.rs)。
 
-Related implementations:
+## 对使用者的影响
 
-- Legacy implementation kept for historical edge-case context: https://github.com/Cumulo/bisection-key.cljs
-- Experimental Rust implementation: https://github.com/Cumulo/bisection-key.rs
+0.0.40 候选配对正式 Calcit / `@calcit/procs` **0.32.1**，需重新安装依赖并生成 JS。
+排序键、base65 字符集、Unicode 标量计数、公开签名、失败行为及原断言保持；已有排序数据无需改写。
+仍使用 0.32.0 的消费者可保留已发布 0.0.39，不混用 CLI 与 JS runtime。
+本 PR 不发版，候选不能当作已发布模块安装，发布状态以正式 Git tag 为准。
 
-### Usage
+0.32 类型标注迁移已在 0.0.39 完成；本次不再修改 Snapshot，算法、schema、测试与探针源码保持相同。
+标准库同步到已发布 `calcit.std` 0.2.47（同样声明 Calcit 0.32.1），通过 Caps 解析并重建；不使用本地导出替代正式依赖。
 
-_TODO_
+## 使用
 
 ```cirru
 bisection-key.core/bisect |a |b
 ```
 
-Charset, base65:
+字符集为 base65：
 
-```
+```text
 +-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
 ```
 
-### Development
+`a` 与 `a+` 之间无法再插入键，当前实现不应生成以 `+` 结尾的键。
+`+` 是最小可见值；连续 `z` 构成上界方向，两端仍需留意原算法边界。
 
-0.0.39 候选（0.32.0 迁移）：本候选将 CLI / `@calcit/procs` 同步到 0.32.0，并用官方 `edit format` 更新类型标注。117 个定义的语义 schema 保持一致，14 处函数/集合类型写法变化不改排序逻辑和原断言。旧 CLI 消费者应保留原 tag。
+## 开发与验证
 
-原生 test 入口及原 18 项 WASM 探针已通过；它们不代表所有函数都支持 WASM。默认入口先在隔离副本中使用标准库 0.2.46 候选验证；该正式 tag 已发布，本候选已通过 caps 严格安装并用正式依赖通过全定义与原生运行。npm 0.32.0 已按原一小时包龄门禁正常安装并生成 lock，完整 JS 与 strict 已通过；Linux CI 待确认。以下为先前版本记录。
+使用 Node.js 24、Yarn 4.18.0、Calcit 0.32.1。项目只使用 `calcit.cirru`、`deps.cirru`。
+`caps` 是独立发行的包管理器；先准备 Rust/Cargo，再安装与 CI 匹配的版本：`cargo install calcit-caps --version 0.1.1 --locked`。CI 由 setup action 安装同版二进制。
 
-0.0.38 候选将标准库依赖配对到已发布的 `calcit.std` **0.2.45**，消除与新迁移消费者的依赖版本冲突。排序数据和公开接口不变；排序算法源码、本仓库原测试及零债务门禁不变。发布前以候选验收结果为准。
-
-当前候选将 CLI 与 `@calcit/procs` 成对升级到正式 **0.31.0**，保留排序键、字符集、Unicode
-计数及公开合同；只将 trim-right 原 slice 数字终点显式包成 Option :some，索引与递归保持。
-使用者不需要重写排序数据，需配对工具链并重新生成 JS；原完整 strict、
-零债务和 native/JS/WASM 门禁保持，WASM 仍需完整 CLI。不把候选当作已发布模块。
-现有数值探针的静默宿主补上 0.31.0 的 `io.log_line` 导入，沿用原日志处理方式；18 项原断言不变，不承诺日志行为验收。
-
-#### 0.30.1 历史源码清理
-
-0.0.37 候选沿用已发布 0.0.36 配对的正式 Calcit / `@calcit/procs` **0.30.1**，不依赖 alpha 编译器或 runtime。仍需 Calcit 0.30.0 的消费者应保留模块 0.0.32。Node 24、Yarn 4.18.0（node-modules linker）和正式 `calcit.std` 0.2.43 保持不变。候选提交不等于已发布模块，发布状态以正式 Git tag 为准。
-
-使用者不需要重写已有排序数据：排序键、base65 字符集、顺序、公开签名、返回值及失败行为不变。本轮仅将 8 处已知 String/List/Map 的前缀 `count` 调用改为公开 `.len`；String 仍按 Unicode 标量计数，不改成 JS UTF-16 或 UTF-8 字节长度。保留全部参数/返回/泛型 schema、类型断言与原断言，不以强转、默认值或基线完成升级。
-
-现有 WASM runner 保留原 16 项断言；两个原有字符串探针改为显式 `defwasm-export`，使其可被实际执行（结果分别为 4、65），合计 18 项。临时事务和审计视图不进入发布源码，不新增永久测试脚本或编译器改写规则。
-
-CLI 与 JS runtime 必须配对，不能只改其中一个；模块依赖没有 alpha/hash 或安装年龄例外。发布状态以正式 Git tag 为准；tag 须对应通过 CI/review 与精确 main 验收的提交。
-
-WASM 验收需要完整 CLI。官方 Linux 标准资产 `calcit` 包含 WASM；`calcit-ubuntu22.04-x86_64-no-wasm` 不包含。自行构建精确发布版时不要使用 `--no-default-features`；可显式用 `cargo install calcit --version 0.32.0 --features wasm --locked`。缺少构建功能不能当作算法失败，也不能删除原 WASM 测试绕过。
-
-Install [Calcit](https://calcit-lang.org/) so the `calcit` command is available on
-your `PATH`, then run the demo:
-
-```bash
-calcit calcit.cirru # run once
-
-calcit -w calcit.cirru # run and watch
-```
-
-For JavaScript:
-
-```bash
-calcit calcit.cirru js
-node main.mjs
-```
-
-For tests:
-
-```bash
+```sh
 caps --strict --ci
 yarn install --immutable
 caps verify --toolchain
@@ -76,46 +44,25 @@ calcit calcit.cirru --entry test --check-only --ns bisection-key.core --ns bisec
 calcit calcit.cirru test --require-match
 yarn test:calcit
 yarn test:js
-```
-
-For WASM:
-
-```bash
-yarn test:wasm:compile
 yarn test:wasm
 ```
 
-`test:wasm` runs runtime assertions for probe APIs and will fail when WASM runtime behavior diverges from expected API semantics.
-The probe functions use explicit `defwasm-export` declarations so the core WASM
-module exposes the same stable test boundary on current Calcit releases.
-The 18 exported probes checked by the runner are the tested WASM boundary, not a claim that every
-utility supports WASM. Code generation currently reports unsupported, uncalled
-dependencies as trapping stubs; native and JavaScript run the complete test entry.
+运行默认示例可使用 `calcit calcit.cirru`；JS 示例使用 `calcit calcit.cirru js` 后执行 `node main.mjs`。
+`yarn test:wasm` 包含原编译和运行断言，不需要另起重复编译步骤。
 
-### Type-quality gate
+## 类型门禁与 WASM 范围
 
-CI enforces zero unresolved static-type debt. Run the same gate locally before
-changing public APIs:
+保留完整 strict、两个入口的动态方法检查，以及原未解决类型、覆盖缺口、nil、弃用调用和 unsafe 的零债务政策，不生成基线或放宽限制。
+具体命令见 [docs/quality-gate.md](docs/quality-gate.md)，与 CI 保持一致；弱类型报告用于定位债务，不能替代严格检查和运行测试。
 
-```bash
-calcit calcit.cirru analyze weak-types --summary-only --format json | jq -e '.data.summary.hits == 0'
-calcit calcit.cirru analyze weak-types --only coverage --coverage-level none,partial --summary-only --format json | jq -e '.data.summary.definitions == 0'
-calcit calcit.cirru analyze weak-types --only deprecated-call --summary-only --format json | jq -e '.data.summary.calls == 0'
-```
+原生与 JS 执行完整 test 入口，WASM 只对原 18 个显式导出的探针验证，不承诺每个工具函数都支持 WASM。
+代码生成仍可能将未调用的不支持依赖生成 trapping stub，不将这些提示隐藏或当作完整后端支持。
+WASM 必须使用带该功能的完整 CLI；官方 Linux 标准资产包含 WASM，no-wasm 资产不能用于本项目原测试。
+自行构建时可使用 `cargo install calcit --version 0.32.1 --features wasm --locked`，不删除 WASM 测试绕过缺失功能。
 
-The zero-debt policy and supporting reports are documented in
-[docs/quality-gate.md](docs/quality-gate.md).
+CI 仅运行原测试，没有部署步骤。Actions 使用精确正式 tag，npm 年龄门禁为一小时，无单包例外。
+工作流参考 <https://github.com/calcit-lang/calcit-workflow>。
 
-### Special cases
-
-Nothing could be inserted between `a` and `a+` since `+` is very close to zero. Such a key which ends with `+` should not be created from current implementation.
-
-Smallest visible value is `+`, largest visible values would be `zzzzz.....`(infinitely). They are both tricky.
-
-### Workflow
-
-https://github.com/calcit-lang/calcit-workflow
-
-### License
+## License
 
 MIT
