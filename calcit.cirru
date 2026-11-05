@@ -639,10 +639,10 @@
           :code $ quote $ defn get-max-key (x)
             let
                 key-list $ &set:to-list $ keys x
-              assert-type key-list $ quote $ List String
+              assert-type key-list $ List String
               let
                   sorted-keys $ sort key-list
-                assert-type sorted-keys $ quote $ List String
+                assert-type sorted-keys $ List String
                 if (empty? sorted-keys) (Option :none)
                   let
                       result $ &list:nth sorted-keys $ dec (.len sorted-keys)
@@ -656,10 +656,10 @@
           :code $ quote $ defn get-min-key (x)
             let
                 key-list $ &set:to-list $ keys x
-              assert-type key-list $ quote $ List String
+              assert-type key-list $ List String
               let
                   sorted-keys $ sort key-list
-                assert-type sorted-keys $ quote $ List String
+                assert-type sorted-keys $ List String
                 if (empty? sorted-keys) (Option :none)
                   let
                       result $ &list:nth sorted-keys 0
@@ -682,7 +682,7 @@
             let
                 keys-set $ keys dict
                 existing-keys $ sort (&set:to-list keys-set) &compare
-              assert-type existing-keys $ quote $ List String
+              assert-type existing-keys $ List String
               assert (&set:includes? keys-set base-key) "|base-key should be existed"
               let
                   position $ .unwrap $ index-of existing-keys base-key
@@ -706,7 +706,7 @@
             let
                 keys-set $ keys dict
                 existing-keys $ sort (&set:to-list keys-set) &compare
-              assert-type existing-keys $ quote $ List String
+              assert-type existing-keys $ List String
               assert (&set:includes? keys-set base-key) "|base-key should be existed"
               let
                   position $ .unwrap $ index-of existing-keys base-key
@@ -730,10 +730,10 @@
           :code $ quote $ defn key-nth (x n)
             let
                 key-list $ &set:to-list $ keys x
-              assert-type key-list $ quote $ List String
+              assert-type key-list $ List String
               let
                   sorted-keys $ sort key-list
-                assert-type sorted-keys $ quote $ List String
+                assert-type sorted-keys $ List String
                 if
                   or (< n 0)
                     >= n $ .len sorted-keys
