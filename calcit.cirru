@@ -154,7 +154,7 @@
               (:none) true
               (:some value) (&= c0 value)
           :examples $ []
-          :schema $ quote $ Fn (calcit.core/Option String) (-> Bool)
+          :schema $ quote $ Fn (Option String) (-> Bool)
         'probe-c32 $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-c32 () c32
           :examples $ []
@@ -185,17 +185,17 @@
         'str-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn str-nth (s idx)
             .map (nth s idx)
-              fn (ch) (assert-type ch 'String)
+              fn (ch) (assert-type ch String)
           :examples $ []
           :schema $ quote $ Fn String Number
-            -> $ calcit.core/Option String
+            -> $ Option String
           :tests $ [] $ %{} 'TestEntry (:name |boundaries)
             :code $ quote $ do
-              assert= (Option :some |a) (str-nth |abc 0)
-              assert= (Option :some |c) (str-nth |abc 2)
-              assert= (Option :none) (str-nth |abc -1)
-              assert= (Option :none) (str-nth |abc 3)
-              assert= (Option :none) (str-nth | 0)
+              assert= (Some |a) (str-nth |abc 0)
+              assert= (Some |c) (str-nth |abc 2)
+              assert= None $ str-nth |abc -1
+              assert= None $ str-nth |abc 3
+              assert= None $ str-nth | 0
             :tags $ #{} :unit
         'str-nth! $ %{} 'CodeEntry
           :doc "|Returns the character at idx, raising when the index is outside the string."
@@ -209,7 +209,7 @@
                 end $ dec $ .len x
               if
                 &= |+ $ slice x end
-                recur $ slice x 0 $ Option :some end
+                recur $ slice x 0 $ Some end
                 , x
           :examples $ []
           :schema $ quote $ Fn String (-> String)
@@ -224,9 +224,7 @@
                 x mid-id
               if (< i 1000)
                 if
-                  >
-                    rand (Option :none) (Option :none)
-                    , 0.5
+                  > (rand None None) 0.5
                   let
                       new-id $ bisect x max-id
                     println |right:
@@ -643,14 +641,13 @@
               let
                   sorted-keys $ sort key-list
                 assert-type sorted-keys $ List String
-                if (empty? sorted-keys) (Option :none)
-                  let
-                      result $ &list:nth sorted-keys $ dec (.len sorted-keys)
-                    assert-type result 'String
-                    Option :some result
+                if (empty? sorted-keys) None $ let
+                    result $ &list:nth sorted-keys $ dec (.len sorted-keys)
+                  assert-type result String
+                  Some result
           :examples $ []
           :schema $ quote $ Fn (Map String T)
-            -> $ calcit.core/Option String
+            -> $ Option String
             :generics T
         'get-min-key $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn get-min-key (x)
@@ -660,14 +657,13 @@
               let
                   sorted-keys $ sort key-list
                 assert-type sorted-keys $ List String
-                if (empty? sorted-keys) (Option :none)
-                  let
-                      result $ &list:nth sorted-keys 0
-                    assert-type result 'String
-                    Option :some result
+                if (empty? sorted-keys) None $ let
+                    result $ &list:nth sorted-keys 0
+                  assert-type result String
+                  Some result
           :examples $ []
           :schema $ quote $ Fn (Map String T)
-            -> $ calcit.core/Option String
+            -> $ Option String
             :generics T
         'has-nth? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn has-nth? (x n)
@@ -724,7 +720,7 @@
               index-of ks k
           :examples $ []
           :schema $ quote $ Fn (Map String T) String
-            -> $ calcit.core/Option Number
+            -> $ Option Number
             :generics T
         'key-nth $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn key-nth (x n)
@@ -737,14 +733,13 @@
                 if
                   or (< n 0)
                     >= n $ .len sorted-keys
-                  Option :none
-                  let
+                  , None $ let
                       result $ &list:nth sorted-keys n
-                    assert-type result 'String
-                    Option :some result
+                    assert-type result String
+                    Some result
           :examples $ []
           :schema $ quote $ Fn (Map String T) Number
-            -> $ calcit.core/Option String
+            -> $ Option String
             :generics T
         'key-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn key-prepend (dict)
@@ -756,10 +751,10 @@
           :code $ quote $ defn val-nth (x n)
             match (key-nth x n)
               (:some key) (get x key)
-              (:none) (Option :none)
+              (:none) None
           :examples $ []
           :schema $ quote $ Fn (Map String T) Number
-            -> $ calcit.core/Option T
+            -> $ Option T
             :generics T
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns bisection-key.util
