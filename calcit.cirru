@@ -239,7 +239,7 @@
                     recur (inc i) new-id
             , &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit)
+          :schema $ quote $ Fn (-> Unit) (:features :io)
         'list-appending-results $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn list-appending-results ()
             loop
@@ -252,15 +252,15 @@
                   recur (inc i) new-id
                   , x
           :examples $ []
-          :schema $ quote $ Fn (-> String)
+          :schema $ quote $ Fn (-> String) (:features :io)
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! () (run-bisection!) (println "|App started.") &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit)
+          :schema $ quote $ Fn (-> Unit) (:features :io)
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! () (run-bisection!) (println "|Code updated.") &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit)
+          :schema $ quote $ Fn (-> Unit) (:features :io)
         'run-bisection! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn run-bisection! () (; compare-random-ids) (; list-appending-results)
             ; println $ bisect |yyyz |z
@@ -286,7 +286,7 @@
                   recur (inc i) new-id
                   , &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit)
+          :schema $ quote $ Fn (-> Unit) (:features :io)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns bisection-key.main
           :require
