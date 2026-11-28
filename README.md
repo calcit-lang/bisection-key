@@ -5,13 +5,13 @@
 
 ## 对使用者的影响
 
-当前源码配对正式 Calcit / `@calcit/procs` **0.47.0**，需重新安装依赖并生成 JS；已发布的 **0.0.53** tag 仍配对 0.46.0，**0.0.52** tag 配对 0.45.1。
+当前源码配对正式 Calcit / `@calcit/procs` **0.47.1**，需重新安装依赖并生成 JS；已发布的 **0.0.53** tag 仍配对 0.46.0，**0.0.52** tag 配对 0.45.1。
 排序键、base65 字符集、Unicode 标量计数、公开签名、失败行为及原断言保持；已有排序数据无需改写。
 仍使用 0.34.1 的消费者可保留已发布 0.0.42；仍使用 0.32.1 的消费者可保留已发布 0.0.40，0.34.0 的消费者可保留已发布 0.0.41；不混用 CLI 与 JS runtime。
 已发布的 0.0.48 tag 配对 Calcit 0.43.0；请按所选 tag 的依赖配置使用相应工具链。
 
 0.43.0 规范化类型名。现有 String、Number、Option 合同保持，原生、JS 与 WASM 测试覆盖相同的排序和探针行为。
-当前源码使用与 Calcit 0.47.0 配套的已发布 calcit.std 0.2.60。
+当前源码使用与 Calcit 0.47.1 配套的已发布 calcit.std 0.2.60。
 
 ## 使用
 
@@ -30,7 +30,7 @@ bisection-key.core/bisect |a |b
 
 ## 开发与验证
 
-使用 Node.js 24、Yarn 4.18.0、Calcit 0.47.0。项目只使用 `calcit.cirru`、`deps.cirru`。
+使用 Node.js 24、Yarn 4.18.0、Calcit 0.47.1。项目只使用 `calcit.cirru`、`deps.cirru`。
 `caps` 是独立发行的包管理器；先准备 Rust/Cargo，再安装与 CI 匹配的版本：`cargo install calcit-caps --version 0.1.2 --locked`。CI 由 setup action 安装同版二进制。
 
 ```sh
@@ -58,7 +58,7 @@ yarn test:wasm
 原生与 JS 执行完整 test 入口，WASM 只对原 18 个显式导出的探针验证，不承诺每个工具函数都支持 WASM。
 代码生成仍可能将未调用的不支持依赖生成 trapping stub，不将这些提示隐藏或当作完整后端支持。
 WASM 必须使用带该功能的完整 CLI；官方 Linux 标准资产包含 WASM，no-wasm 资产不能用于本项目原测试。
-自行构建时可使用 `cargo install calcit --version 0.47.0 --features wasm --locked`，不删除 WASM 测试绕过缺失功能。
+自行构建时可使用 `cargo install calcit --version 0.47.1 --features wasm --locked`，不删除 WASM 测试绕过缺失功能。
 
 CI 仅运行原测试，没有部署步骤。Actions 使用精确正式 tag，npm 年龄门禁为一小时，无单包例外。
 工作流参考 <https://github.com/calcit-lang/calcit-workflow>。
