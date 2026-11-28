@@ -16,7 +16,6 @@
       :defs $ {}
         'bisect $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn bisect (x y)
-            assert "|[bitsect] arguments should be strings!" $ and (string? x) (string? y)
             assert "|[bisection] keys are identical!" $ not= x y
             assert "|[bisection] x > y" $ or (&= y |)
               < (&compare x y) 0
@@ -586,7 +585,6 @@
             :generics T
         'assoc-append $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn assoc-append (dict v)
-            assert (map? dict) "|dict should be a map"
             let
                 k $ key-append dict
               assoc dict k v
@@ -625,7 +623,6 @@
             :generics T
         'assoc-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn assoc-prepend (dict v)
-            assert (map? dict) "|dict should be a map"
             let
                 k $ key-prepend dict
               assoc dict k v
@@ -673,8 +670,6 @@
           :schema $ quote $ Fn (Map String T) Number (-> Bool) (:generics T)
         'key-after $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn key-after (dict base-key)
-            assert (string? base-key) "|base-key should be string"
-            assert (map? dict) "|dict should be a map"
             let
                 keys-set $ keys dict
                 existing-keys $ sort (&set:to-list keys-set) &compare
@@ -689,7 +684,6 @@
           :schema $ quote $ Fn (Map String T) String (-> String) (:generics T)
         'key-append $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn key-append (dict)
-            assert (map? dict) "|dict should be a map"
             if (empty? dict) mid-id $ bisect
               .unwrap $ get-max-key dict
               , max-id
@@ -697,8 +691,6 @@
           :schema $ quote $ Fn (Map String T) (-> String) (:generics T)
         'key-before $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn key-before (dict base-key)
-            assert (string? base-key) "|base-key should be string"
-            assert (map? dict) "|dict should be a map"
             let
                 keys-set $ keys dict
                 existing-keys $ sort (&set:to-list keys-set) &compare
@@ -743,7 +735,6 @@
             :generics T
         'key-prepend $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn key-prepend (dict)
-            assert (map? dict) "|dict should be a map"
             if (empty? dict) mid-id $ bisect min-id $ .unwrap (get-min-key dict)
           :examples $ []
           :schema $ quote $ Fn (Map String T) (-> String) (:generics T)
@@ -783,12 +774,12 @@
           :code $ quote $ defn probe-assert-str ()
             and (string? |1) (string? |2)
           :examples $ []
-          :schema $ quote $ Fn (-> Bool)
+          :schema $ quote $ Fn (-> Bool) (:open :reflect)
         'probe-assert1 $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-assert1 ()
             and (string? |1) (string? |2)
           :examples $ []
-          :schema $ quote $ Fn (-> Bool)
+          :schema $ quote $ Fn (-> Bool) (:open :reflect)
         'probe-assert2 $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-assert2 () (not= |1 |2)
           :examples $ []
@@ -1083,7 +1074,7 @@
           :code $ quote $ defn probe-str-q ()
             if (string? |hello) 1 0
           :examples $ []
-          :schema $ quote $ Fn (-> Number)
+          :schema $ quote $ Fn (-> Number) (:open :reflect)
         'probe-string-eq $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn probe-string-eq ()
             if (= |hello |hello) 1 0
@@ -1095,7 +1086,7 @@
               and (string? |1) (string? |2)
               , 1 0
           :examples $ []
-          :schema $ quote $ Fn (-> Number)
+          :schema $ quote $ Fn (-> Number) (:open :reflect)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns bisection-key.wasm-probe
           :require $ bisection-key.core :refer $ bisect bisect-vec min-id max-id mid-id c0 c1 c32 c64 trim-right lookup-i peek-tiny? dictionary str-nth
